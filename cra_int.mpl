@@ -1,12 +1,12 @@
-# maple chinese remainder algorithm for integer reconstruction
+# maple chinese remainder algorithm for polynomial reconstruction with integer coefficients
 
-# todo later polynomials
+# todo later rational reconstruction for Q
 
 # start with u mod various primes
 # you have a list of the primes, and a list of the modular images
 
 # mis is the prime list
-# modImgs is the list of modular images
+# modImgs is the list of modular images (here, they're polynomials)
 CRA_int := proc( mis, modImgs) 
 		
 		local i, gammas, vs, curProds, curTerm := 1;
@@ -26,7 +26,7 @@ CRA_int := proc( mis, modImgs)
 			gammas := [ op( gammas), mods( 1/curTerm, mis[ i + 1])];
 		od;
 
-		# now we need to find the v's
+		# now we need to find the v's (which are going to be polynomials now)
 
 		vs := [];
 		curTerm := 0; # might as well reuse
@@ -35,7 +35,6 @@ CRA_int := proc( mis, modImgs)
 		# v2 = (modImgs[ 2] - v1)*gamma[1] mods m1
 		# vi = (modImgs[ i] - sumOfVs) * gammas[ i - 1]   mods m[ i] 
 
-		print( curProds);
 		for i from 1 to nops( mis) do
 			vs := [ op( vs), mods((modImgs[ i] - curTerm) * gammas[ i], mis[ i])];
 			curTerm := curTerm + curProds[ i]*vs[ i];
