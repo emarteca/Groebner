@@ -31,7 +31,7 @@ irecon := proc( m, n)
 
 
 	# error checking
-	if w[ 2] < d and gcd( w[ 1], w[ 2]) = 1 then
+	if abs(w[ 1]) <= N and w[ 2] > 0 and w[ 2] <= d and gcd( w[ 1], w[ 2]) = 1 and gcd( w[ 2], m) = 1 then
 		return w;
 	else
 		print( "There is not a unique rat recon");
