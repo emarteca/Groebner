@@ -28,8 +28,27 @@ complementBy := proc( p, S)
 	
 end;
 
+isBasis := proc( F, ord)
+
+	local p, q, S;
+
+	for p in F do
+		for q in F do
+			if p <> q then
+				S := Reduce( SPolynomial( p, q, ord), F, ord);
+				if S <> 0 then
+					return false;
+				fi;
+			fi;
+		end do;
+	end do;
+
+	return true;
+
+end;
+
 # F is the generating set for the ideal
-BB_CRA := proc( F)    
+BB_CRA := proc( F, ord)    
 	local G, Gp, p, q, S; # the groebner basis
 	G := F;
 	
@@ -39,20 +58,26 @@ BB_CRA := proc( F)
 		for p in Gp do
 			for q in Gp do
 				if p <> q then
-					S := complementBy( Spoly( p, q), Gp);
-					print(S);
+					#S := complementBy( Spoly( p, q), Gp);
+					S := Reduce( SPolynomial( p, q, ord), G, ord);
 					if S <> 0 then
 						G := [ op(G), S];
+						print(S);
 					fi;
 				fi;
 			end do;
 		end do;
+		#print(G);
+		#print(Gp);
 		
 		if nops( Gp) = nops( G) then	# then nothing has changed (since the only other option is for 
 			break;						# a poly to have been added to G) and the algorithm has terminated
+			print( "WAT");
 		fi;
 	
 	end do;
+
+	return G;
 	
 	
 end;
