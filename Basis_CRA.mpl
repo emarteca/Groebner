@@ -2,7 +2,7 @@
 # pass in a basis, an ordering, and a list of primes
 
 Basis_CRA := proc( B, ord, primes)
-	local curBasis, newBasis, curPrime, i, done;
+	local curBasis, newBasis, curPrime, i, isDone;
 	
 	# one thing to check is if the built-in groebner basis does mod or mods for characteristic
 	
@@ -12,19 +12,22 @@ Basis_CRA := proc( B, ord, primes)
 	curPrime := primes[1];
 	
 	i := 2;
-	done := false;
+	isDone := false;
 	
 	# TODO error check for invalid primes!!
-	while ( i <= nops( primes) and !done) do  # max iterations once per prime 
-		curPrime = curPrime * primes[ i];
+	while ( i <= nops( primes) and not isDone) do  # max iterations once per prime 
 		
 		newBasis := Basis( B, ord, method=fgb, characteristic=primes[i]);
 		
 		# now, combine curBasis and newBasis via cra
-		[curBasis, done] := CRA_sets( curBasis, curPrime, newBasis, primes[ i], ord); # return true for done if LTs same
+		curBasis, isDone := CRA_sets( curBasis, curPrime, newBasis, primes[ i], ord); # return true for isDone if LTs same
 	
+		curPrime := curPrime * primes[ i];
 		i := i + 1;
+		
 	end do;
+
+	return curBasis;
 	
 end;
 
@@ -41,12 +44,12 @@ CRA_sets := proc( curBasis, curPrime, newBasis, newPrime, ord)
 	i := 1;
 	while ( i <= nops( curBasis)) do
 		oldLTerms := [ op( oldLTerms), LeadingTerm( curBasis[ i], ord)];
-		liftBasis := [ op( liftBasis), cra_int( [ curPrime, newPrime], [ curBasis[ i], newBasis[ i]);
-		newLTerms := [ op( newLTerms), LeadingTerm( liftBasis[ i], ord)]
+		liftBasis := [ op( liftBasis), CRA_int( [ curPrime, newPrime], [ curBasis[ i], newBasis[ i]])];
+		newLTerms := [ op( newLTerms), LeadingTerm( liftBasis[ i], ord)];
 		
 		i := i + 1;
 	end do;
 	
-	return [ liftBasis, ( oldLTerms = newLTerms)];
+	return liftBasis, ( oldLTerms = newLTerms);
 	
 end;
