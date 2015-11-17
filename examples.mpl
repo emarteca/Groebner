@@ -2,8 +2,8 @@
 # disgusting Argborg example
 # p. 13 linz 2006
 
-ord := tdeg( v, w, x, y, x);
-B := [  v + w + x + y + z, 
+ord1 := tdeg( v, w, x, y, x);
+B1 := [  v + w + x + y + z, 
 		v*w + v*z + w*x + x*y + y*z,
 		v*w*x + v*w*z + v*y*z + w*x*y + x*y*z,
 		v*w*x*y + v*w*x*z + v*w*y*z + v*x*y*z + w*x*y*z,
@@ -13,8 +13,8 @@ B := [  v + w + x + y + z,
 # "too easy (?)" Katsura example
 # p. 14 linz 2006
 
-ord := tdeg( a, b, c, d, e);
-B := [  a + 2*b + 2*c + 2*d + 2*e - 1,
+ord2 := tdeg( a, b, c, d, e);
+B2 := [  a + 2*b + 2*c + 2*d + 2*e - 1,
 		a^2 + 2*b^2 + 2*c^2 + 2*d^2 + 2*e^2 - a,
 		2*a*b + 2*b*c + 2*c*d + 2*d*e - b,
 		2*a*c + b^2 + 2*b*d + 2*c*e - c,
@@ -27,7 +27,7 @@ B := [  a + 2*b + 2*c + 2*d + 2*e - 1,
 # p. 17 linz 2006
 
 # parameters:  su, sv, mv, Pi
-ord := tdeg( a, b, c, d, f, g);
+ord3 := tdeg( a, b, c, d, f, g);
 
 PM0 := -6*c*g^2*su*Pi*sv^5-2*(2*c*d+a+b*d+b+c*d^2+mv*b*f-mv+2
 *mv*c*d*f+2*mv*c*f+mv^2*b*g+2*mv^2*c*g+2*mv^2*c*d*g+mv^2*c*f^2+2*mv
@@ -80,16 +80,16 @@ a-5*g^2*mv-2*g*f+c*f^4+3*g^2*b*d+6*g^2*c*d^2+15*g^3*mv^2*b+70*g^4*c
 c*d*g+2*c*f^2+12*mv*c*f*g+12*c*g^2*mv^2)*su^3*Pi*sv^3-36*c*g^
 2*su^3*Pi*sv^5-6*c*su^5*Pi*sv;
 
-B := [ PM0, PM1, PM2, ME0, ME1, ME2];
+B3 := [ PM0, PM1, PM2, ME0, ME1, ME2];
 
 
 
 # Trinks problem
 # Dekleine paper, p. 5
 
-ord := tdeg( b, s, p, t, z, w);
+ord4 := tdeg( b, s, p, t, z, w);
 
-B := [  45*p + 35*s - 165*b - 36,
+B4 := [  45*p + 35*s - 165*b - 36,
 		35*p + 40*z + 25*t - 27*s,
 		15*w + 25*p*s + 30*z - 18*t - 165*b^2,
 		-9*w + 15*p*t + 20*z*s,
