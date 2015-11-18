@@ -2,7 +2,8 @@
 # disgusting Argborg example
 # p. 13 linz 2006
 
-ord1 := tdeg( v, w, x, y, x);
+n1 := "Argborg";
+ord1 := tdeg( v, w, x, y, z);
 B1 := [  v + w + x + y + z, 
 		v*w + v*z + w*x + x*y + y*z,
 		v*w*x + v*w*z + v*y*z + w*x*y + x*y*z,
@@ -13,6 +14,7 @@ B1 := [  v + w + x + y + z,
 # "too easy (?)" Katsura example
 # p. 14 linz 2006
 
+n2 := "Too-easy Katsura";
 ord2 := tdeg( a, b, c, d, e);
 B2 := [  a + 2*b + 2*c + 2*d + 2*e - 1,
 		a^2 + 2*b^2 + 2*c^2 + 2*d^2 + 2*e^2 - a,
@@ -25,6 +27,8 @@ B2 := [  a + 2*b + 2*c + 2*d + 2*e - 1,
 # Kriber's example ( HOOOOOOOOOOOOOOOOOOOOOOOOOOOOOLY SHIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIT)
 # found online (in pls links)
 # p. 17 linz 2006
+
+n3 := "Revolting Kriber";
 
 # parameters:  su, sv, mv, Pi
 ord3 := tdeg( a, b, c, d, f, g);
@@ -87,6 +91,8 @@ B3 := [ PM0, PM1, PM2, ME0, ME1, ME2];
 # Trinks problem
 # Dekleine paper, p. 5
 
+n4 := "Trinks from Dekleine";
+
 ord4 := tdeg( b, s, p, t, z, w);
 
 B4 := [  45*p + 35*s - 165*b - 36,
@@ -95,6 +101,23 @@ B4 := [  45*p + 35*s - 165*b - 36,
 		-9*w + 15*p*t + 20*z*s,
 		w*p + 2*z*t - 11*b^3,
 		99*w - 11*s*b + 3*b^2];
+
+
+
+
+
+totOrds := [ ord1, ord2, ord3, ord4];
+totBs := [ B1, B2, B3, B4];
+exNames := [ n1, n2, n3, n4];
+
+
+n1 := "testing";
+ord1 := plex( x, y);
+B1 := [x^3 - 3*x*y, y*x^2 - 2*y^2 + x];
+
+totOrds := [ ord1];
+totBs := [ B1];
+exNames := [ n1];
 
 
 

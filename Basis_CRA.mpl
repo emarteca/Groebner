@@ -20,7 +20,10 @@ Basis_CRA := proc( B, ord, primes)
 		newBasis := Basis( B, ord, method=fgb, characteristic=primes[i]);
 		
 		# now, combine curBasis and newBasis via cra
+		#print( ord);
 		curBasis, isDone := CRA_sets( curBasis, curPrime, newBasis, primes[ i], ord); # return true for isDone if LTs same
+		#curBasis := basisrecon( curPrime, curBasis);
+		#print( curBasis);
 	
 		curPrime := curPrime * primes[ i];
 		i := i + 1;
@@ -38,6 +41,7 @@ CRA_sets := proc( curBasis, curPrime, newBasis, newPrime, ord)
 	newLTerms := [];
 	
 	liftBasis := [];
+	print( ord);
 	
 	# assume lists are of same length
 	
@@ -52,4 +56,25 @@ CRA_sets := proc( curBasis, curPrime, newBasis, newPrime, ord)
 	
 	return liftBasis, ( oldLTerms = newLTerms);
 	
+end;
+
+
+
+isBasis := proc( F, ord)
+
+	local p, q, S;
+
+	for p in F do
+		for q in F do
+			if p <> q then
+				S := Reduce( SPolynomial( p, q, ord), F, ord);
+				if S <> 0 then
+					return false;
+				fi;
+			fi;
+		end do;
+	end do;
+
+	return true;
+
 end;
