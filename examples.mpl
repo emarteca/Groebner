@@ -31,7 +31,7 @@ B2 := [  a + 2*b + 2*c + 2*d + 2*e - 1,
 n3 := "Revolting Kriber";
 
 # parameters:  su, sv, mv, Pi
-ord3 := tdeg( a, b, c, d, f, g);
+ord3 := tdeg( a, b, c, d, f, g, su, sv, mv, Pi);
 
 PM0 := -6*c*g^2*su*Pi*sv^5-2*(2*c*d+a+b*d+b+c*d^2+mv*b*f-mv+2
 *mv*c*d*f+2*mv*c*f+mv^2*b*g+2*mv^2*c*g+2*mv^2*c*d*g+mv^2*c*f^2+2*mv
@@ -106,18 +106,18 @@ B4 := [  45*p + 35*s - 165*b - 36,
 
 
 
-totOrds := [ ord1, ord2, ord3, ord4];
-totBs := [ B1, B2, B3, B4];
-exNames := [ n1, n2, n3, n4];
+totOrds := [ ord1, ord2, ord4];
+totBs := [ B1, B2, B4];
+exNames := [ n1, n2, n4];
 
 
-n1 := "testing";
-ord1 := plex( x, y);
-B1 := [x^3 - 3*x*y, y*x^2 - 2*y^2 + x];
+#n1 := "testing";
+#ord1 := plex( x, y);
+#B1 := [x^3 - 3*x*y, y*x^2 - 2*y^2 + x];
 
-totOrds := [ ord1];
-totBs := [ B1];
-exNames := [ n1];
+#totOrds := [ ord1];
+#totBs := [ B1];
+#exNames := [ n1];
 
 
 

@@ -14,10 +14,10 @@ read( "examples.mpl"):
 # right now there are 4 examples to parse through
 exNum := 1;
 
-primes := [ 1663, 1021]; 
-#for i from 1 to 10 do
-#	primes := [ op( primes), nextprime( primes[ i] + 100)];			# sequence of 10 10-digit primes sequentially 
-#od;
+primes := [ nextprime( 4294967291)]; 
+for i from 1 to 20 do
+	primes := [ op( primes), nextprime( primes[ i] + 5000)];			# sequence of 10 10-digit primes sequentially 
+od;
 
 # recall we have exNames from examples.mpl which is the names of each example
 
@@ -29,6 +29,12 @@ for exNum from 1 to nops( totBs) do
 	tt := time();
 	sol := Basis( totBs[ exNum], totOrds[ exNum], method=fgb);
 	tt := time() - tt;
+	
+	acNums := [];
+	for i from 1 to nops( sol) do
+		acNums := [ op( acNums), nops( sol[ i])];
+	od;
+	print( acNums);
 
 	fileName := cat( "output_ex", convert( exNum, string), ".txt");
 
@@ -39,7 +45,7 @@ for exNum from 1 to nops( totBs) do
 	writeto( terminal);
 
 	tt := time();
-	sol := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes);
+	sol := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, acNums);
 	tt := time() - tt;
 
 	appendto( fileName);

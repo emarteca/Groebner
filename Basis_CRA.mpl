@@ -1,23 +1,40 @@
 # Groebner method using CRA
 # pass in a basis, an ordering, and a list of primes
 
-Basis_CRA := proc( B, ord, primes)
+# acNum is a hack atm
+
+Basis_CRA := proc( B, ord, primes, acNums)
 	local curBasis, newBasis, curPrime, i, isDone;
 	
 	# one thing to check is if the built-in groebner basis does mod or mods for characteristic
 	
 	# incrementally run the basis for each prime, cra the results as they come in
 	
-	curBasis := Basis( B, ord, method=fgb, characteristic=primes[1]);
+	curBasis := Basis( B, ord, method=maplef4, characteristic=primes[1]);
 	curPrime := primes[1];
-	
+
 	i := 2;
+
+	while not isOkPrime( curBasis, acNums) do
+		print( "OH NOOOOOO");
+		curBasis := Basis( B, ord, method=maplef4, characteristic=primes[ i]);
+		curPrime := primes[ i];
+		i := i + 1;
+	end do;
+	
+
+	#i := 2;
 	isDone := false;
 	
 	# TODO error check for invalid primes!!
-	while ( i <= nops( primes) and not isDone) do  # max iterations once per prime 
-		
-		newBasis := Basis( B, ord, method=fgb, characteristic=primes[i]);
+	while i <= nops( primes) and not isDone do  # max iterations once per prime 
+		print( "HERE!");
+		newBasis := Basis( B, ord, method=maplef4, characteristic=primes[i]);
+
+		if not isOkPrime( newBasis, acNums) then
+			print( "WAT");
+			continue;
+		end if;
 		
 		# now, combine curBasis and newBasis via cra
 		#print( ord);
@@ -50,9 +67,18 @@ CRA_sets := proc( curBasis, curPrime, newBasis, newPrime, ord)
 		oldLTerms := [ op( oldLTerms), LeadingTerm( curBasis[ i], ord)];
 		liftBasis := [ op( liftBasis), CRA_int( [ curPrime, newPrime], [ curBasis[ i], newBasis[ i]])];
 		newLTerms := [ op( newLTerms), LeadingTerm( liftBasis[ i], ord)];
+
+		#print( "...........................................");
+		#print (oldLTerms);
+		#print (newLTerms);
+		#print( "************");
+		#print( liftBasis);
+		#print( "????????????????????????????????????????????");
 		
 		i := i + 1;
 	end do;
+
+	print( oldLTerms);
 	
 	return liftBasis, ( oldLTerms = newLTerms);
 	
@@ -74,6 +100,21 @@ isBasis := proc( F, ord)
 			fi;
 		end do;
 	end do;
+
+	return true;
+
+end;
+
+
+isOkPrime := proc( curBasis, acNums)
+	
+	local i;
+
+	for i from 1 to nops( curBasis) do
+		if nops( curBasis[ i]) < acNums[ i] then
+			return false;
+		end if;
+	od;
 
 	return true;
 
