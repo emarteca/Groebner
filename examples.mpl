@@ -3,7 +3,7 @@
 # p. 13 linz 2006
 
 n1 := "Argborg";
-ord1 := tdeg( v, w, x, y, z);
+ord1 := grlex( v, w, x, y, z);
 B1 := [  v + w + x + y + z, 
 		v*w + v*z + w*x + x*y + y*z,
 		v*w*x + v*w*z + v*y*z + w*x*y + x*y*z,
@@ -15,7 +15,7 @@ B1 := [  v + w + x + y + z,
 # p. 14 linz 2006
 
 n2 := "Too-easy Katsura";
-ord2 := tdeg( a, b, c, d, e);
+ord2 := plex( a, b, c, d, e);
 B2 := [  a + 2*b + 2*c + 2*d + 2*e - 1,
 		a^2 + 2*b^2 + 2*c^2 + 2*d^2 + 2*e^2 - a,
 		2*a*b + 2*b*c + 2*c*d + 2*d*e - b,
@@ -31,7 +31,7 @@ B2 := [  a + 2*b + 2*c + 2*d + 2*e - 1,
 n3 := "Revolting Kriber";
 
 # parameters:  su, sv, mv, Pi
-ord3 := tdeg( a, b, c, d, f, g, su, sv, mv, Pi);
+ord3 := plex( a, b, c, d, f, g, su, sv, mv, Pi);
 
 PM0 := -6*c*g^2*su*Pi*sv^5-2*(2*c*d+a+b*d+b+c*d^2+mv*b*f-mv+2
 *mv*c*d*f+2*mv*c*f+mv^2*b*g+2*mv^2*c*g+2*mv^2*c*d*g+mv^2*c*f^2+2*mv
@@ -111,13 +111,13 @@ totBs := [ B1, B2, B4];
 exNames := [ n1, n2, n4];
 
 
-#n1 := "testing";
+n1 := "testing";
 #ord1 := plex( x, y);
 #B1 := [x^3 - 3*x*y, y*x^2 - 2*y^2 + x];
 
-#totOrds := [ ord1];
-#totBs := [ B1];
-#exNames := [ n1];
+totOrds := [ ord1];
+totBs := [ B1];
+exNames := [ n1];
 
 
 

@@ -13,13 +13,26 @@ intpolyrecon := proc( m, p)
 
 	for i from 1 to nops( polst) do
 		curTerm := coeffs( polst[ i]); # should give you a list of coeffs but here there's just one, since one term
-		curCoeff := irecon( m, curTerm);
+		#curCoeff := irecon( m, curTerm);
+		curCoeff := iratrecon( curTerm, m);
 		# now need to update the coefficient in the list (add to new list)
-		newPoly := newPoly + polst[ i] * (1/curTerm) * (curCoeff[ 1]/curCoeff[ 2]);;
+		newPoly := newPoly + polst[ i] * (1/curTerm) * curCoeff; #(curCoeff[ 1]/curCoeff[ 2]);;
 	od;
 	
 	return newPoly;
-	
 
+end;
+
+basisrecon := proc( m, B)
+	local p, newB, curP;
+
+	newB := [];
+
+	for p in B do
+		curP := intpolyrecon( m, p);
+		newB := [ op(newB), curP * denom( curP)];
+	od;
+
+	return newB;
 
 end;

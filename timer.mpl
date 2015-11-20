@@ -14,10 +14,10 @@ read( "examples.mpl"):
 # right now there are 4 examples to parse through
 exNum := 1;
 
-primes := [ nextprime( 4294967291)]; 
+primes := [ nextprime( 8294967291)]; 
 for i from 1 to 20 do
-	primes := [ op( primes), nextprime( primes[ i] + 5000)];			# sequence of 10 10-digit primes sequentially 
-od;
+	primes := [ op( primes), nextprime( primes[ i] + 10000)];			# sequence of 10 10-digit primes sequentially 
+od:
 
 # recall we have exNames from examples.mpl which is the names of each example
 
@@ -27,14 +27,14 @@ for exNum from 1 to nops( totBs) do
 	# print times to a file
 
 	tt := time();
-	sol := Basis( totBs[ exNum], totOrds[ exNum], method=fgb);
+	sol := Basis( totBs[ exNum], totOrds[ exNum], method=maplef4);
 	tt := time() - tt;
 	
 	acNums := [];
 	for i from 1 to nops( sol) do
 		acNums := [ op( acNums), nops( sol[ i])];
 	od;
-	print( acNums);
+	#print( acNums);
 
 	fileName := cat( "output_ex", convert( exNum, string), ".txt");
 

@@ -1,7 +1,29 @@
+
+symmMod := proc( F, curPrime)
+	
+	local Fi, newB;
+
+	newB := [];
+
+	`mod` := mods;
+
+	for Fi in F do
+		newB := [ op( newB), Fi mod curPrime];
+	end do;
+
+	return newB;
+	
+	
+end;
+
+
+
+
+
 # Groebner method using CRA
 # pass in a basis, an ordering, and a list of primes
 
-# acNum is a hack atm
+# acNum is a hack atm (which doesn't even work huehuehuehuehue)
 
 Basis_CRA := proc( B, ord, primes, acNums)
 	local curBasis, newBasis, curPrime, i, isDone;
@@ -10,17 +32,19 @@ Basis_CRA := proc( B, ord, primes, acNums)
 	
 	# incrementally run the basis for each prime, cra the results as they come in
 	
-	curBasis := Basis( B, ord, method=maplef4, characteristic=primes[1]);
 	curPrime := primes[1];
+	curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=primes[1]), curPrime);
 
 	i := 2;
 
 	while not isOkPrime( curBasis, acNums) do
 		print( "OH NOOOOOO");
-		curBasis := Basis( B, ord, method=maplef4, characteristic=primes[ i]);
+		curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=primes[ i]), primes[ i]);
 		curPrime := primes[ i];
 		i := i + 1;
 	end do;
+
+	#print( curBasis);
 	
 
 	#i := 2;
@@ -28,8 +52,9 @@ Basis_CRA := proc( B, ord, primes, acNums)
 	
 	# TODO error check for invalid primes!!
 	while i <= nops( primes) and not isDone do  # max iterations once per prime 
-		print( "HERE!");
-		newBasis := Basis( B, ord, method=maplef4, characteristic=primes[i]);
+		#print( "HERE!");
+		newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=primes[i]), primes[ i]);
+		#print( newBasis);
 
 		if not isOkPrime( newBasis, acNums) then
 			print( "WAT");
@@ -39,7 +64,7 @@ Basis_CRA := proc( B, ord, primes, acNums)
 		# now, combine curBasis and newBasis via cra
 		#print( ord);
 		curBasis, isDone := CRA_sets( curBasis, curPrime, newBasis, primes[ i], ord); # return true for isDone if LTs same
-		#curBasis := basisrecon( curPrime, curBasis);
+		curBasis := basisrecon( curPrime, curBasis);
 		#print( curBasis);
 	
 		curPrime := curPrime * primes[ i];
@@ -58,10 +83,12 @@ CRA_sets := proc( curBasis, curPrime, newBasis, newPrime, ord)
 	newLTerms := [];
 	
 	liftBasis := [];
-	print( ord);
+	#print( ord);
 	
 	# assume lists are of same length
 	
+	`mod` := mods;
+
 	i := 1;
 	while ( i <= nops( curBasis)) do
 		oldLTerms := [ op( oldLTerms), LeadingTerm( curBasis[ i], ord)];
@@ -78,7 +105,7 @@ CRA_sets := proc( curBasis, curPrime, newBasis, newPrime, ord)
 		i := i + 1;
 	end do;
 
-	print( oldLTerms);
+	#print( oldLTerms);
 	
 	return liftBasis, ( oldLTerms = newLTerms);
 	
