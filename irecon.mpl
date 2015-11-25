@@ -1,3 +1,38 @@
+
+# p.3 fareypls paper
+# return a, b such that a/b = r mod N
+
+frecon := proc( N, r)
+	local as, bs, i, q;
+
+	as := [ N, r];
+	bs := [ 0, 1];
+	i := 0;
+
+	while 2*(as[ i + 2]^2) >= N - 1 do
+		i := i + 1;
+		q := floor( as[ i] / as[ i + 1]);
+		as := [ op( as), as[ i] - q * as[ i  + 1]];
+		bs := [ op( bs), bs[ i] - q * bs[ i  + 1]];
+	end do;
+
+	if 2*(bs[ i + 2]^2) < N - 1 and gcd( as[ i + 2], bs[ i + 2]) = 1 then
+		return [ as[ i + 2], bs[ i + 2]];
+	else
+		print( "OOOOOOOOOH NO");
+		return [ as[ i + 2], bs[ i + 2]];
+	end if;
+
+end;
+
+
+
+
+
+
+
+
+
 # euclid's alg repurposed for rational reconstruction
 
 # m is the mod 
@@ -35,7 +70,7 @@ irecon := proc( m, n)
 		return w;
 	else
 		print( "There is not a unique rat recon");
-		return [-1, -1];
+		return w;
 	end if;
 
 
