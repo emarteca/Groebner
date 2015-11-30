@@ -1,0 +1,7 @@
+
+# test problem A.2 from K. Forsman's thesis
+
+F := [x1*w^4 + 18*x1*w^2 + 81*x1 - 4*w^2 - 12,
+      x2*w^5 + 18*x2*w^3 + 81*x2*w + w^4 + 2*w^2 + 9];
+
+X := [w,x1,x2];

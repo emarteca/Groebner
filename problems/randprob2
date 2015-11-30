@@ -1,0 +1,6 @@
+# and more ...  probably too easy
+
+F := [-4+7*z-6*y*z-5*x+7*x*z+6*x*y-6*x**2,
+       5*z-10*z**3+y+y*z-10*x+5*x*z-4*x*y,
+      -1-10*z+3*y-y*z-9*y**3+4*x*z];
+X := [x,y,z];

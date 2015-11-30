@@ -1,0 +1,7 @@
+
+#  test : trav1
+#  from : Traverso "Grobner Trace Algorithms", ISSAC '88 ?,
+#         problem 7
+
+F := [ x^2 + y*z + t*u - 5*v, y*z + x*t + 3*u*v - 2, y^2 + x*z - t*v];
+X := [u,z,t,v,x,y];

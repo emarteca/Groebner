@@ -1,0 +1,19 @@
+#----------------------------------------------------------------
+# Test Problem 9: an easy Katsura from Boge, Gebauer + Kredel, JSC '86
+#                 5 equations in 5 variables
+#
+# Easy - go for a bigger Katsura problem
+#
+p1 := u0^2 - u0 + 2*u1^2 + 2*u2^2 + 2*u3^2 + 2*u4^2:
+p2 := 2*u0*u1 + 2*u1*u2 + 2*u2*u3 + 2*u3*u4 - u1:
+p3 := 2*u0*u2 + u1^2 + 2*u1*u3 + 2*u2*u4 - u2:
+p4 := 2*u0*u3 + 2*u1*u2 + 2*u1*u4 - u3:
+p5 := u0 + 2*u1 + 2*u2 + 2*u3 + 2*u4 - 1:
+ 
+P := [p1,p2,p3,p4,p5]:
+
+# in increasing order of difficulty (for lex.)
+Xa := [u4,u2,u0,u3,u1];
+Xb := [u4,u0,u2,u3,u1];
+Xc := [u4,u0,u3,u2,u1];
+

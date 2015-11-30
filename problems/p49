@@ -1,0 +1,70 @@
+#--------------
+# problem 49 - looks like a real stinker
+#--------------
+#From gjfee  Tue Nov 17 17:00:26 1987
+#Received: by watmum; Tue, 17 Nov 87 17:00:26 EST
+#To: srczapor
+#Subject: Filliman's 3rd problem
+#
+#Do you think we can solve this one?
+words(0):
+X := array(1..4,1..9):
+for i to 4 do
+        for j to 9 do
+                X[i,j] := x.i.j
+        od
+od:
+X[1,1] := 0:
+X[1,3] := 0:
+X[1,5] := 0:
+X[1,6] := 0:
+X[1,7] := 0:
+X[1,8] := 0:
+X[1,9] := 0:
+c := 0:
+for i to 4 do
+        temp := 0:
+        for j to 9 do
+                temp := temp + X[i,j]^2
+        od:
+        c := c+1:
+        e.c := temp-1:
+od:
+for i to 3 do
+        for j from i+1 to 4 do
+                temp := 0:
+                for k to 9 do
+                        temp := temp+X[i,k]*X[j,k]
+                od:
+                c := c+1:
+                e.c := temp:
+        od:
+od:
+M := proc(i,j,k,l)
+        linalg[det](linalg[submatrix](X,subsop(i=NULL,[1,2,3,4]),[j,k,l]))
+end:
+for i to 4 do
+ c := c+1:
+ e.c:=-(-1)^(i+1)*al*X[i,1]+M(i,2,4,5)+M(i,2,7,8)+M(i,3,4,6)+M(i,3,7,9):
+ c := c+1:
+ e.c:=-(-1)^(i+1)*al*X[i,2]-M(i,1,4,5)-M(i,1,7,8)+M(i,3,5,6)+M(i,3,8,9):
+ c := c+1:
+ e.c:=+(-1)^(i+1)*al*X[i,3]+M(i,1,4,6)+M(i,1,7,9)+M(i,2,5,6)+M(i,2,8,9):
+ c := c+1:
+ e.c:=-(-1)^(i+1)*al*X[i,4]+M(i,1,2,5)+M(i,5,7,8)+M(i,1,3,6)+M(i,6,7,9):
+ c := c+1:
+ e.c:=-(-1)^(i+1)*al*X[i,5]-M(i,1,2,4)-M(i,4,7,8)+M(i,2,3,6)+M(i,6,8,9):
+ c := c+1:
+ e.c:=+(-1)^(i+1)*al*X[i,6]+M(i,1,3,4)+M(i,4,7,9)+M(i,2,3,5)+M(i,5,8,9):
+ c := c+1:
+ e.c:=-(-1)^(i+1)*al*X[i,7]+M(i,1,2,8)+M(i,4,5,8)+M(i,1,3,9)+M(i,4,6,9):
+ c := c+1:
+ e.c:=-(-1)^(i+1)*al*X[i,8]-M(i,1,2,7)-M(i,4,5,7)+M(i,2,3,9)+M(i,5,6,9):
+ c := c+1:
+ e.c:=+(-1)^(i+1)*al*X[i,9]+M(i,1,3,7)+M(i,4,6,7)+M(i,2,3,8)+M(i,5,6,8):
+od:
+ 
+#eqs := {e.(1..c)};
+F := [e.(1..c)]:
+vars := {al,x12,x14,x2.(1..9),x3.(1..9),x4.(1..9)};
+#G := grobner[gbasis](eqs,vars,tdeg);

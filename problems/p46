@@ -1,0 +1,23 @@
+#--------------------------
+# Test problem 46: 12 eqns in 9 vars
+#--------------------------
+# private communication from Paul Filliman
+
+z1 := -1 + a^2 + 2*b^2 + e^2;
+z2 := -1 + 2*c^2 + 2*g^2;
+z3 := -1 + 2*d^2 + f^2 + 2*h^2;
+z4 := -al*a + 2*(c*f - c*d + 2*d*g + 2*c*h + 2*d*h);
+z5 := -al*b + c*f;
+z6 := -al*e + 2*c*d;
+z7 := -al*c + a*f - a*d + 2*a*h + d*e + b*f;
+z8 := -al*g + 2*a*d + 2*a*h;
+z9 := -0 + c*e + b*c - 2*b*g;
+z10 := -al*d  -a*c + 2*a*g + c*e;
+z11 := -al*f + 2*a*c + 2*b*c;
+z12 := -al*h + 2*a*c + 2*a*g;
+ 
+F := [z1,z2,z3,z4,z5,z6,z7,z8,z9,z10,z11,z12]:
+vars := {a,b,c,d,e,f,g,h,al}:
+# heu. opt. X := [al,e,h,d,f,a,g,b,c];
+X := [al,e,h,d,f,a,g,b,c];
+

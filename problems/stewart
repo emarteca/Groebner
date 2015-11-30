@@ -1,0 +1,92 @@
+#----------------------------------------------------------------
+#
+# Hard ? (maybe ridiculous) problem posted by someone on a newsgroup
+# years ago ... hoping someone would do their research for them!
+#
+# The syntax is still in Macsyma form, and will need to be converted
+# into Maple assignments ... and plain polynomials instead of equations.
+#
+# But who knows ... it could turn out to be a good one.
+#
+#----------------------------------------------------------------
+#From nstn.ns.ca!news.cs.indiana.edu!samsung!uakari.primate.wisc.edu!sdd.hp.com!elroy.jpl.nasa.gov!decwrl!mcnc!uvaarpa!murdoch!usenet Thu Mar  7 11:39:17 AST 1991
+#Article: 1956 of sci.math.symbolic
+#Path: cs.dal.ca!nstn.ns.ca!news.cs.indiana.edu!samsung!uakari.primate.wisc.edu!sdd.hp.com!elroy.jpl.nasa.gov!decwrl!mcnc!uvaarpa!murdoch!usenet
+#From: peter@Virginia.EDU (Alwyn Peter Allan)
+#Newsgroups: sci.math.symbolic
+#Subject: Challenge: Can anyone solve this?
+#Keywords: tough problem
+#Message-ID: <1991Mar7.013230.1053@murdoch.acc.Virginia.EDU>
+#Date: 7 Mar 91 01:32:30 GMT
+#Sender: usenet@murdoch.acc.Virginia.EDU
+#Organization: University of Virginia
+#Lines: 66
+
+#I am working on a design for a mechanism called a Stewart Platform.
+#It is a 6-degree-of-freedom parallel manipulator, described in detail
+#in:
+#
+#	E. F. Fichter.  A Stewart Platform-Based Manipulator: General
+#	Theory and Practical Construction.  International Journal of
+#	Robotics Research, Vol. 5, No. 2, pp. 157-182, 1986.
+#
+#Unlike a traditional serial manipulator mechanism, the inverse
+#kinematics problem is easy and the direct kinematics problem is
+#tough.  There are solutions in the literature for special cases, but
+#none has appeared for the general case.
+#
+#A solution would satisfy the 30 nonlinear equations given below in
+#Macsyma BATCH format.  See the above reference for an explanation of
+#terms.  I have tried it on a Sun 4/60 and it churns for hours
+#without issue.
+#
+#Anyone have a faster machine or a better symbolic math package? I will
+#post a summary.
+#
+#---------------------------------------------------------------------------
+
+eq1:  xb1 + xl1 = xt + r11 * xp1 + r12 * yp1 + r13 * zp1;
+eq2:  yb1 + yl1 = yt + r21 * xp1 + r22 * yp1 + r23 * zp1;
+eq3:  zb1 + zl1 = zt + r31 * xp1 + r32 * yp1 + r33 * zp1;
+eq4:  xb2 + xl2 = xt + r11 * xp2 + r12 * yp2 + r13 * zp2;
+eq5:  yb2 + yl2 = yt + r21 * xp2 + r22 * yp2 + r23 * zp2;
+eq6:  zb2 + zl2 = zt + r31 * xp2 + r32 * yp2 + r33 * zp2;
+eq7:  xb3 + xl3 = xt + r11 * xp3 + r12 * yp3 + r13 * zp3;
+eq8:  yb3 + yl3 = yt + r21 * xp3 + r22 * yp3 + r23 * zp3;
+eq9:  zb3 + zl3 = zt + r31 * xp3 + r32 * yp3 + r33 * zp3;
+eq10: xb4 + xl4 = xt + r11 * xp4 + r12 * yp4 + r13 * zp4;
+eq11: yb4 + yl4 = yt + r21 * xp4 + r22 * yp4 + r23 * zp4;
+eq12: zb4 + zl4 = zt + r31 * xp4 + r32 * yp4 + r33 * zp4;
+eq13: xb5 + xl5 = xt + r11 * xp5 + r12 * yp5 + r13 * zp5;
+eq14: yb5 + yl5 = yt + r21 * xp5 + r22 * yp5 + r23 * zp5;
+eq15: zb5 + zl5 = zt + r31 * xp5 + r32 * yp5 + r33 * zp5;
+eq16: xb6 + xl6 = xt + r11 * xp6 + r12 * yp6 + r13 * zp6;
+eq17: yb6 + yl6 = yt + r21 * xp6 + r22 * yp6 + r23 * zp6;
+eq18: zb6 + zl6 = zt + r31 * xp6 + r32 * yp6 + r33 * zp6;
+eq19: xl1^2 + yl1^2 + zl1^2 = l1^2;
+eq20: xl2^2 + yl2^2 + zl2^2 = l2^2;
+eq21: xl3^2 + yl3^2 + zl3^2 = l3^2;
+eq22: xl4^2 + yl4^2 + zl4^2 = l4^2;
+eq23: xl5^2 + yl5^2 + zl5^2 = l5^2;
+eq24: xl6^2 + yl6^2 + zl6^2 = l6^2;
+eq25: r11^2 + r12^2 + r13^2 = 1;
+eq26: r21^2 + r22^2 + r23^2 = 1;
+eq27: r31^2 + r32^2 + r33^2 = 1;
+eq28: r11^2 + r21^2 + r31^2 = 1;
+eq29: r12^2 + r22^2 + r32^2 = 1;
+eq30: r13^2 + r23^2 + r33^2 = 1;
+solve([eq1,eq2,eq3,eq4,eq5,eq6,eq7,eq8,eq9,eq10,eq11,eq12,eq13,eq14,
+       eq15,eq16,eq17,eq18,eq19,eq20,eq21,eq22,eq23,eq24,eq25,eq26,
+       eq27,eq28,eq29,eq30], 
+       [xt,yt,zt,r11,r12,r13,r21,r22,r23,r31,
+       r32,r33,xl1,yl1,zl1,xl2,yl2,zl2,xl3,yl3,zl3,xl4,yl4,zl4,
+       xl5,yl5,zl5,xl6,yl6,zl6]);
+
+#------------------------------------------------------------------
+#
+#The first 18 equations require kinematic chains around the legs to be
+#closed.  Eqs. 19-24 require leg lengths to be satisfied.  Eqs. 25-30
+#require the R matrix to be a propper rotation.
+#
+#Thanks.
+

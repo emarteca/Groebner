@@ -1,0 +1,45 @@
+## Fee A11 (b)
+
+# I don't recall these being too hard ... not sure
+
+rescale := proc(p) if p=0 then 0 else p/icontent(p) fi end;
+re_part := proc(p) coeff(p,I,0) end;
+im_part := proc(p) coeff(p,I,1) end;
+fix := proc(p) rescale(numer(normal(p))) end;
+     
+phi00 :=-((1/4)*f^2+(1/4)*b^2-(1/8)*d^2+(1/4)*c*d-(1/8)*c^2+(1/2)*q*a*f-(
+1/4)*q*c*d+(1/4)*q*c^2+(1/4)*q^2*a^2-(1/8)*q^2*c^2)
+/(a^2*b^2)
+-((1/2)*I* f+(1/4)*I* q*f+(1/2)*I* q*a+(1/4)*I* q^2*a)/(I* a*b^2):
+     
+phi10 :=-((1/8)*d*f+(1/8)*I* d*b+(1/16)*q*a*d+(1/16)*q*c*a-(1/16)*q^2*c*a)/(
+a^2*b^2)
+-((3/8)*I* d-(3/8)*I* c+(3/16)*I* q*d+(3/16)*I* q*c+(3/16)*I* q^2*c)/(I*
+a*b^2):
+     
+phi20 :=-((1/8)*f^2+(1/4)*I* b*f-(1/8)*b^2-(1/8)*q^2*a^2)/(a^2*b^2)
++((1/2)-(1/8)*q^2)/(b^2):
+     
+phi11 :=((1/16)*f^2+(1/16)*b^2-(3/16)*d^2+(3/16)*c^2+(1/8)*I* q*a*b-(3/
+8)*q*c^2-(1/16)*q^2*a^2+(3/16)*q^2*c^2)/(a^2*b^2)
+     
+-((1/8)*I* q*b+(1/4)*q^2*a)/(a*b^2)
++((1/4)+(1/4)*q+(1/16)*q^2)/(b^2):
+     
+phi12 :=-((1/8)*d*f-(1/8)*I* d*b-(1/16)*q*a*d+(1/16)*q*c*a-(1/16)*q^2*c*a)/(
+a^2*b^2)
++((3/8)*I* d+(3/8)*I* c+(3/16)*I* q*d-(3/16)*I* q*c-(3/16)*I* q^2*c)/(I*
+a*b^2):
+     
+phi22 :=-((1/4)*f^2+(1/4)*b^2-(1/8)*d^2-(1/4)*c*d-(1/8)*c^2-(1/2)*q*a*f+(
+1/4)*q*c*d+(1/4)*q*c^2+(1/4)*q^2*a^2-(1/8)*q^2*c^2)
+/(a^2*b^2)
++((1/2)*I* f+(1/4)*I* q*f-(1/2)*I* q*a-(1/4)*I* q^2*a)/(I* a*b^2):
+
+temp := map(fix, [phi00,phi10,phi20,phi11,phi12,phi22] ):
+temp := map(expand,temp):
+
+F := map(fix, [temp[1],re_part(temp[2]),im_part(temp[2]),
+               re_part(temp[3]),im_part(temp[3]),temp[4],
+               re_part(temp[5]),im_part(temp[5]),temp[6] ] );
+

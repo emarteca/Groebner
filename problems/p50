@@ -1,0 +1,93 @@
+#--------------
+# problem 50 - another peach, from Barry Trager at IBM Yorktown
+#
+# Nasty in lex ordering ... not so bad in tdeg, but the final coefficients
+# are pretty big.  Will homomorphisms like this problem?
+#-------------
+#This is a system of 8 nonlinear quadratic equations.
+#They involve floating point coefficients.  The Scratchpad code
+#below has converted the floats to rationals.
+#The user believes that there are only 32 solutions.
+#Scratchpad ran out of memory when trying Groebner with the given
+#lex ordering.
+ 
+Digits := 10;
+rhox := .22441776 : rhoy := .71549788 : rhoz := .79551628 :
+lx   :=-.71511545 : ly   := .65150320 : lz   := .25328538 :
+mx   :=-.69899036 : my   :=-.66895464 : mz   :=-.25280857 :
+nx   := .00473084 : ny   :=-.35783135 : nz   := .93377425 :
+ 
+rad := (Pi/180) :
+a1:=1/2 : d1:= 3/16 : alpha[1] := 80*rad :
+a2:=1   : d2:= 3/8  : alpha[2] := 15*rad :
+a3:=1/8 : d3:= 1/4  : alpha[3] :=120*rad :
+a4:=5/8 : d4:= 7/8  : alpha[4] := 75*rad :
+a5:=5/16: d5:= 1/2  : alpha[5] :=100*rad :
+a6:=1/4 : d6:= 1/8  : alpha[6] := 60*rad :
+ 
+for i to 6 do lam[i]:=cos(alpha[i]): mu[i]:=sin(alpha[i]) od :
+for i to 6 do lam[i]:=evalf(lam[i]):mu[i]:=evalf(mu[i]) od:
+ 
+p:=-lx*a6-(mx*mu[6]+nx*lam[6])*d6+rhox :
+q:=-ly*a6-(my*mu[6]+ny*lam[6])*d6+rhoy :
+r:=-lz*a6-(mz*mu[6]+nz*lam[6])*d6+rhoz :
+u:=mx*mu[6]+nx*lam[6] :
+v:=my*mu[6]+ny*lam[6] :
+w:=mz*mu[6]+nz*lam[6] :
+ 
+p:=evalf(p,8) :
+q:=evalf(q,8) :
+r:=evalf(r,8) :
+u:=evalf(u,8) :
+v:=evalf(v,8) :
+w:=evalf(w,8) :
+ 
+p:=convert(p,rational,100) ;
+q:=convert(q,rational,100) ;
+r:=convert(r,rational,100) ;
+u:=convert(u,rational,100) ;
+v:=convert(v,rational,100) ;
+w:=convert(w,rational,100) ;
+ 
+for i to 6 do lam[i]:=evalf(lam[i],8):mu[i]:=evalf(mu[i],8) od:
+for i to 6 do lam[i]:=convert(lam[i],rational,100):mu[i]:=convert(mu[i],
++ rational,100) od:
+ 
+#(h1,h2,h3,h4,h5,h6,h7,h8):NDMP([x1,x2,x3,x4,x5,x6,x7,x8],RN)
+ 
+h1:= -x1*x3*lam[1]*mu[2]*q + x1*x4*mu[2]*p + x2*x3*lam[1]*mu[2]*p +
+  x2*x4*mu[2]*q -x5*x8*mu[3]*lam[4]*a5  - x6*x7*mu[3]*a5-
+  x1*mu[1]*lam[2]*q+x2*mu[1]*lam[2]*p-x3*mu[1]*mu[2]*(r-d1)-
+  x4*mu[2]*a1+x5*mu[3]*mu[4]*d5-x6*mu[3]*a4-x8*lam[3]*mu[4]*a5+
+  lam[1]*lam[2]*r-lam[1]*lam[2]*d1-lam[2]*d2-d3-lam[3]*d4-
+  lam[3]*lam[4]*d5 :
+h2:= -x1*x3*lam[1]*mu[2]*v+x1*x4*mu[2]*u+x2*x3*lam[1]*mu[2]*u+
+  x2*x4*mu[2]*v+x5*x7*mu[3]*lam[4]*mu[5]-x6*x8*mu[3]*mu[5]-
+  x1*mu[1]*lam[2]*v+x2*mu[1]*lam[2]*u-x3*mu[1]*mu[2]*w+
+  x5*mu[3]*mu[4]*lam[5]+x7*lam[3]*mu[4]*mu[5]+lam[1]*lam[2]*w-
+  lam[3]*lam[4]*lam[5] :
+h3:=x1*x3*a2*u+x1*x4*lam[1]*a2*v+x2*x3*a2*v-x2*x4*lam[1]*a2*u-
+  x5*x7*mu[3]*lam[4]*mu[5]*d3+x5*x8*mu[5]*a3+x6*x7*lam[4]*mu[5]*a3+
+  x6*x8*mu[3]*mu[5]*d3-x1*(-a1*u+mu[1]*d2*v)+x2*(a1*v+mu[1]*d2*u)+
+  x4*mu[1]*a2*w-x5*mu[3]*mu[4]*lam[5]*d3+x6*mu[4]*lam[5]*a3-
+  x7*(mu[4]*mu[5]*d4+lam[3]*mu[4]*mu[5]*d3)+x8*mu[5]*a4+d1*w+
+  lam[1]*d2*w+lam[3]*lam[4]*lam[5]*d3+lam[4]*lam[5]*d4+lam[5]*d5-
+  p*u-q*v-r*w :
+h4:=x1*x3*a2*p+x1*x4*lam[1]*a2*q+x2*x3*a2*q-x2*x4*lam[1]*a2*p+
+  x5*x7*a3*a5+x5*x8*mu[3]*lam[4]*a5*d3+x6*x7*mu[3]*a5*d3-
+  x6*x8*lam[4]*a3*a5+x1*(a1*p-mu[1]*d2*q)+x2*(a1*q+mu[1]*d2*p)-x3*a1*a2+
+  x4*(-mu[1]*a2*d1+mu[1]*a2*r)+x5*(a3*a4-mu[3]*mu[4]*d3*d5)+
+  x6*(mu[4]*a3*d5+mu[3]*a4*d3)+x7*a4*a5+x8*(mu[4]*a5*d4+lam[3]*mu[4]*
+  a5*d3)+(-a1**2-d1**2-a2**2-d2**2+a3**2+d3**2+a4**2+d4**2+a5**2+d5**2-
+  p**2-q**2-r**2)/2+d1*r+lam[1]*d2*r-lam[1]*d1*d2+lam[3]*d3*d4+
+  lam[3]*lam[4]*d3*d5+lam[4]*d4*d5 :
+ 
+h5:=x1**2+x2**2-1 :
+h6:=x3**2+x4**2-1 :
+h7:=x5**2+x6**2-1 :
+h8:=x7**2+x8**2-1 :
+ 
+F := [h1,h2,h3,h4,h5,h6,h7,h8]:
+F := map(proc(q) q/icontent(q) end, F):
+X := [x8,x7,x6,x5,x4,x3,x2,x1];
+

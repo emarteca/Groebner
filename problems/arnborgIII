@@ -1,0 +1,9 @@
+#  test: arnborgIII
+#  from:  Faugere, Gianni, Lazard, Mora '90
+
+f1 := a^2*b*c + a*b^2*c + a*b*c^2 + a*b*c + a*b + a*c + b*c:
+f2 := a^2*b^2*c + a*b^2*c^2 + a^2*b*c + a*b*c + b*c + a + c:
+f3 := a^2*b^2*c^2 + a^2*b^2*c + a*b^2*c + a*b*c + a*c + c + 1:
+
+F := [f1,f2,f3];
+X := [a,c,b];

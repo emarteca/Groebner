@@ -1,0 +1,37 @@
+# This procedure attempts to guess an ordering of variables
+# that'll work well for lex. orderings.
+#
+# When it returns [x1,x2, ..., xn], you should call Basis with
+#
+#   x1 > x2 > ... > xn
+#
+# to make it FAST.  In other words, if you want to make the problem
+# SLOW/BAD, try the opposite!
+
+
+
+reorder := proc(eqns,X)
+    local xl,a,i,j,k,n,num,min,ind,Y,Z;
+    k := nops(eqns);
+    for xl in X do
+        num[xl] := 0;
+        for i to k do
+            for j from 0 to degree( eqns[i], xl ) do
+                coeff( eqns[i], xl, j);
+                if type(%,`+`) then n := nops(%)
+                elif % = 0 then n := 0
+                else n := 1  fi;
+                num[xl] := num[xl] + n*1000^j
+            od
+        od
+    od;
+    Z := [] ; Y := map(op,{indices(num)}) ;
+    to nops(X) do
+        min := 999*10^999;
+        for a in Y do
+            if num[a] < min then min := num[a]; ind := a fi
+        od;
+        Z := [op(Z),ind] ; Y := Y minus {ind}
+    od;
+    Z
+end:

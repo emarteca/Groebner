@@ -1,0 +1,16 @@
+#-----------------
+# Test problem 24 ... more randomness (is this repeated in one of my
+# other files?)
+#-----------------
+
+#readlib(randpoly):
+#poly := 'randpoly([x,y,z,w],dense,degree=2,coeffs=rand(-10..10))';
+#p1 := poly; p2 := poly; p3 := poly; p4 := poly;
+
+F := [4+8*w-10*w**2-10*z+7*z*w-3*z**2-3*y+6*y*w+2*y*z-8*y**2-9*x+5*x*w-2*x*z-4*
+x*y-x**2, 
+9-6*w+6*w**2-2*z+10*z*w-5*z**2+7*y+y*w-2*y*z+6*y**2-9*x-8*x*w-4*x*z-8*x*y-5*x**2, 
+-9-2*w+10*w**2-9*z+8*z*w+10*z**2-3*y-2*y*w-2*y*z-3*y**2-2*x+3*x*w-9*x*z+7*x*y+6*x**2, 
+-7+9*w+2*w**2+3*z+10*z*w-2*z**2+8*y+4*y*w-3*y*z-6*y**2+3*x-6*x*w+9*x*y-3*x**2];
+
+X := [z,x,w,y];

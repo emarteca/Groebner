@@ -1,0 +1,8 @@
+
+# test problem A.1 from K. Forsman's thesis
+
+F := [y0 - x2^2, y1 - 2*x2*x21, y2 - 2*x2*x22 - 2*x21^2,
+      2*x1^5*x11 - u + x1, 2*x2*x21 - x1 + x2, 2*x21^2 + 2*x2*x22 - x11 + x21];
+
+X := [x22,x21,x2,x11,x1,u,y2,y1,y0];
+
