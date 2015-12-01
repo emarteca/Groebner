@@ -12,9 +12,9 @@ read( "examples.mpl"):
 
 
 # right now there are 4 examples to parse through
-exNum := 1;
+exNum := 1:
 
-primes := [ nextprime( 8294967291)]; 
+primes := [ nextprime( 8294967291)]:
 for i from 1 to 20 do
 	primes := [ op( primes), nextprime( primes[ i] + 10000)];			# sequence of 10 10-digit primes sequentially 
 od:
@@ -26,33 +26,37 @@ for exNum from 1 to nops( totBs) do
 	# run example with Basis_CRA
 	# print times to a file
 
-	tt := time();
-	sol := Basis( totBs[ exNum], totOrds[ exNum], method=maplef4);
-	tt := time() - tt;
+	tt := time():
+	sol := Basis( totBs[ exNum], totOrds[ exNum], method=maplef4):
+	tt := time() - tt:
 	
-	acNums := [];
+	acNums := []:
 	for i from 1 to nops( sol) do
-		acNums := [ op( acNums), nops( sol[ i])];
-	od;
+		acNums := [ op( acNums), nops( sol[ i])]:
+	od:
 	#print( acNums);
 
-	fileName := cat( "output_ex", convert( exNum, string), ".txt");
+	fileName := cat( "output_ex", convert( exNum, string), ".txt"):
 
-	writeto( fileName);
-	# Basis with fgb
-	tt;
-	sol;
-	writeto( terminal);
+	writeto( fileName):
+	print( "Basis with maplef4");
+	print( "\nTime: ");
+	print( tt);
+	print( "\nSolution: ");
+	print( sol);
+	writeto( terminal):
 
-	tt := time();
-	sol := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, acNums);
-	tt := time() - tt;
+	tt := time():
+	sol := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, acNums):
+	tt := time() - tt:
 
 	appendto( fileName);
-	# Basis with CRA
-	tt;
-	sol;
-	writeto( terminal);
+	print( "Basis with CRA");
+	print( "\nTime: ");
+	print( tt);
+	print( "\nSolution");
+	print( sol);
+	writeto( terminal):
 
 
-od;
+od:
