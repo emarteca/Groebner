@@ -38,9 +38,9 @@ Basis_CRA := proc( B, ord, primes, acNums)
 	i := 2;
 
 	while not isOkPrime( curBasis, acNums) do
-		print( "OH NOOOOOO");
-		curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=primes[ i]), primes[ i]);
+		#print( "OH NOOOOOO");
 		primes := [ op( primes), nextprime( primes[ nops( primes)])];
+		curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=primes[ i]), primes[ i]);
 		curPrime := primes[ i];
 		i := i + 1;
 	end do;
@@ -55,7 +55,7 @@ Basis_CRA := proc( B, ord, primes, acNums)
 	while i <= nops( primes) and not isDone do  # max iterations once per prime 
 		#print( "HERE!");
 		primes := [ op( primes), nextprime( primes[ nops( primes)])];
-		
+
 		newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=primes[i]), primes[ i]);
 		#print( newBasis);
 
