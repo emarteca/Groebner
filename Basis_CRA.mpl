@@ -26,22 +26,24 @@ end;
 # acNum is a hack atm (which doesn't even work huehuehuehuehue)
 
 Basis_CRA := proc( B, ord, primes, acNums)
-	local curBasis, newBasis, curPrime, i, isDone;
+	local curBasis, newBasis, curPrime, i, isDone, informalPrimes;
 	
 	# one thing to check is if the built-in groebner basis does mod or mods for characteristic
 	
 	# incrementally run the basis for each prime, cra the results as they come in
+
+	informalPrimes := [ op(primes)];
 	
-	curPrime := primes[1];
-	curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=primes[1]), curPrime);
+	curPrime := informalPrimes[1];
+	curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[1]), curPrime);
 
 	i := 2;
 
 	while not isOkPrime( curBasis, acNums) do
 		#print( "OH NOOOOOO");
-		primes := [ op( primes), nextprime( primes[ nops( primes)])];
-		curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=primes[ i]), primes[ i]);
-		curPrime := primes[ i];
+		informalPrimes := [ op( informalPrimes), nextprime( informalPrimes[ nops( informalPrimes)])];
+		curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[ i]), informalPrimes[ i]);
+		curPrime := informalPrimes[ i];
 		i := i + 1;
 	end do;
 
@@ -52,11 +54,11 @@ Basis_CRA := proc( B, ord, primes, acNums)
 	isDone := false;
 	
 	# TODO error check for invalid primes!!
-	while i <= nops( primes) and not isDone do  # max iterations once per prime 
+	while not isDone do #i <= nops( informalPrimes) and not isDone do  # max iterations once per prime 
 		#print( "HERE!");
-		primes := [ op( primes), nextprime( primes[ nops( primes)])];
+		informalPrimes := [ op( informalPrimes), nextprime( informalPrimes[ nops( informalPrimes)])];
 
-		newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=primes[i]), primes[ i]);
+		newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=informalPrimes[i]), informalPrimes[ i]);
 		#print( newBasis);
 
 		if not isOkPrime( newBasis, acNums) then
@@ -66,11 +68,11 @@ Basis_CRA := proc( B, ord, primes, acNums)
 		
 		# now, combine curBasis and newBasis via cra
 		#print( ord);
-		curBasis, isDone := CRA_sets( curBasis, curPrime, newBasis, primes[ i], ord); # return true for isDone if LTs same
+		curBasis, isDone := CRA_sets( curBasis, curPrime, newBasis, informalPrimes[ i], ord); # return true for isDone if LTs same
 		curBasis := basisrecon( curPrime, curBasis);
 		#print( curBasis);
 	
-		curPrime := curPrime * primes[ i];
+		curPrime := curPrime * informalPrimes[ i];
 		i := i + 1;
 		
 	end do;
