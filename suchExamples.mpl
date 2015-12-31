@@ -10,7 +10,7 @@
 
 n1 := "arnborgI";
 
-read( "arnborgI");
+read( "problems/arnborgI");
 ord1 := tdeg( X);
 B1 := F;
 
@@ -19,7 +19,7 @@ B1 := F;
 
 n2 := "arnborgIII";
 
-read( "arnborgIII");
+read( "problems/arnborgIII");
 ord2 := tdeg( X);
 B2 := F;
 
@@ -28,7 +28,7 @@ B2 := F;
 
 n3 := "forsman4";
 
-read( "forsman4");
+read( "problems/forsman4");
 ord3 := tdeg( X);
 B3 := F;
 
@@ -37,7 +37,7 @@ B3 := F;
 
 n4 := "hell-in";
 
-read( "hell-in");
+read( "problems/hell-in");
 ord4 := tdeg( X);
 B4 := F;
 
@@ -46,7 +46,7 @@ B4 := F;
 
 n5 := "kiyoshi5";
 
-read( "kiyoshi5");
+read( "problems/kiyoshi5");
 ord5 := tdeg( X);
 B5 := F;
 
@@ -55,7 +55,7 @@ B5 := F;
 
 n6 := "p34";
 
-read( "p34");
+read( "problems/p34");
 ord6 := tdeg( X);
 B6 := F;
 
