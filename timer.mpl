@@ -3,9 +3,10 @@ with( Groebner):
 read( "irecon.mpl"):
 read( "intpolyrecon.mpl"):
 read( "cra_int.mpl"):
+read( "pauerLucky.mpl"):
 read( "Basis_CRA.mpl"):
 
-read( "examples.mpl"):
+read( "suchExamples.mpl"):
 
 # so it looks like command line args aren't a thing in maple?
 # so, i'll just make a bash script run the maple script which is secretly a bash script
@@ -15,9 +16,9 @@ read( "examples.mpl"):
 exNum := 1:
 
 primes := [ nextprime( 8294967291)]:
-for i from 1 to 20 do
-	primes := [ op( primes), nextprime( primes[ i] + 10000)];			# sequence of 10 10-digit primes sequentially 
-od:
+#for i from 1 to 20 do
+#	primes := [ op( primes), nextprime( primes[ i] + 10000)];			# sequence of 10 10-digit primes sequentially 
+#od:
 
 # recall we have exNames from examples.mpl which is the names of each example
 

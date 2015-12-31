@@ -39,7 +39,8 @@ Basis_CRA := proc( B, ord, primes, acNums)
 
 	i := 2;
 
-	while not isOkPrime( curBasis, acNums) do
+	#while not isOkPrime( curBasis, acNums) do
+	while not isPauerLucky( curPrime, B, ord) do
 		#print( "OH NOOOOOO");
 		informalPrimes := [ op( informalPrimes), nextprime( informalPrimes[ nops( informalPrimes)])];
 		curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[ i]), informalPrimes[ i]);
@@ -61,7 +62,8 @@ Basis_CRA := proc( B, ord, primes, acNums)
 		newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=informalPrimes[i]), informalPrimes[ i]);
 		#print( newBasis);
 
-		if not isOkPrime( newBasis, acNums) then
+		#if not isOkPrime( newBasis, acNums) then
+		if not isPauerLucky( informalPrimes[ i], B, ord) then
 			print( "WAT");
 			continue;
 		end if;
