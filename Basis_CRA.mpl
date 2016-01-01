@@ -26,7 +26,7 @@ end;
 # acNum is a hack atm (which doesn't even work huehuehuehuehue)
 
 Basis_CRA := proc( B, ord, primes, acNums)
-	local curBasis, newBasis, curPrime, i, isDone, informalPrimes;
+	local curBasis, newBasis, oldBasis, curPrime, i, isDone, informalPrimes;
 	
 	# one thing to check is if the built-in groebner basis does mod or mods for characteristic
 	
@@ -70,8 +70,11 @@ Basis_CRA := proc( B, ord, primes, acNums)
 		
 		# now, combine curBasis and newBasis via cra
 		#print( ord);
+		oldBasis := [ op( curBasis)];
 		curBasis, isDone := CRA_sets( curBasis, curPrime, newBasis, informalPrimes[ i], ord); # return true for isDone if LTs same
 		curBasis := basisrecon( curPrime, curBasis);
+
+		isDone := ( oldBasis = curBasis);
 		#print( curBasis);
 	
 		curPrime := curPrime * informalPrimes[ i];
