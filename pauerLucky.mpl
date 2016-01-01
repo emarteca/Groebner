@@ -16,6 +16,7 @@ isPauerLucky := proc( p, B, ord)
 		if curCoeff mod p = 0 then
 			soLuck := false;
 		fi;
+		i := i + 1;
 	end;
 
 	return soLuck;

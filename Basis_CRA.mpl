@@ -71,6 +71,7 @@ Basis_CRA := proc( B, ord, primes, acNums)
 		# now, combine curBasis and newBasis via cra
 		#print( ord);
 		oldBasis := [ op( curBasis)];
+		print( oldBasis);
 		curBasis, isDone := CRA_sets( curBasis, curPrime, newBasis, informalPrimes[ i], ord); # return true for isDone if LTs same
 		curBasis := basisrecon( curPrime, curBasis);
 
