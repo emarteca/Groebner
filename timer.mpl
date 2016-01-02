@@ -27,7 +27,7 @@ for exNum from 1 to nops( totBs) do
 	# run example with Basis_CRA
 	# print times to a file
 
-	exNum := 4;
+	#exNum := 4;
 
 	tt := time():
 	sol := Basis( totBs[ exNum], totOrds[ exNum], method=maplef4):
@@ -61,7 +61,7 @@ for exNum from 1 to nops( totBs) do
 	print( sol);
 	writeto( terminal):
 
-	exNum := 12;
+	#exNum := 12;
 
 
 od:

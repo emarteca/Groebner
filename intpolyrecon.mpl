@@ -19,10 +19,7 @@ intpolyrecon := proc( m, p)
 		newPoly := newPoly + polst[ i] * (1/curTerm) * (curCoeff[ 1]/curCoeff[ 2]);
 
 		if not isGoodPrime then
-			#print( curTerm);
 			return newPoly, false;
-		else
-			#print( curTerm);
 		fi;
 	od;
 	

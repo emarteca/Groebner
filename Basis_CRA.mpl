@@ -39,19 +39,6 @@ Basis_CRA := proc( B, ord, primes, acNums)
 
 	i := 2;
 
-	#while not isOkPrime( curBasis, acNums) do
-	#while not isPauerLucky( curPrime, B, ord) do
-	#	#print( "OH NOOOOOO");
-	#	informalPrimes := [ op( informalPrimes), nextprime( informalPrimes[ nops( informalPrimes)])];
-	#	curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[ i]), informalPrimes[ i]);
-	#	curPrime := informalPrimes[ i];
-	#	i := i + 1;
-	#end do;
-
-	#print( curBasis);
-	
-
-	#i := 2;
 	isDone := false;
 	curMultiplier := 1;
 	everBad := true;
@@ -66,77 +53,54 @@ Basis_CRA := proc( B, ord, primes, acNums)
 			curPrime := informalPrimes[ 1];
 			curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[ 1]), curPrime);
 			i := i + 1;
-			print( "HERE");
+			#print( "HERE");
 		else
 
-		#print( informalPrimes);
-		newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=informalPrimes[i]), informalPrimes[ i]);
-		#print( newBasis);
+			newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=informalPrimes[i]), informalPrimes[ i]);
+			
+			# now, combine curBasis and newBasis via cra
+			oldBasis := [ op( curBasis)];
+			curBasis := CRA_sets( curBasis, curPrime, newBasis, informalPrimes[ i], ord); 
+			curBasis, isGoodPrime := basisrecon( curPrime, curBasis);
 
-		#if not isOkPrime( newBasis, acNums) then
-		if not isPauerLucky( informalPrimes[ i], B, ord) then
-			print( "WAT");
-			continue;
-		end if;
+			if isGoodPrime then
+				isDone := ( oldBasis = curBasis);
+				print( informalPrimes[ i]);
 		
-		# now, combine curBasis and newBasis via cra
-		#print( ord);
-		oldBasis := [ op( curBasis)];
-		curBasis, isDone := CRA_sets( curBasis, curPrime, newBasis, informalPrimes[ i], ord); # return true for isDone if LTs same
-		curBasis, isGoodPrime := basisrecon( curPrime, curBasis);
+				curPrime := curPrime * informalPrimes[ i];
+				curMultiplier := 1;
 
-		if isGoodPrime then
-			isDone := ( oldBasis = curBasis);
-			#print( curBasis);
-			print( informalPrimes[ i]);
-	
-			curPrime := curPrime * informalPrimes[ i];
-			curMultiplier := 1;
+				if everBad then
+					informalPrimes := [ informalPrimes[ nops( informalPrimes)]];
+					curPrime := informalPrimes[ 1];
 
-			if everBad then
-				informalPrimes := [ informalPrimes[ nops( informalPrimes)]];
-				curPrime := informalPrimes[ 1];
+					if i > 2 then
+						everBad := false;
+					fi;
 
-				if i > 2 then
-					everBad := false;
+					i := 1;
+
 				fi;
 
-				i := 1;
+				#print( "OMG");
+			else
+				curBasis := [ op( oldBasis)];
+				isDone := false;
+				#print( "Here Lol");
 
-				#everBad := false;
+				if everBad and i > 1 then
+					informalPrimes := [ informalPrimes[ nops( informalPrimes)]];
+					#print( "WHY");
+					curPrime := informalPrimes[ 1];
+					i := 0;
+					curMultiplier := 1.5;
+				fi;
+
 			fi;
 
-			print( "OMG");
-		else
-			#print( "BAD PRIME (recon)");
-			#print( informalPrimes[ i]);
-			curBasis := [ op( oldBasis)];
-			isDone := false;
-			print( "Here Lol");
-
-			if everBad and i > 1 then
-				informalPrimes := [ informalPrimes[ nops( informalPrimes)]];
-				print( "WHY");
-				curPrime := informalPrimes[ 1];
-				i := 0;
-				curMultiplier := 1.5;
-			fi;
-
-			#if everBad and informalPrimes[ i] < 12345678123783456788294967291/2 then
-				#curMultiplier := 1.5;
-			#else 
-			#	curMultiplier := 1;
-			#fi;
-			#curPrime := curPrime * informalPrimes[ i];  # KAPPA
-		fi;
-
-		#print( informalPrimes[ nops( informalPrimes)]);
-
-		i := i + 1;
-		#print(" KAPPA");
-		#print( i);
-
-		fi;
+			i := i + 1;
+			
+		fi; # end if for i = 1
 		
 	end do;
 
@@ -145,10 +109,7 @@ Basis_CRA := proc( B, ord, primes, acNums)
 end;
 
 CRA_sets := proc( curBasis, curPrime, newBasis, newPrime, ord)
-	local oldLTerms, newLTerms, liftBasis, i;
-	
-	oldLTerms := [];
-	newLTerms := [];
+	local liftBasis, i;
 	
 	liftBasis := [];
 	#print( ord);
@@ -159,23 +120,12 @@ CRA_sets := proc( curBasis, curPrime, newBasis, newPrime, ord)
 
 	i := 1;
 	while ( i <= nops( curBasis)) do
-		oldLTerms := [ op( oldLTerms), LeadingTerm( curBasis[ i], ord)];
 		liftBasis := [ op( liftBasis), CRA_int( [ curPrime, newPrime], [ curBasis[ i], newBasis[ i]])];
-		newLTerms := [ op( newLTerms), LeadingTerm( liftBasis[ i], ord)];
-
-		#print( "...........................................");
-		#print (oldLTerms);
-		#print (newLTerms);
-		#print( "************");
-		#print( liftBasis);
-		#print( "????????????????????????????????????????????");
 		
 		i := i + 1;
 	end do;
 
-	#print( oldLTerms);
-	
-	return liftBasis, ( oldLTerms = newLTerms);
+	return liftBasis;
 	
 end;
 
