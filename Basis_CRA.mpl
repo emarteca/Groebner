@@ -26,7 +26,7 @@ end;
 # acNum is a hack atm (which doesn't even work huehuehuehuehue)
 
 Basis_CRA := proc( B, ord, primes, acNums)
-	local curBasis, newBasis, oldBasis, curPrime, i, isDone, informalPrimes;
+	local curBasis, newBasis, oldBasis, curPrime, i, isDone, isGoodPrime, everBad, informalPrimes, curMultiplier;
 	
 	# one thing to check is if the built-in groebner basis does mod or mods for characteristic
 	
@@ -40,25 +40,36 @@ Basis_CRA := proc( B, ord, primes, acNums)
 	i := 2;
 
 	#while not isOkPrime( curBasis, acNums) do
-	while not isPauerLucky( curPrime, B, ord) do
-		#print( "OH NOOOOOO");
-		informalPrimes := [ op( informalPrimes), nextprime( informalPrimes[ nops( informalPrimes)])];
-		curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[ i]), informalPrimes[ i]);
-		curPrime := informalPrimes[ i];
-		i := i + 1;
-	end do;
+	#while not isPauerLucky( curPrime, B, ord) do
+	#	#print( "OH NOOOOOO");
+	#	informalPrimes := [ op( informalPrimes), nextprime( informalPrimes[ nops( informalPrimes)])];
+	#	curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[ i]), informalPrimes[ i]);
+	#	curPrime := informalPrimes[ i];
+	#	i := i + 1;
+	#end do;
 
 	#print( curBasis);
 	
 
 	#i := 2;
 	isDone := false;
+	curMultiplier := 1;
+	everBad := true;
 	
 	# TODO error check for invalid primes!!
 	while not isDone do #i <= nops( informalPrimes) and not isDone do  # max iterations once per prime 
 		#print( "HERE!");
-		informalPrimes := [ op( informalPrimes), nextprime( informalPrimes[ nops( informalPrimes)])];
+		informalPrimes := [ op( informalPrimes), nextprime( (ceil( informalPrimes[ nops( informalPrimes)] * curMultiplier) + 1000000000))];
 
+		if i = 1 then
+			informalPrimes := [ informalPrimes[ nops( informalPrimes)]]; 
+			curPrime := informalPrimes[ 1];
+			curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[ 1]), curPrime);
+			i := i + 1;
+			print( "HERE");
+		else
+
+		#print( informalPrimes);
 		newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=informalPrimes[i]), informalPrimes[ i]);
 		#print( newBasis);
 
@@ -71,15 +82,61 @@ Basis_CRA := proc( B, ord, primes, acNums)
 		# now, combine curBasis and newBasis via cra
 		#print( ord);
 		oldBasis := [ op( curBasis)];
-		print( oldBasis);
 		curBasis, isDone := CRA_sets( curBasis, curPrime, newBasis, informalPrimes[ i], ord); # return true for isDone if LTs same
-		curBasis := basisrecon( curPrime, curBasis);
+		curBasis, isGoodPrime := basisrecon( curPrime, curBasis);
 
-		isDone := ( oldBasis = curBasis);
-		#print( curBasis);
+		if isGoodPrime then
+			isDone := ( oldBasis = curBasis);
+			#print( curBasis);
+			print( informalPrimes[ i]);
 	
-		curPrime := curPrime * informalPrimes[ i];
+			curPrime := curPrime * informalPrimes[ i];
+			curMultiplier := 1;
+
+			if everBad then
+				informalPrimes := [ informalPrimes[ nops( informalPrimes)]];
+				curPrime := informalPrimes[ 1];
+
+				if i > 2 then
+					everBad := false;
+				fi;
+
+				i := 1;
+
+				#everBad := false;
+			fi;
+
+			print( "OMG");
+		else
+			#print( "BAD PRIME (recon)");
+			#print( informalPrimes[ i]);
+			curBasis := [ op( oldBasis)];
+			isDone := false;
+			print( "Here Lol");
+
+			if everBad and i > 1 then
+				informalPrimes := [ informalPrimes[ nops( informalPrimes)]];
+				print( "WHY");
+				curPrime := informalPrimes[ 1];
+				i := 0;
+				curMultiplier := 1.5;
+			fi;
+
+			#if everBad and informalPrimes[ i] < 12345678123783456788294967291/2 then
+				#curMultiplier := 1.5;
+			#else 
+			#	curMultiplier := 1;
+			#fi;
+			#curPrime := curPrime * informalPrimes[ i];  # KAPPA
+		fi;
+
+		#print( informalPrimes[ nops( informalPrimes)]);
+
 		i := i + 1;
+		#print(" KAPPA");
+		#print( i);
+
+		fi;
 		
 	end do;
 

@@ -15,7 +15,7 @@ read( "suchExamples.mpl"):
 # right now there are 4 examples to parse through
 exNum := 1:
 
-primes := [ nextprime( 8294967291)]:
+primes := [ nextprime( 88294967291)]:
 #for i from 1 to 20 do
 #	primes := [ op( primes), nextprime( primes[ i] + 10000)];			# sequence of 10 10-digit primes sequentially 
 #od:
@@ -26,6 +26,8 @@ for exNum from 1 to nops( totBs) do
 	# run example with Basis
 	# run example with Basis_CRA
 	# print times to a file
+
+	exNum := 4;
 
 	tt := time():
 	sol := Basis( totBs[ exNum], totOrds[ exNum], method=maplef4):
@@ -58,6 +60,8 @@ for exNum from 1 to nops( totBs) do
 	print( "\nSolution");
 	print( sol);
 	writeto( terminal):
+
+	exNum := 12;
 
 
 od:

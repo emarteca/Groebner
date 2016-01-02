@@ -17,10 +17,10 @@ frecon := proc( N, r)
 	end do;
 
 	if 2*(bs[ i + 2]^2) < N - 1 and gcd( as[ i + 2], bs[ i + 2]) = 1 then
-		return [ as[ i + 2], bs[ i + 2]];
+		return [ as[ i + 2], bs[ i + 2]], true;
 	else
-		print( "OOOOOOOOOH NO");
-		return [ as[ i + 2], bs[ i + 2]];
+		#print( "OOOOOOOOOH NO");
+		return [ as[ i + 2], bs[ i + 2]], false;
 	end if;
 
 end;
