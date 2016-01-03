@@ -46,7 +46,7 @@ B4 := F;
 n10 := "hell-in";
 
 #read( "problems/hell-in");
-ord10 := lex( op( X));
+ord10 := plex( op( X));
 B4 := F;
 
 
@@ -71,21 +71,21 @@ B6 := F;
 
 n7 := "huygens3";
 read( "problems/huygens3");
-ord7 := lex( op( vars));
+ord7 := plex( op( vars));
 B7 := F;
 
 # p17 (given F and X) -------------------------------------------------------------------
 
 n8 := "p17";
 read( "problems/p17");
-ord8 := lex( op( vars));
+ord8 := plex( op( vars));
 B8 := F;
 
 # p33 (given F and X) -------------------------------------------------------------------
 
 n9 := "p33";
 read( "problems/p33");
-ord9 := lex( op( vars));
+ord9 := plex( op( vars));
 B9 := F;
 
 # the 10 is above
