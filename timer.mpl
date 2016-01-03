@@ -53,7 +53,7 @@ for exNum from 1 to nops( totBs) do
 	sol, primeTime := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, acNums):
 	procTime := time():
 	tt := procTime - tt:
-	primeTime := procTime - primeTime:
+	primeTime := tt - (procTime - primeTime):
 
 	appendto( fileName);
 	print( "Basis with CRA");
