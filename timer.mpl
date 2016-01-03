@@ -42,6 +42,7 @@ for exNum from 1 to nops( totBs) do
 	fileName := cat( "output_ex", convert( exNum, string), ".txt"):
 
 	writeto( fileName):
+	print( exNames[ exNum]);
 	print( "Basis with maplef4");
 	print( "\nTime: ");
 	print( tt);
