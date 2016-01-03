@@ -26,7 +26,7 @@ end;
 # acNum is a hack atm (which doesn't even work huehuehuehuehue)
 
 Basis_CRA := proc( B, ord, primes, acNums)
-	local curBasis, newBasis, oldBasis, curPrime, i, isDone, isGoodPrime, everBad, informalPrimes, curMultiplier;
+	local curBasis, newBasis, oldBasis, curPrime, i, isDone, isGoodPrime, everBad, informalPrimes, curMultiplier, primeTime;
 	
 	# one thing to check is if the built-in groebner basis does mod or mods for characteristic
 	
@@ -42,6 +42,7 @@ Basis_CRA := proc( B, ord, primes, acNums)
 	isDone := false;
 	curMultiplier := 1;
 	everBad := true;
+	primeTime := time();
 	
 	# TODO error check for invalid primes!!
 	while not isDone do #i <= nops( informalPrimes) and not isDone do  # max iterations once per prime 
@@ -78,6 +79,8 @@ Basis_CRA := proc( B, ord, primes, acNums)
 						everBad := false;
 					fi;
 
+					primeTime := time();
+
 					i := 1;
 
 				fi;
@@ -94,6 +97,8 @@ Basis_CRA := proc( B, ord, primes, acNums)
 					curPrime := informalPrimes[ 1];
 					i := 0;
 					curMultiplier := 1.5;
+
+					primeTime := time();
 				fi;
 
 			fi;
@@ -104,7 +109,7 @@ Basis_CRA := proc( B, ord, primes, acNums)
 		
 	end do;
 
-	return curBasis;
+	return curBasis, primeTime;
 	
 end;
 

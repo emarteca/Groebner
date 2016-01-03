@@ -50,13 +50,17 @@ for exNum from 1 to nops( totBs) do
 	writeto( terminal):
 
 	tt := time():
-	sol := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, acNums):
-	tt := time() - tt:
+	sol, primeTime := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, acNums):
+	procTime := time():
+	tt := procTime - tt:
+	primeTime := procTime - primeTime:
 
 	appendto( fileName);
 	print( "Basis with CRA");
 	print( "\nTime: ");
 	print( tt);
+	print( "\nPrime Time: ");
+	print( primeTime);
 	print( "\nSolution");
 	print( sol);
 	writeto( terminal):
