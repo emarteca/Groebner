@@ -71,7 +71,7 @@ B6 := F;
 
 n7 := "huygens3";
 read( "problems/huygens3");
-ord7 := plex( op( vars));
+ord7 := tdeg( op( vars));
 B7 := F;
 
 # p17 (given F and X) -------------------------------------------------------------------
