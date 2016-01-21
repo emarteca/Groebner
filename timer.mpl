@@ -5,6 +5,7 @@ read( "intpolyrecon.mpl"):
 read( "cra_int.mpl"):
 read( "pauerLucky.mpl"):
 read( "Basis_CRA.mpl"):
+read( "Basis_Hensel.mpl");
 
 read( "suchExamples.mpl"):
 
@@ -62,6 +63,19 @@ for exNum from 1 to nops( totBs) do
 	print( tt);
 	print( "\nPrime Time: ");
 	print( primeTime);
+	print( "\nSolution");
+	print( sol);
+	writeto( terminal):
+
+	tt := time():
+	sol := Basis_Hensel( totBs[ exNum], totOrds[ exNum], primes[ 1]):
+	procTime := time():
+	tt := procTime - tt:
+	
+	appendto( fileName);
+	print( "Basis with Hensel");
+	print( "\nTime: ");
+	print( tt);
 	print( "\nSolution");
 	print( sol);
 	writeto( terminal):
