@@ -67,15 +67,24 @@ for exNum from 1 to nops( totBs) do
 	print( sol);
 	writeto( terminal):
 
-	tt := time():
-	sol := Basis_Hensel( totBs[ exNum], totOrds[ exNum], primes[ 1]):
-	procTime := time():
-	tt := procTime - tt:
-	
+	isLegit := false:
+	numTries := 0:
+	curPrime := primes[ 1];
+
+	while not isLegit do
+		tt := time():
+		sol, isLegit := Basis_Hensel( totBs[ exNum], totOrds[ exNum], nextprime( curPrime)):
+		procTime := time():
+		tt := procTime - tt:
+		numTries := numTries + 1:
+	end;
+
 	appendto( fileName);
 	print( "Basis with Hensel");
 	print( "\nTime: ");
 	print( tt);
+	print( "\nNumber of tries: ");
+	print( numTries);
 	print( "\nSolution");
 	print( sol);
 	writeto( terminal):

@@ -1,7 +1,19 @@
 
-HC := proc(p,X) LeadingCoefficient(p,X) end;
-HM := proc(p,X) LeadingMonomial(p,X) end;
-normalize := proc(p,X) if p<>0 then p/HC(p,X) else 0 fi end;
+HC := proc(p,X) 
+	LeadingCoefficient(p,X) 
+end:
+
+HM := proc(p,X) 
+	LeadingMonomial(p,X) 
+end:
+
+normalize := proc(p,X) 
+	if p<>0 then 
+		p/HC(p,X) 
+	else 
+		0 
+	fi 
+end:
 
 
 lmult := proc(Z,F)
@@ -51,17 +63,33 @@ plift := proc(Zin,F,Gin,p,Gp,X,i)
 end:
 
 
+verifyBasis := proc( B, ord, curG, thePrime, i)
+	local G, NG, conc;
+
+	G := Basis( B, ord): 
+	NG := map( normalize, G, ord):
+
+
+	# return if bad prime                
+	conc := (NG = iratrecon( curG, thePrime^(i-1))):
+
+
+
+
+end:
+
+
 
 
 # Basis_Hensel( totBs[ exNum], totOrds[ exNum], primes[ 1]):
 
 Basis_Hensel := proc( B, ord, thePrime)
-	local G, Gp, Z1, Znorm, Gpnorm, curG, curZ, i, oldRec, curRec;
+	local Gp, Z1, Znorm, Gpnorm, curG, curZ, i, oldRec, curRec;
 
-	G := Basis( B, ord): 
-	#NG := map( normalize, G, ord):
-
+	
 	Gp, Z1 := Basis( B, ord, characteristic=thePrime, output=extended):
+
+	Gp := Gp * lcm( op( denom( Gp))); # normalize won't crash with fractions (i.e. convert to ints)
 
 
 	Znorm,Gpnorm := normalizeZG(Z1,Gp,ord,thePrime):
@@ -84,11 +112,7 @@ Basis_Hensel := proc( B, ord, thePrime)
 		i := i + 1:
 	end:
 
-	return iratrecon( curG, thePrime^(i-1));
-	 
-	# output if bad prime??                 
-	#bigfinish := iratrecon( curG, thePrime^(i-1)):
-	#NG - bigfinish;
+	return iratrecon( curG, thePrime^(i-1)), verifyBasis( B, ord, curG, thePrime, i);
 
 end:
 
