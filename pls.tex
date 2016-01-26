@@ -21,6 +21,11 @@
 \def\BState{\State\hskip-\ALG@thistlm}
 \makeatother
 
+\usepackage{geometry}
+\geometry{legalpaper}
+\setlength{\parskip}{1em}
+\renewcommand{\baselinestretch}{1.5}
+
 
 \begin{document}
 
@@ -83,6 +88,14 @@ Using primes of size x for using hardware, etc
 How did I set up batch running and such things
 What am I testing (list tests maybe?)
 \subsection{Setbacks/Problems}
+
+\noindent 
+
+\par There were several problems encountered with the initial approach from the software itself.  The optimal comparison would using the current highest-speed Groebner calculations.  However, any significant comparison must be done using the same method for all approaches (i.e. one method must be chosed for both the Maple benchmarks and the padic and Chinese remaindering approach, in order to have a common reference frame).  
+However, these statements proved to be impossible to both satisfy with the software of choice.  In Maple, the current fastest Groebner basis computation algorithm is FGB (named after Faugere, .....).  This method, written in C and interfacing directly with the Maple kernel, is significantly faster than its competitors (see TABLE WTE).  However, this method could not be used for the modular approaches.  FGB was not written with all of the options necessary for the modular implementation - it does not support the option of working in a prime modular space with primes larger than $2^{16}$ which is too small to perform successive padic lifts (since this requires higher prime powers).  In addition, with primes so small, the likelyhood of being a Farey bad prime is high, particularly for the problems with larger values such as HUYGENS I THINK ISH.  
+\par The FGB algorithm also did not allow for monomial orderings other than degree-based, which limits the pool of test problems, and reduces the range of bases any conclusions drawn could be applicable to.
+\par The next fastest algorithm implemented into Maple is f4 (maplef4).  Although a logical second choice, it, too, suffers from lack of options.  Due to the construction of this method, the option \'output=extended\' is not supported; this is vital to the implementation of Hensel lifting as it allows for the computation of Syzygy matrices during the internal intermediate calculations which can then be used during the lifting.  Maplef4 uses a higher efficiency sparse linear algebra approach; however, it does not perform the intermediate computations internally for the matrix to be returned.
+\par Therefore, for accurate comparisons to be made between approaches, the same method was used for all 3 (the classic Buchberger algorithm).  However, this cripples the padic approach; regardless of how it compares to the non-modular approach using the Buchberger algorithm, the FGB approach, which can be used to solve these problems, is so much faster.  All of this data is provided for reference in TABLE WTE OR SOMETHING.
 
 \section{Results}
 \subsection{Raw Data}

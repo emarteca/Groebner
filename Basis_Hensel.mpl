@@ -87,7 +87,7 @@ Basis_Hensel := proc( B, ord, thePrime)
 	local Gp, Z1, Znorm, Gpnorm, curG, curZ, i, oldRec, curRec;
 
 	
-	Gp, Z1 := Basis( B, ord, characteristic=thePrime, output=extended):
+	Gp, Z1 := Basis( B, ord, characteristic=thePrime, method=buchberger, output=extended):
 
 	Gp := Gp * lcm( op( denom( Gp))); # normalize won't crash with fractions (i.e. convert to ints)
 
