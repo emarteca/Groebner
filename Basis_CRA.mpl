@@ -35,7 +35,7 @@ Basis_CRA := proc( B, ord, primes, acNums)
 	informalPrimes := [ op(primes)];
 	
 	curPrime := informalPrimes[1];
-	curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[1]), curPrime);
+	curBasis := symmMod( Basis( B, ord, method=buchberger, characteristic=informalPrimes[1]), curPrime);
 
 	i := 2;
 
@@ -53,12 +53,12 @@ Basis_CRA := proc( B, ord, primes, acNums)
 		if i = 1 then
 			informalPrimes := [ informalPrimes[ nops( informalPrimes)]]; 
 			curPrime := informalPrimes[ 1];
-			curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[ 1]), curPrime);
+			curBasis := symmMod( Basis( B, ord, method=buchberger, characteristic=informalPrimes[ 1]), curPrime);
 			i := i + 1;
 			#print( "HERE");
 		else
 
-			newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=informalPrimes[i]), informalPrimes[ i]);
+			newBasis := symmMod (Basis( B, ord, method=buchberger, characteristic=informalPrimes[i]), informalPrimes[ i]);
 			
 			# now, combine curBasis and newBasis via cra
 			oldBasis := [ op( curBasis)];

@@ -37,7 +37,7 @@ primes := [ nextprime( 88294967291)]:
 
 	if theMethod = 1 then
 		tt := time():
-		sol := Basis( totBs[ exNum], totOrds[ exNum], method=maplef4):
+		sol := Basis( totBs[ exNum], totOrds[ exNum], method=buchberger):
 		tt := time() - tt:
 		
 		acNums := []:
@@ -91,12 +91,13 @@ primes := [ nextprime( 88294967291)]:
 		print( "\nTime: ");
 		print( tt);
 		print( "Lift timings");
-		i := 0:
+		i := 1:
 		for l in liftTimes do
 			print( "\n");
 			print( i);
 			print( " lift :"):
 			print( l);
+			i := i + 1:
 		end;
 		print( "\nNumber of tries: ");
 		print( numTries);
