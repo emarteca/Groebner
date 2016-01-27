@@ -84,7 +84,7 @@ end:
 # Basis_Hensel( totBs[ exNum], totOrds[ exNum], primes[ 1]):
 
 Basis_Hensel := proc( B, ord, thePrime)
-	local Gp, Z1, Znorm, Gpnorm, curG, curZ, i, oldRec, curRec;
+	local Gp, Z1, Znorm, Gpnorm, curG, curZ, i, oldRec, curRec, timings, theTime;
 
 	
 	Gp, Z1 := Basis( B, ord, characteristic=thePrime, method=buchberger, output=extended):
@@ -101,8 +101,12 @@ Basis_Hensel := proc( B, ord, thePrime)
 	oldRec := iratrecon(curG, thePrime^2):
 	curRec := []:
 
+	timings := []:
+
 	while oldRec <> curRec or curRec = FAIL do
+		theTime := time():
 		curG, curZ := plift( curZ, B, curG, thePrime, Gpnorm, ord, i):
+		timings := [ op( timings), time()-theTime]:
 		oldRec := curRec:
 		curRec := iratrecon( curG, thePrime^i):
 		if curRec = FAIL then
@@ -112,7 +116,7 @@ Basis_Hensel := proc( B, ord, thePrime)
 		i := i + 1:
 	end:
 
-	return iratrecon( curG, thePrime^(i-1)), verifyBasis( B, ord, curG, thePrime, i);
+	return iratrecon( curG, thePrime^(i-1)), verifyBasis( B, ord, curG, thePrime, i), timings;
 
 end:
 
