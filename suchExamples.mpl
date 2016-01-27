@@ -95,6 +95,6 @@ B9 := F;
 
 
 
-totOrds := [ ord1, ord2, ord3, ord4, ord5, ord6, ord7, ord8, ord9, ord10];
-totBs := [ B1, B2, B3, B4, B5, B6, B7, B8, B9, B10];
-exNames := [ n1, n2, n3, n4, n5, n6, n7, n8, n9, n10];
+totOrds := [ ord1, ord2, ord3, ord4, ord5, ord6, ord10, ord8, ord9, ord7];
+totBs := [ B1, B2, B3, B4, B5, B6, B10, B8, B9, B7];
+exNames := [ n1, n2, n3, n4, n5, n6, n10, n8, n9, n7];
