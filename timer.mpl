@@ -19,7 +19,7 @@ read( "suchExamples.mpl"):
 # right now there are 4 examples to parse through
 #exNum := 1:
 
-primes := [ nextprime( 88294967291)]:
+primes := [ prevprime( 2^31)]:
 #for i from 1 to 20 do
 #	primes := [ op( primes), nextprime( primes[ i] + 10000)];			# sequence of 10 10-digit primes sequentially 
 #od:
@@ -40,11 +40,7 @@ primes := [ nextprime( 88294967291)]:
 		sol := Basis( totBs[ exNum], totOrds[ exNum], method=buchberger):
 		tt := time() - tt:
 		
-		acNums := []:
-		for i from 1 to nops( sol) do
-			acNums := [ op( acNums), nops( sol[ i])]:
-		od:
-		#print( acNums);
+		acMonoms := LeadingMonomial( sol, totOrds[ exNum]):
 
 		writeto( fileName):
 		print( exNames[ exNum]);
@@ -56,8 +52,11 @@ primes := [ nextprime( 88294967291)]:
 		writeto( terminal):
 	elif theMethod = 2 then
 
+		sol := Basis( totBs[ exNum], totOrds[ exNum], method=buchberger):
+		acMonoms := LeadingMonomial( sol, totOrds[ exNum]):
+
 		tt := time():
-		sol, primeTime := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, acNums):
+		sol, primeTime := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, acMonoms);
 		procTime := time():
 		tt := procTime - tt:
 		primeTime := tt - (procTime - primeTime):
