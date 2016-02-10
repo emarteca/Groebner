@@ -35,7 +35,7 @@ Basis_CRA := proc( B, ord, primes, acMonoms)
 	informalPrimes := [ op(primes)];
 	
 	curPrime := informalPrimes[1];
-	curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[1]), curPrime);
+	curBasis := symmMod( Basis( B, ord, method=buchberger, characteristic=informalPrimes[1]), curPrime);
 	theMonoms := LeadingMonomial( curBasis, ord);
 
 	#print( theMonoms);
@@ -44,7 +44,7 @@ Basis_CRA := proc( B, ord, primes, acMonoms)
 	while theMonoms <> (acMonoms mod curPrime) do
 		curPrime := prevprime( curPrime):
 		informalPrimes := [ curPrime]:
-		curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[1]), curPrime);
+		curBasis := symmMod( Basis( B, ord, method=buchberger, characteristic=informalPrimes[1]), curPrime);
 		theMonoms := LeadingMonomial( curBasis, ord);
 	end do:
 
@@ -69,7 +69,7 @@ Basis_CRA := proc( B, ord, primes, acMonoms)
 		
 		newPrime := prevprime( informalPrimes[ nops( informalPrimes)]);
 	
-		newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=newPrime), newPrime);
+		newBasis := symmMod (Basis( B, ord, method=buchberger, characteristic=newPrime), newPrime);
 		theMonoms := LeadingMonomial( newBasis, ord);
 
 
