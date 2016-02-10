@@ -11,8 +11,8 @@ F := expand(F):
 
 X := [x2,x9,x8,y8,y6,y4,m];
 
-F2 := subs({x9=X9+1/2,y4=Y4+1,y6=Y6+1},F):
-F2 := map(primpart,F2):
-F2 := map(factor,F2);
+#F2 := subs({x9=X9+1/2,y4=Y4+1,y6=Y6+1},F):
+#F2 := map(primpart,F2):
+#F2 := map(factor,F2);
 
-X2 := [x2,X9,x8,y8,Y6,Y4,m];
+#X2 := [x2,X9,x8,y8,Y6,Y4,m];
