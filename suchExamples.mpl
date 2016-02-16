@@ -47,7 +47,7 @@ n10 := "hell-in";
 
 #read( "problems/hell-in");
 ord10 := plex( op( X));
-B4 := F;
+B10 := F;
 
 
 # kiyoshi5 (given F and X) --------------------------------------------------------------

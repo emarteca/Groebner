@@ -1,0 +1,193 @@
+
+\documentclass[letterpaper,12pt,titlepage,oneside,final]{book}
+ 
+
+\newcommand{\package}[1]{\textbf{#1}} 
+\newcommand{\cmmd}[1]{\textbackslash\texttt{#1}} 
+\newcommand{\href}[1]{#1} 
+
+
+\usepackage{ifthen}
+\usepackage{indentfirst}
+\newboolean{PrintVersion}
+\setboolean{PrintVersion}{false} 
+
+\usepackage{amsmath,amssymb,amstext}
+\usepackage[pdftex]{graphicx}
+
+
+\usepackage[pdftex,letterpaper=true,pagebackref=false]{hyperref} 
+		
+\hypersetup{
+    plainpages=false,       % needed if Roman numbers in frontpages
+    pdfpagelabels=true,     % adds page number as label in Acrobat's page count
+    bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={uWaterloo\ LaTeX\ Thesis\ Template},    % title: CHANGE THIS TEXT!
+%    pdfauthor={Author},    % author: CHANGE THIS TEXT! and uncomment this line
+%    pdfsubject={Subject},  % subject: CHANGE THIS TEXT! and uncomment this line
+%    pdfkeywords={keyword1} {key2} {key3}, % list of keywords, and uncomment this line if desired
+    pdfnewwindow=true,      % links in new window
+    colorlinks=true,        % false: boxed links; true: colored links
+    linkcolor=blue,         % color of internal links
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+\ifthenelse{\boolean{PrintVersion}}{   
+\hypersetup{	% override some previously defined hyperref options
+%    colorlinks,%
+    citecolor=black,%
+    filecolor=black,%
+    linkcolor=black,%
+    urlcolor=black}
+}{} % end of ifthenelse (no else)
+
+
+\setlength{\marginparwidth}{0pt} 
+\setlength{\marginparsep}{0pt}
+\setlength{\evensidemargin}{0.125in}
+\setlength{\oddsidemargin}{0.125in}
+\setlength{\textwidth}{6.375in} 
+\raggedbottom
+
+
+\setlength{\parskip}{\medskipamount}
+
+
+\renewcommand{\baselinestretch}{1} 
+
+\let\origdoublepage\cleardoublepage
+\newcommand{\clearemptydoublepage}{%
+  \clearpage{\pagestyle{empty}\origdoublepage}}
+\let\cleardoublepage\clearemptydoublepage
+
+%======================================================================
+%   L O G I C A L    D O C U M E N T -- the content of your thesis
+%======================================================================
+\begin{document}
+
+
+%======================================================================
+\chapter{Introduction}
+%======================================================================
+
+%----------------------------------------------------------------------
+\section{Brief Overview and History of Groebner Bases}
+%----------------------------------------------------------------------
+ 
+pls no
+
+\section{Intermediate Expression Swell}
+
+Expression swell is a problem emergent in computer algebra.
+
+Working with exact computations, where the numerical precision used is not bounded by the language, provides a platform for situations where as computations proceed the values stored keep increasing in size.  Consider multiplication of integers as an example.  Multiplying two n-digit integers results in a 2n-digit integer.  In computations involving sequential multiplication of integers, the product would get exponentially large.  Another example of expression swell can be seen in rational addition. Consider the following demonstrative example:
+
+\begin{equation*}
+  \frac{100}{101} + \frac{101}{102} = \frac{20401}{10302}
+\end{equation*}
+
+Here, the initial numerators and denominators are all 3-digit numbers, however their sum is a rational number with the numerator and denominator both 5 digits.  Addition of rational numbers results in expression swell as the greatest common denominator increases as more values are included in the sum.
+
+This is not a problem in classic numerical programming languages where the precision of values stored is bounded by the language specifications.  However, when using a symbolic language where computations are exact, the precision is arbitrary and depends directly on the values stored.  Because of this essentially limitless precision, the results are accurate, however expression swell could potentially result in a large amount of memory being required to store values.
+
+Intermediate expression swell is the special case of expression swell where the intermediate results of a computation have increasingly large values (i.e. suffer from expression swell), however this is not reflected in the final result.  This is not as simple to detect as regular expression swell; to be sure some or all of the intermediate computations must be displayed. 
+
+Groebner basis computations are known to suffer from intermediate expression swell.  Generally the output basis does not reflect the size of the coefficients of the intermediate polynomials.  The intermediate coefficient growth is related to many factors of the original basis: degree, number of polynomials, initial coefficient size.  The values can grow to impractical size, slowing down the execution of the computation and perhaps even halting it if the program runs out of memory for storage.  
+
+Consider the following demonstrative example, as provided by Arnolds:
+
+\begin{eqnarray*}
+  f_1 &=& 8x^2y^2 + 5xy^3 + 3x^3z + x^2yz\\
+  f_2 &=& x^5 + 2y^3z^2 + 13y^2z^3 + 5yz^4\\ 
+  f_3 &=& 8x^3 + 12y^3 + xz^2 + 3\\
+  f_4 &=& 7x^2y^4 + 18xy^3z^2 + y^3z^3
+\end{eqnarray*}  
+
+The coefficients and for these polynomials are all less than 10; the resulting basis for ${B = [f_1, f_2, f_3, f_4]}$, with degree based monomial ordering\footnote{Referred to in her paper as DegRevLex, degree reverse lexicographical ordering; however this is equivalent to degree based ordering tdeg in Maple}
+
+
+%======================================================================
+\chapter{Observations}
+%======================================================================
+
+This would be a good place for some figures and tables.
+
+Some notes on figures and photographs\ldots
+
+\begin{itemize}
+\item A well-prepared PDF should be 
+  \begin{enumerate}
+    \item Of reasonable size, {\it i.e.} photos cropped and compressed.
+    \item Scalable, to allow enlargment of text and drawings. 
+  \end{enumerate} 
+\item Photos must be bit maps, and so are not scaleable by definition. TIFF and
+BMP are uncompressed formats, while JPEG is compressed. Most photos can be
+compressed without losing their illustrative value.
+
+\end{itemize}
+ 
+
+\footnote{
+Footnote man
+}
+
+
+
+% The \appendix statement indicates the beginning of the appendices.
+\appendix
+
+% Add a title page before the appendices and a line in the Table of Contents
+\chapter*{APPENDICES}
+\addcontentsline{toc}{chapter}{APPENDICES}
+%======================================================================
+\chapter[PDF Plots From Matlab]{Matlab Code for Making a PDF Plot}
+\label{AppendixA}
+% Tip 4: Example of how to get a shorter chapter title for the Table of Contents 
+%======================================================================
+\section{Using the GUI}
+
+
+\section{From the Command Line} 
+All figure properties can also be manipulated from the command line. Here's an example: 
+\begin{verbatim}
+x=[0:0.1:pi];
+hold on % Plot multiple traces on one figure
+
+\end{verbatim}
+
+%----------------------------------------------------------------------
+% END MATERIAL
+%----------------------------------------------------------------------
+
+% B I B L I O G R A P H Y
+% -----------------------
+
+% The following statement selects the style to use for references.  It controls the sort order of the entries in the bibliography and also the formatting for the in-text labels.
+\bibliographystyle{plain}
+% This specifies the location of the file containing the bibliographic information.  
+% It assumes you're using BibTeX (if not, why not?).
+\cleardoublepage % This is needed if the book class is used, to place the anchor in the correct page,
+                 % because the bibliography will start on its own page.
+                 % Use \clearpage instead if the document class uses the "oneside" argument
+\phantomsection  % With hyperref package, enables hyperlinking from the table of contents to bibliography             
+% The following statement causes the title "References" to be used for the bibliography section:
+\renewcommand*{\bibname}{References}
+
+% Add the References to the Table of Contents
+\addcontentsline{toc}{chapter}{\textbf{References}}
+
+\bibliography{uw-ethesis}
+% Tip 5: You can create multiple .bib files to organize your references. 
+% Just list them all in the \bibliogaphy command, separated by commas (no spaces).
+
+% The following statement causes the specified references to be added to the bibliography% even if they were not 
+% cited in the text. The asterisk is a wildcard that causes all entries in the bibliographic database to be included (optional).
+\nocite{*}
+
+\end{document}
