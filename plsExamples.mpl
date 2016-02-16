@@ -12,6 +12,9 @@
 # katsura8
 # katsura9
 # katsura10
+# repulso1
+# repulso2
+# repulso3
 
 
 # arnborgII --------------------------------------------------------------
@@ -127,10 +130,34 @@ read( "problems/katsura10");
 ord14 := tdeg( op( X));
 B14 := F;
 
+# repulso1 --------------------------------------------------------------
+
+n15 := "repulso1";
+
+read( "problems/repulso1");
+ord15 := tdeg( op( X));
+B15 := F;
+
+# repulso2 --------------------------------------------------------------
+
+n16 := "repulso2";
+
+read( "problems/repulso2");
+ord16 := tdeg( op( X));
+B16 := F;
+
+# repulso3 --------------------------------------------------------------
+
+n17 := "repulso3";
+
+read( "problems/repulso3");
+ord17 := tdeg( op( X));
+B17 := F;
 
 
 
 
-totOrds := [ ord1, ord2, ord3, ord4, ord5, ord6, ord7, ord8, ord9, ord10, ord11, ord12, ord13, ord14];
-totBs := [ B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11, B12, B13, B14];
-exNames := [ n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14];
+
+totOrds := [ ord1, ord2, ord3, ord4, ord5, ord6, ord7, ord8, ord9, ord10, ord11, ord12, ord13, ord14, ord15, ord16, ord17];
+totBs := [ B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11, B12, B13, B14, B15, B16, B17];
+exNames := [ n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17];
