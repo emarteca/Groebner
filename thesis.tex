@@ -15,6 +15,15 @@
 \usepackage{amsmath,amssymb,amstext}
 \usepackage[pdftex]{graphicx}
 
+\usepackage{lipsum}
+\newcounter{examplecounter}
+\newenvironment{example}{\begin{quote}%
+    \refstepcounter{examplecounter}%
+  \textbf{Example \arabic{examplecounter}}%
+  \quad
+}{%
+\end{quote}%
+}
 
 \usepackage[pdftex,letterpaper=true,pagebackref=false]{hyperref} 
 		
@@ -107,59 +116,77 @@ Consider the following demonstrative example, as provided by Arnolds:
   f_2 &=& x^5 + 2y^3z^2 + 13y^2z^3 + 5yz^4\\ 
   f_3 &=& 8x^3 + 12y^3 + xz^2 + 3\\
   f_4 &=& 7x^2y^4 + 18xy^3z^2 + y^3z^3
-\end{eqnarray*}  
+\end{eqnarray*} 
 
-The coefficients and for these polynomials are all less than 10; the resulting basis for ${B = [f_1, f_2, f_3, f_4]}$, with degree based monomial ordering\footnote{Referred to in her paper as DegRevLex, degree reverse lexicographical ordering; however this is equivalent to degree based ordering tdeg in Maple}
+As the input basis, while the output basis is computed as:
 
+\begin{eqnarray*}
+  g_1 &=& x\\
+  g_2 &=& y^3 + \frac{1}{4}\\ 
+  g_3 &=& z^2\\
+\end{eqnarray*} 
 
-%======================================================================
-\chapter{Observations}
-%======================================================================
+The coefficients and for these polynomials are all less than 10; the resulting basis for ${B = [f_1, f_2, f_3, f_4]}$, with degree based monomial ordering\footnote{Referred to in her paper as DegRevLex, degree reverse lexicographical ordering; however this is equivalent to degree based ordering tdeg in Maple} x > y > z, given by ${G = [g_1, g_2, g_3]}$ also has small degree and coefficients.  However, the intermediate computations contain polynomials with very large coefficients, rational numbers commonly of 80 000 digits in both the numerator and denominator (CITE ARNOLDS HERE).  
 
-This would be a good place for some figures and tables.
-
-Some notes on figures and photographs\ldots
-
-\begin{itemize}
-\item A well-prepared PDF should be 
-  \begin{enumerate}
-    \item Of reasonable size, {\it i.e.} photos cropped and compressed.
-    \item Scalable, to allow enlargment of text and drawings. 
-  \end{enumerate} 
-\item Photos must be bit maps, and so are not scaleable by definition. TIFF and
-BMP are uncompressed formats, while JPEG is compressed. Most photos can be
-compressed without losing their illustrative value.
-
-\end{itemize}
- 
-
-\footnote{
-Footnote man
-}
+This is a common occurence in Groebner basis computations.  The size of the intermediate coefficients is not generally reflected in the final output of the normalized basis; it also depends on many factors (degree, initial coefficient size, initial basis size, initial ideal, monomial ordering chosen) and as such is hard to avoid.  Instead of attempting the difficult task of working around it, another solution to this problem will be attempted.
 
 
 
-% The \appendix statement indicates the beginning of the appendices.
-\appendix
+\chapter{Background}
 
-% Add a title page before the appendices and a line in the Table of Contents
-\chapter*{APPENDICES}
-\addcontentsline{toc}{chapter}{APPENDICES}
-%======================================================================
-\chapter[PDF Plots From Matlab]{Matlab Code for Making a PDF Plot}
-\label{AppendixA}
-% Tip 4: Example of how to get a shorter chapter title for the Table of Contents 
-%======================================================================
-\section{Using the GUI}
+There is some background mathematics necessary to the computation and discussion of Groebner bases.  This will build off assumed knowledge of basic groups and rings in order to explain the ideal theory needed.
+
+\section{Polynomials and Polynomial Ideals}
+
+\section{Monomial Ordering}
+
+Groebner bases are computed with respect to a particular monomial ordering; such an ordering must be defined for a given polynomial space.  For univariate polynomials, the ordering is fairly intuitive.
+
+For polynomials ${p(x), q(x) \in}$ polynomial space ${D[x], \, p(x) = a_n x^n + a_{n-1} x^{n-1} + \ldots + a_1 x + a_0, \, a_i \in D \\ \, q(x) = b_m x^m + b_{m-1} x^{m-1} + \ldots + b_1 x + b_0, \, b_i \in D}$, the ordering is defined as 
+\begin{equation*}
+  p(x) > q(x) \iff \, \textrm{either} \, n > m \, \textrm{or} \, n = m \; \textrm{and} \; \exists \, a_i > b_i \neq 0, \, \textrm{where} \, a_k = b_k \, \forall k > i 
+\end{equation*}
+This is a rather complex notation for the intuitive idea for univariate polynomial ordering.  In simpler terms, polynomial ${p > }$ polynomial ${q}$ if ${p}$ has a higher degree, or if they have the same degree, then if ${p}$ has higher values for one or more of its higher order coefficients.
+
+\begin{example}\label{ex: Univariate ordering}
+  Consider basic polynomials over the integers.
+  \begin{equation*}
+    2x^2 + 3x > 5x
+  \end{equation*}
+  Since the first polynomial is of higher degree.\\
+  \begin{equation*}
+    3x^2 + 2x > 2x^2 + 5x + 1
+  \end{equation*}
+  Since the polynomials are of equal degree, but ${3 > 2}$\\
+  \begin{equation*}
+    3x^2 + 2x > 3x^2 + 5
+  \end{equation*}
+  Since the polynomials are of equal degree but ${2x}$ is of higher degree than ${5}$
+\end{example}
+
+The idea of ordering can be extended to multivariate polynomials, however this requires slightly more work, as the concept is not as intuitive.  While ordering for univariate polynomials is strictly degree-based, when considering multivariate polynomials, the ordering must be considered both degree-wise and lexicographically.  The same polynomials can be ordered in various different ways depending on the monomial ordering chosen; this in turn can have large effects on the efficiency of algorithms working over this polynomial space, including the Groebner basis algorithms.
+
+Whether degree-based or lexicographical (known henceforth as lex) ordering is selected, the variables must still be ordered with respect to each other i.e. an ordering must be chosen.  Then, in degree ordering the total degree is the first factor considered; so, monomials with a higher total degree are considered greater 
+
+To explain the differences and functionality of degree and lex ordering, demonstrative examples will be used.  
+
+\begin{example}\label{ex: Multivariate degree ordering}
+  Consider the polynomials ${x^2y^2, xy^3, x^3y, x^4y}$, with ordering ${x > y}$.\\
+  The degree-based ordering would be as follows:
+  ${x^4y >}$ everything else, since it has total degree 5 (sum of exponents) while the rest of the monomials have total degree 4.\\
+  Then, ${x^3y > x^2y^2 > xy^3}$ since, when the total degrees are identical, then the ordering is based on the degree of the "greater" variable.
+
+  Similarly, if the initial variable ordering chosen was ${y > x}$, the ordering would be as follows:
+  ${x^4y >}$ everything else, since total degree is still 5.  Then, ${xy^3 > x^2y^2 > x^3y}$, since now ordering is with respect to y i.e. y is the "greater" variable.
+\end{example}
 
 
-\section{From the Command Line} 
-All figure properties can also be manipulated from the command line. Here's an example: 
-\begin{verbatim}
-x=[0:0.1:pi];
-hold on % Plot multiple traces on one figure
 
-\end{verbatim}
+\section{Groebner Basis Characterization}
+
+
+
+
 
 %----------------------------------------------------------------------
 % END MATERIAL
