@@ -25,7 +25,7 @@ end;
 
 # acMonom is a hack until Hensel lucky is coded in (hopefully soon!!! :P )
 
-Basis_CRA := proc( B, ord, primes, acMonoms)
+Basis_CRA := proc( B, ord, primes)
 	local curBasis, newBasis, oldBasis, curPrime, i, isDone, isGoodPrime, informalPrimes, primeTime, theMonoms, newPrime, tempBasis, lastTempBasis;
 	
 	# one thing to check is if the built-in groebner basis does mod or mods for characteristic
@@ -35,18 +35,18 @@ Basis_CRA := proc( B, ord, primes, acMonoms)
 	informalPrimes := [ op(primes)];
 	
 	curPrime := informalPrimes[1];
-	curBasis := symmMod( Basis( B, ord, method=buchberger, characteristic=informalPrimes[1]), curPrime);
+	curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[1]), curPrime);
 	theMonoms := LeadingMonomial( curBasis, ord);
 
 	#print( theMonoms);
 	#print( acMonoms);
 
-	while theMonoms <> (acMonoms mod curPrime) do
-		curPrime := prevprime( curPrime):
-		informalPrimes := [ curPrime]:
-		curBasis := symmMod( Basis( B, ord, method=buchberger, characteristic=informalPrimes[1]), curPrime);
-		theMonoms := LeadingMonomial( curBasis, ord);
-	end do:
+	#while theMonoms <> (acMonoms mod curPrime) do
+	#	curPrime := prevprime( curPrime):
+	#	informalPrimes := [ curPrime]:
+	#	curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[1]), curPrime);
+	#	theMonoms := LeadingMonomial( curBasis, ord);
+	#end do:
 
 	curPrime := informalPrimes[1];
 
@@ -69,11 +69,11 @@ Basis_CRA := proc( B, ord, primes, acMonoms)
 		
 		newPrime := prevprime( informalPrimes[ nops( informalPrimes)]);
 	
-		newBasis := symmMod (Basis( B, ord, method=buchberger, characteristic=newPrime), newPrime);
+		newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=newPrime), newPrime);
 		theMonoms := LeadingMonomial( newBasis, ord);
 
 
-		if theMonoms = (acMonoms mod newPrime) then
+		#if theMonoms = (acMonoms mod newPrime) then
 
 			# now, combine curBasis and newBasis via cra
 			curBasis := CRA_sets( curBasis, curPrime, newBasis, newPrime, ord); 
@@ -93,7 +93,7 @@ Basis_CRA := proc( B, ord, primes, acMonoms)
 			i := i + 1;
 			curPrime := curPrime * newPrime;
 
-		fi;
+		#fi;
 		
 		
 	end do;

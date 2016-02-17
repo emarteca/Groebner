@@ -37,7 +37,7 @@ primes := [ prevprime( 2^31)]:
 
 	if theMethod = 1 then
 		tt := time():
-		sol := Basis( totBs[ exNum], totOrds[ exNum], method=buchberger):
+		sol := Basis( totBs[ exNum], totOrds[ exNum], method=maplef4):
 		tt := time() - tt:
 		
 		acMonoms := LeadingMonomial( sol, totOrds[ exNum]):
@@ -52,7 +52,7 @@ primes := [ prevprime( 2^31)]:
 		writeto( terminal):
 	elif theMethod = 2 then
 
-		sol := Basis( totBs[ exNum], totOrds[ exNum], method=buchberger):
+		sol := Basis( totBs[ exNum], totOrds[ exNum], method=maplef4):
 		acMonoms := LeadingMonomial( sol, totOrds[ exNum]):
 
 		tt := time():
