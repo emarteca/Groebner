@@ -25,6 +25,15 @@
 \end{quote}%
 }
 
+\newcounter{definitioncounter}
+\newenvironment{defn}{\begin{quote}%
+    \refstepcounter{definitioncounter}%
+  \textbf{Definition \arabic{definitioncounter}}%
+  \quad
+}{%
+\end{quote}%
+}
+
 \usepackage[pdftex,letterpaper=true,pagebackref=false]{hyperref} 
 		
 \hypersetup{
@@ -126,9 +135,9 @@ As the input basis, while the output basis is computed as:
   g_3 &=& z^2\\
 \end{eqnarray*} 
 
-The coefficients and for these polynomials are all less than 10; the resulting basis for ${B = [f_1, f_2, f_3, f_4]}$, with degree based monomial ordering\footnote{Referred to in her paper as DegRevLex, degree reverse lexicographical ordering; however this is equivalent to degree based ordering tdeg in Maple} x > y > z, given by ${G = [g_1, g_2, g_3]}$ also has small degree and coefficients.  However, the intermediate computations contain polynomials with very large coefficients, rational numbers commonly of 80 000 digits in both the numerator and denominator (CITE ARNOLDS HERE).  
+The coefficients and for these polynomials are all less than 10; the resulting basis for ${B = [f_1, f_2, f_3, f_4]}$, with degree based monomial ordering\footnote{Referred to in her paper as DegRevLex, degree reverse lexicographical ordering; however this is equivalent to degree based ordering tdeg in Maple} ${x > y > z}$, given by ${G = [g_1, g_2, g_3]}$ also has small degree and coefficients.  However, the intermediate computations contain polynomials with very large coefficients, rational numbers commonly of 80 000 digits in both the numerator and denominator (CITE ARNOLDS HERE).  
 
-This is a common occurence in Groebner basis computations.  The size of the intermediate coefficients is not generally reflected in the final output of the normalized basis; it also depends on many factors (degree, initial coefficient size, initial basis size, initial ideal, monomial ordering chosen) and as such is hard to avoid.  Instead of attempting the difficult task of working around it, another solution to this problem will be attempted.
+This is a common occurrence in Groebner basis computations.  The size of the intermediate coefficients is not generally reflected in the final output of the normalized basis; it also depends on many factors (degree, initial coefficient size, initial basis size, initial ideal, monomial ordering chosen) and as such is hard to avoid.  Instead of attempting the difficult task of working around it, another solution to this problem will be attempted.
 
 
 
@@ -136,13 +145,67 @@ This is a common occurence in Groebner basis computations.  The size of the inte
 
 There is some background mathematics necessary to the computation and discussion of Groebner bases.  This will build off assumed knowledge of basic groups and rings in order to explain the ideal theory needed.
 
+\section{Algebraic Review}
+
+There are various algebraic objects which one must be familiar with; this will be a brief introduction to these objects, assuming previous knowledge of the theory of groups and rings.  
+
+There are various algebraic spaces with characterizations between rings and fields - notably, integral domains, unique factorization domains (henceforth UFDs), and Euclidean domains (henceforth EuDs).  These have their own properties, and once the space is extended (for example, by a variable or set of variables in the definition of a polynomial space) they have different relations between each other.  
+
+Each will first be defined, building off the definition of a ring which is presumed known (but included for reference).
+
+\begin{defn}\label{defn: Ring}
+  A \textbf{ring} is a triple ${(R, +, *)}$ consisting of a non-empty set ${R}$ along with a pair of binary operations 
+
+  \begin{equation*}
+    + : R \times R \rightarrow R   \qquad \qquad * : R \times R \rightarrow R
+  \end{equation*}
+
+  such that:
+
+  \begin{itemize}
+    \item ${(R, +)}$ is an Abelian group
+    \item ${*}$ is associative
+    \item ${*}$ is distributive over ${+}$ i.e. ${\forall\, a, b, c\, \in\, R}$\begin{eqnarray*} a*(b+c) = (a*b) + (a*c) \\ (a+b)*c = (a*c) + (b*c) \end{eqnarray*} 
+  \end{itemize}
+\end{defn}
+
+Rings can also be \textbf{commutative rings}, where the operation ${*}$ is also commutative (recall, ${+}$ is already commutative since ${(R, +)}$ is an Abelian group).  In addition, rings can be \textbf{rings with unity}; this is where ${R}$ has an identity with respect to ${*}$.  In order to construct the next algebraic structures, rings with unity will mainly be considered.
+
+Similar to a ring, but with more specifications, there are integral domains.  
+
+\begin{defn}\label{defn: Integral domain}
+  An \textbf{integral domain} is a commutative ring with unity which satisfies the "cancellation law" i.e. \\
+  \begin{equation*} \forall\, a, b, c\, \in R\, \mid \, a \cdot b = a \cdot c, \, a \neq 0\end{equation*}
+  we must have ${b = c}$
+\end{defn}
+
 \section{Polynomials and Polynomial Ideals}
+
+Polynomials over a field
+
+Polynomials are some of the most important and widely used algebraic objects in symbolic computation (CN).  Polynomials are defined as an extension of a space S by one (or more, for multivariate) variables.  The polynomial spaces of interest are generally those where the space extended was a field: 
+SO, WHAT IS RELATION BETWEEN EUD, UFD, RING, ETC
+
+A polynomial space has a basis which consists of polynomials in the space.  The space can then be written as the set generated by the basis set of polynomials.  For example notation, consider:
+EXAMPLE FROM NOTES
+
+Ideals
+
+Similar to the idea of rings and fields, a principal ideal domain is ....
+
+An ideal is defined in terms of a commutative ring, DEFINITION ON NOTES
+
+Polynomial Ideals
+
+
 
 \section{Monomial Ordering}
 
+DEFINE MONOMIAL
+
 Groebner bases are computed with respect to a particular monomial ordering; such an ordering must be defined for a given polynomial space.  For univariate polynomials, the ordering is fairly intuitive.
 
-For polynomials ${p(x), q(x) \in}$ polynomial space ${D[x], \, p(x) = a_n x^n + a_{n-1} x^{n-1} + \ldots + a_1 x + a_0, \, a_i \in D \\ \, q(x) = b_m x^m + b_{m-1} x^{m-1} + \ldots + b_1 x + b_0, \, b_i \in D}$, the ordering is defined as 
+For polynomials ${p(x), q(x) \in}$ polynomial space ${D[x], \, p(x) = a_n x^n + a_{n-1} x^{n-1} + \ldots + a_1 x + a_0,}$ \\ ${\, a_i \in D\, q(x) = b_m x^m + b_{m-1} x^{m-1} + \ldots + b_1 x + b_0, \, b_i \in D}$, the ordering is defined as 
 \begin{equation*}
   p(x) > q(x) \iff \, \textrm{either} \, n > m \, \textrm{or} \, n = m \; \textrm{and} \; \exists \, a_i > b_i \neq 0, \, \textrm{where} \, a_k = b_k \, \forall k > i 
 \end{equation*}
@@ -166,7 +229,7 @@ This is a rather complex notation for the intuitive idea for univariate polynomi
 
 The idea of ordering can be extended to multivariate polynomials, however this requires slightly more work, as the concept is not as intuitive.  While ordering for univariate polynomials is strictly degree-based, when considering multivariate polynomials, the ordering must be considered both degree-wise and lexicographically.  The same polynomials can be ordered in various different ways depending on the monomial ordering chosen; this in turn can have large effects on the efficiency of algorithms working over this polynomial space, including the Groebner basis algorithms.
 
-Whether degree-based or lexicographical (known henceforth as lex) ordering is selected, the variables must still be ordered with respect to each other i.e. an ordering must be chosen.  Then, in degree ordering the total degree is the first factor considered; so, monomials with a higher total degree are considered greater 
+Whether degree-based or lexicographical (known henceforth as lex) ordering is selected, the variables must still be ordered with respect to each other i.e. an ordering must be chosen.  Then, in degree ordering the total degree is the first factor considered; so, monomials with a higher total degree are considered greater regardless of the degrees of the individual variables making up the monomial.  Then, if the total degree is the same, ordering is lexicographical given the order specified.  For lex, the ordering is the variable ordering specified.
 
 To explain the differences and functionality of degree and lex ordering, demonstrative examples will be used.  
 
@@ -180,6 +243,18 @@ To explain the differences and functionality of degree and lex ordering, demonst
   ${x^4y >}$ everything else, since total degree is still 5.  Then, ${xy^3 > x^2y^2 > x^3y}$, since now ordering is with respect to y i.e. y is the "greater" variable.
 \end{example}
 
+In contrast, consider the same example but with lex ordering instead.
+\begin{example}\label{ex: Multivariate lex ordering}
+  Consider again the polynomials ${x^2y^2, xy^3, x^3y, x^4y}$, with ordering ${x > y}$.\\
+  The lex ordering would be as follows:
+  Then, ${x^4y > x^3y > x^2y^2 > xy^3}$ since the ordering is chosen with respect to the degree of ${x}$ alone (in the event of a tie in degree, then the ordering would be considered with respect to the degree of ${y}$).
+
+  Similarly, if the initial variable ordering chosen was ${y > x}$, the ordering would be as follows:
+  ${xy^3 > x^2y^2 >}$ the other terms, since degree in ${y}$ is the ordering factor (recall, the remaining terms have ${y^1}$).\\
+  Then, for the remaining terms, ${x^4y > x^3y}$ since, as they have the same degree in ${y}$, ordering is now considered with respect to degree in ${x}$.
+\end{example}
+
+These ordering techniques can be applied to polynomials with an arbitrary number of variables.  Although not immediately clear from the concepts, the monomial ordering chosen (either degree-based or lex, and, within this choice, the ordering of the variables chosen) can have a large effect on the efficiency of the Groebner basis computations.  The same problem can be considered with different orderings and have massively different timings for the computations (as will be seen below with tested examples).
 
 
 \section{Groebner Basis Characterization}
