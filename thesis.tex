@@ -34,7 +34,18 @@
 \end{quote}%
 }
 
+\newcounter{notecounter}
+\newenvironment{note}{\begin{quote}%
+    \refstepcounter{notecounter}%
+  \textbf{Note \arabic{notecounter}}%
+  \quad
+}{%
+\end{quote}%
+}
+
 \usepackage[pdftex,letterpaper=true,pagebackref=false]{hyperref} 
+
+\usepackage[toc,page]{appendix}
 		
 \hypersetup{
     plainpages=false,       % needed if Roman numbers in frontpages
@@ -98,7 +109,9 @@
 \section{Brief Overview and History of Groebner Bases}
 %----------------------------------------------------------------------
  
-pls no
+The problem of solving for a Groebner basis was resolved by Bruno Buchberger in <YEAR>.  His algorithm (\textbf{Buchberger's Algorithm}, explained later in the text) was published in <SOME GARBAGE CONFERENCE PAPER> and it was not until <YEAR> at <SOME CONFERENCE> that the community realized that the algorithm existed and the implications of such.
+
+Buchberger's algorithm was the initial approach, and since then there have been various different solutions 
 
 \section{Intermediate Expression Swell}
 
@@ -177,7 +190,50 @@ Similar to a ring, but with more specifications, there are integral domains.
   An \textbf{integral domain} is a commutative ring with unity which satisfies the "cancellation law" i.e. \\
   \begin{equation*} \forall\, a, b, c\, \in R\, \mid \, a \cdot b = a \cdot c, \, a \neq 0\end{equation*}
   we must have ${b = c}$
+
+  Note: this is equivalent to the "no zero divisors" law: whenever ${a \cdot b = 0}$, then either ${a = 0}$ or ${b = 0}$
 \end{defn}
+
+All integral domains are rings; they just have additional conditions which must be met in order to be categorized as such.
+
+Similarly, there are also UFDs, which are integral domains with more restrictions.  These require the concepts of \textbf{units}, \textbf{associates}, and \textbf{primes}.  These definitions are not explicitly stated in the body of the text as they are more background, however they are included for reference in the Supplementary Definitions appendix \ref{appendix:definitions}.
+
+\begin{defn}\label{defn: Unique Factorization Domain}
+  An integral domain ${D}$ is a \textbf{unique factorization domain} (UFD) if for any ${a \in D - \{0\}}$,  either: 
+  \begin{itemize}
+    \item ${a}$ is a \textbf{unit}, or
+    \item ${a = p_1 \cdot p_2 \cdot \ldots \cdot p_n}$ for primes ${p_i}$, and this factorization is unique up to \textbf{associates} and \textbf{reordering}
+  \end{itemize}
+\end{defn}
+
+Another algebraic structure, building on UFDs, is a \textbf{Euclidean domain}.
+
+\begin{defn}\label{defn: Euclidean domain}
+  A \textbf{Euclidean domain} (EuD) is a UFD with a \\ \textbf{valuation function} ${v : D - \{0\} \leftarrow \mathbb{N}_0}$:
+  \begin{itemize}
+    \item ${v(a, b) \geq v(b) \;\; \forall \, a, b \in D - \{0\}}$
+    \item ${\forall \, a, b \in D, b \neq 0, \exists \, q, r \in D \mid a = b \cdot q + r}$ where either ${r = 0}$ or ${v(r) < v(b)}$
+  \end{itemize}
+\end{defn}
+
+Finally, there is the concept of a \textbf{field}, again building on the previous algebraic structures. 
+
+\begin{defn}\label{defn: Field}
+  A \textbf{field} is a commutative ring with unity ${(F, +, *)}$ in which:
+  \begin{itemize}
+    \item ${(F, +)}$ is an Abelian group
+    \item ${(F - \{0\}, *)}$ is an Abelian group (i.e. every nonzero element in ${F}$ has an inverse with respect to ${*}$)
+    \item ${*}$ is distributive over ${+}$
+  \end{itemize}
+\end{defn}
+
+\begin{note}
+  Every field is a EuD.
+
+  \textbf{Proof}: Consider the second criterion BRO I NEED A PROOF HERE AWKS
+  I think it has v(a) = 1 \forall a.
+\end{note}
+
 
 \section{Polynomials and Polynomial Ideals}
 
@@ -258,6 +314,35 @@ These ordering techniques can be applied to polynomials with an arbitrary number
 
 
 \section{Groebner Basis Characterization}
+
+\begin{appendices}
+
+\section{Supplementary Definitions}
+\label{appendix:definitions}
+
+\appendix{}
+
+This contains definitions which are presumed known and not explicitly declared in the text, but are referred to in passing.  They are included here for clarity.
+
+\begin{defn}\label{defn: Unit}
+  An element ${u \in D, \, D}$ domain, is a \textbf{unit} (\textbf{invertible}) if ${u}$ has a multiplicative inverse (i.e. with respect to operation ${*\,}$in ${D}$.
+
+  For example, in $\mathbb{Z}$, the units are 1 and -1.
+\end{defn}
+
+\begin{defn}\label{defn: Associate}
+  Two elements ${a, b \in D, \, D}$ domain, are \textbf{associates} if ${a \mid b}$ and ${b \mid a}$ i.e. they are multiples they are related via multiplication of a unit. 
+\end{defn}
+
+\begin{defn}\label{defn: Prime}
+  An element ${p \in D - \{0\}, \, D}$ domain, is a \textbf{prime} if
+  \begin{itemize}
+    \item ${p}$ is \textbf{not} a unit
+    \item whenever ${p = a \cdot b}$, for ${a, b \in D}$, then either ${a}$ or ${b}$ is a unit (but not both, since ${p}$ is not a unit)
+  \end{itemize}
+\end{defn}
+
+\end{appendices}
 
 
 
