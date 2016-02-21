@@ -230,9 +230,17 @@ Finally, there is the concept of a \textbf{field}, again building on the previou
 \begin{note}
   Every field is a EuD.
 
-  \textbf{Proof}: Consider the second criterion BRO I NEED A PROOF HERE AWKS
-  I think it has v(a) = 1 \forall a.
+  \textbf{Proof}: For a space to be a EuD, it must have a valuation function ${v : F - \{0\} \leftarrow \mathbb{N}_0}$ satisfiying the criteria listed above.
+  Here, take the valuation function to be ${v(a) = 1 \, \forall \, a \, \in F - \{0\}}$, for ${F}$ field with unity 1.    
+  \begin{itemize}
+    \item ${v(a * b) = 1 \, \forall \, a, b \, \in F - \{0\}}$, since ${a * b \in F - \{0\} \forall \, a, b \, \in F - \{0\}}$, and ${v(a) = 1 \, \forall \, a \, \in F - \{0\}}$ \\ This satisfies the first condition of EuD, since ${v(a * b) = 1 \leq 1 = v(b) \, \forall \, a, b \, \in F - \{0\}}$
+    \item ${a, b \, \in F, b \neq 0}$ \begin{equation*} a = b * q + r; \; q, r \, \in F, v(r) < v(b) \, \text{or} \, r = 0 \end{equation*} \\ Here, consider that ${v(a) = 1 \, \forall \, a \in F - \{0\}}$.  So, there is no ${r \in F - \{0\}}$ such that ${v(r) < v(b)}$ for some ${b \in F - \{0\}}$.  \\ So therefore, ${r = 0}$ \\ Then, ${a = b*q}$ for some ${q \in F - \{0\}}$ \\ Recall that in a field F, ${b^{-1} \exists \, \forall \, b \in F - \{0\}}$ \\ So, applying ${b^{-1}}$ to both sides, ${b^{-1} * a = q \; \in F \, \forall a, b \in F, b \neq 0}$ \\ This satisfies the second condition of EuD. 
+  \end{itemize} 
+
+  Therefore, every field is an EuD.
 \end{note}
+
+Now, consider these spaces when they are extended by one or more variables, they 
 
 
 \section{Polynomials and Polynomial Ideals}
