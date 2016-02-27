@@ -161,3 +161,9 @@ B17 := F;
 totOrds := [ ord1, ord2, ord3, ord4, ord5, ord6, ord7, ord8, ord9, ord10, ord11, ord12, ord13, ord14, ord15, ord16, ord17];
 totBs := [ B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11, B12, B13, B14, B15, B16, B17];
 exNames := [ n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17];
+
+
+# more reasonable set that actually finishes
+totOrds := [ ord1, ord2, ord3, ord4, ord5, ord6, ord11];
+totBs := [ B1, B2, B3, B4, B5, B6, B11];
+exNames := [ n1, n2, n3, n4, n5, n6, n11];
