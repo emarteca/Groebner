@@ -10,7 +10,7 @@ read( "pauerLucky.mpl"):
 read( "Basis_CRA.mpl"):
 read( "Basis_Hensel.mpl");
 
-read( "plsExamples.mpl"):
+read( "moreExamples.mpl"):
 
 # so it looks like command line args aren't a thing in maple?
 # so, i'll just make a bash script run the maple script which is secretly a bash script
