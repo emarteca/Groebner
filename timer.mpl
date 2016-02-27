@@ -52,11 +52,11 @@ primes := [ prevprime( 2^31)]:
 		writeto( terminal):
 	elif theMethod = 2 then
 
-		sol := Basis( totBs[ exNum], totOrds[ exNum], method=maplef4):
+		sol := Basis( totBs[ exNum], totOrds[ exNum], method=fgb):
 		acMonoms := LeadingMonomial( sol, totOrds[ exNum]):
 
 		tt := time():
-		sol, primeTime := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, acMonoms);
+		sol, primeTime, numImgs := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, acMonoms);
 		procTime := time():
 		tt := procTime - tt:
 		primeTime := tt - (procTime - primeTime):
@@ -67,6 +67,8 @@ primes := [ prevprime( 2^31)]:
 		print( tt);
 		print( "\nPrime Time: ");
 		print( primeTime);
+		print( "\nNum images: ");
+		print( numImgs);
 		print( "\nSolution");
 		print( sol);
 		writeto( terminal):

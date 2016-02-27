@@ -46,7 +46,7 @@
 \usepackage[pdftex,letterpaper=true,pagebackref=false]{hyperref} 
 
 \usepackage[toc,page]{appendix}
-		
+    
 \hypersetup{
     plainpages=false,       % needed if Roman numbers in frontpages
     pdfpagelabels=true,     % adds page number as label in Acrobat's page count
@@ -68,7 +68,7 @@
     urlcolor=cyan           % color of external links
 }
 \ifthenelse{\boolean{PrintVersion}}{   
-\hypersetup{	% override some previously defined hyperref options
+\hypersetup{  % override some previously defined hyperref options
 %    colorlinks,%
     citecolor=black,%
     filecolor=black,%
@@ -251,11 +251,19 @@ Now, consider a ring extended by a variable - this will be a univariate polynomi
 
 The categorization of the initial space determines what type the univariate polynomial space will be.  The relations between these spaces when they are extended is shown in the below list, and in FIGURE 1.
 \begin{itemize}
+<<<<<<< HEAD
+  \item ${D[x]}$ is a \textbf{commutative ring} for ${D}$ \textbf{commutative ring} 
+  \item ${D[x]}$ is an \textbf{integral domain} for ${D}$ \textbf{integral domain} 
+  \item ${D[x]}$ is a \textbf{UFD} for ${D}$ \textbf{UFD}
+  \item ${D[x]}$ is a \textbf{UFD} for ${D}$ \textbf{EuD}
+  \item ${D[x]}$ is a \textbf{EuD} for ${D}$ \textbf{field}; with valuation function ${v(p(x)) = deg(p(x))}$ 
+=======
 	\item ${D[x]}$ is a \textbf{commutative ring} for ${D}$ \textbf{commutative ring} 
 	\item ${D[x]}$ is an \textbf{integral domain} for ${D}$ \textbf{integral domain} 
 	\item ${D[x]}$ is a \textbf{UFD} for ${D}$ \textbf{UFD}
 	\item ${D[x]}$ is a \textbf{UFD} for ${D}$ \textbf{EuD}
 	\item ${D[x]}$ is a \textbf{EuD} for ${D}$ \textbf{field}; with valuation function ${v(p(x)) = deg(p(x))}$ 
+>>>>>>> 4a5039eb049ab91d9bf6aad059346124b8cbd550
 \end{itemize}  
 
 This leads to a few interesting points: for one thing, there will never be a polynomial field.  A polynomial extension over a field results in a EuD, and not a field.  This makes sense, as for a space to be a field every non-zero element in the set would need to have an inverse also in the set - and polynomials do not have inverses in the polynomial space (i.e. there are no polynomials ${p_1(x) \neq 1, p_2(x) \neq 1}$ such that ${p_1(x) \cdot p_2(x) = 1 \, \forall \, x}$).  So, a polynomial space cannot be a field.
@@ -266,10 +274,17 @@ For example, consider a bivariate polynomial space over a ring.  This is equival
 
 As a more involved example, consider a bivariate polynomial over a field.  The first "layer" to consider is a univariate extension of a field, which is a EuD.  Then, when this space is extended with another variable, this is now a EuD extended by a variable, which results in a UFD.  
 
+<<<<<<< HEAD
+\begin{note}
+  There cannot be a univariate polynomial field (the "highest" algebraic structure possible for a univariate space is when the coefficient space is a field, and then the extension becomes a EuD).
+  
+  Similarly, there cannot be a bivariate (or greater than 2 variable) polynomial EuD (or field) - the "highest" algebraic structure is a UFD.
+=======
 \being{note}
 	There cannot be a univariate polynomial field (the "highest" algebraic structure possible for a univariate space is when the coefficient space is a field, and then the extension becomes a EuD).
 	
 	Similarly, there cannot be a bivariate (or greater than 2 variable) polynomial EuD (or field) - the "highest" algebraic structure is a UFD.
+>>>>>>> 4a5039eb049ab91d9bf6aad059346124b8cbd550
 \end{note}      
 
 
@@ -283,6 +298,23 @@ A polynomial space has a basis which consists of polynomials in the space.  The 
 EXAMPLE FROM NOTES
 
 Ideals
+
+Ideals are another algebraic structure, building off of rings and ring structure.  
+
+\begin{defn}\label{defn: Ideals}
+  An additive subgroup N of ring ${(R, +, *)}$ is an \textbf{ideal} iff 
+  \begin{equation*} aN \subseteq R \qquad ; \qquad Nb \subseteq R \; \forall a, b \in R \end{equation*}
+  This criterion can be written equivalently as
+  \begin{equation*} a*n, \, n*a \in N \, \forall \, n \in N, \, a \in R \end{equation*}
+  
+  In other words: ideals are groups over a ring which are closed with respect to the ring's multiplication operation i.e. every ideal N contains all of its cosets (and both left and right).  
+\end{defn}
+
+The idea of an ideal can be demonstrated in part by the following simple example.  Note how the criterion for being an ideal is well-defined.
+
+\begin{example}\label{ex: Simple ideal}
+  
+\end{example}
 
 Similar to the idea of rings and fields, a principal ideal domain is ....
 

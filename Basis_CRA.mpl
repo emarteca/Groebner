@@ -98,7 +98,7 @@ Basis_CRA := proc( B, ord, primes)
 		
 	end do;
 
-	return tempBasis, primeTime;
+	return tempBasis, primeTime, i;
 	
 end;
 
