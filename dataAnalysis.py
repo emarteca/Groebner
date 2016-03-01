@@ -22,7 +22,13 @@ ax = fig.add_subplot( 111)
 # rects2 = ax.bar(ind+width, cra_bb, width, color='r', log=True, label='CRA')
 # rects3 = ax.bar(ind+2*width, hensel_bb, width, color='y', log=True, label='Hensel')
 
-rects1 = ax.bar(ind, maple_f4, width, color='b', log=True, label='BB')
+# rects1 = ax.bar(ind, maple_f4, width, color='b', log=True, label='Maple')
+# rects2 = ax.bar(ind+width, cra_f4, width, color='r', log=True, label='CRA')
+
+# rects1 = ax.bar(ind, maple_bb, width, color='b', log=True, label='BB')
+# rects2 = ax.bar(ind+width, maple_f4, width, color='r', log=True, label='F4')
+
+rects1 = ax.bar(ind, cra_bb, width, color='b', log=True, label='BB')
 rects2 = ax.bar(ind+width, cra_f4, width, color='r', log=True, label='F4')
 
 ax.set_ylabel('Time (log scaled, seconds)', fontsize=13)
