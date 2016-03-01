@@ -25,7 +25,7 @@ end;
 
 # acMonom is a hack until Hensel lucky is coded in (hopefully soon!!! :P )
 
-Basis_CRA := proc( B, ord, primes)
+Basis_CRA := proc( B, ord, primes, theAlgoType)
 	local curBasis, newBasis, oldBasis, curPrime, i, isDone, isGoodPrime, informalPrimes, primeTime, theMonoms, newPrime, tempBasis, lastTempBasis;
 	
 	# one thing to check is if the built-in groebner basis does mod or mods for characteristic
@@ -35,7 +35,7 @@ Basis_CRA := proc( B, ord, primes)
 	informalPrimes := [ op(primes)];
 	
 	curPrime := informalPrimes[1];
-	curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[1]), curPrime);
+	curBasis := symmMod( Basis( B, ord, method=theAlgoType, characteristic=informalPrimes[1]), curPrime);
 	theMonoms := LeadingMonomial( curBasis, ord);
 
 	#print( theMonoms);
@@ -44,7 +44,7 @@ Basis_CRA := proc( B, ord, primes)
 	#while theMonoms <> (acMonoms mod curPrime) do
 	#	curPrime := prevprime( curPrime):
 	#	informalPrimes := [ curPrime]:
-	#	curBasis := symmMod( Basis( B, ord, method=maplef4, characteristic=informalPrimes[1]), curPrime);
+	#	curBasis := symmMod( Basis( B, ord, method=theAlgoType, characteristic=informalPrimes[1]), curPrime);
 	#	theMonoms := LeadingMonomial( curBasis, ord);
 	#end do:
 
@@ -69,7 +69,7 @@ Basis_CRA := proc( B, ord, primes)
 		
 		newPrime := prevprime( informalPrimes[ nops( informalPrimes)]);
 	
-		newBasis := symmMod (Basis( B, ord, method=maplef4, characteristic=newPrime), newPrime);
+		newBasis := symmMod (Basis( B, ord, method=theAlgoType, characteristic=newPrime), newPrime);
 		theMonoms := LeadingMonomial( newBasis, ord);
 
 
