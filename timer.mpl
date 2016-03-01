@@ -11,7 +11,7 @@ read( "pauerLucky.mpl"):
 read( "Basis_CRA.mpl"):
 read( "Basis_Hensel.mpl");
 
-read( "plsExamples.mpl"):
+read( "allTheExamples.mpl"):
 
 # so it looks like command line args aren't a thing in maple?
 # so, i'll just make a bash script run the maple script which is secretly a bash script
@@ -34,7 +34,7 @@ primes := [ prevprime( 2^31)]:
 
 	#exNum := 4;
 
-	fileName := cat( "output_ex", convert( exNum, string), ".txt"):
+	fileName := cat( "output_ex", convert( exNum, string), "_", convert( theAlgoType, string), ".txt"):
 
 	if theMethod = 1 then
 		tt := time():
