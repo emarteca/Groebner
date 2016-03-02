@@ -20,7 +20,7 @@ read( "allTheExamples.mpl"):
 # right now there are 4 examples to parse through
 #exNum := 1:
 
-primes := [ prevprime( 2^31)]:
+primes := [ prevprime( 2^16 - 1)]:
 #for i from 1 to 20 do
 #	primes := [ op( primes), nextprime( primes[ i] + 10000)];			# sequence of 10 10-digit primes sequentially 
 #od:
