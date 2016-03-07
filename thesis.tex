@@ -6,6 +6,20 @@
 \newcommand{\cmmd}[1]{\textbackslash\texttt{#1}} 
 \newcommand{\href}[1]{#1} 
 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{algorithmicx}
+
+\algnewcommand\algorithmicInput{\textbf{Input:}}
+\algnewcommand\Input{\item[\algorithmicInput]}
+
+\algnewcommand\algorithmicOutput{\textbf{Output:}}
+\algnewcommand\Output{\item[\algorithmicOutput]}
+
+\newcommand\abs[1]{\left|#1\right|}
+
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}
+
 
 \usepackage{ifthen}
 \usepackage{indentfirst}
@@ -230,7 +244,7 @@ Finally, there is the concept of a \textbf{field}, again building on the previou
 \begin{note}
   Every field is a EuD.
 
-  \textbf{Proof}: For a space to be a EuD, it must have a valuation function ${v : F - \{0\} \leftarrow \mathbb{N}_0}$ satisfiying the criteria listed above.
+  \textbf{Proof}: For a space to be a EuD, it must have a valuation function ${v : F - \{0\} \leftarrow \mathbb{N}_0}$ satisfying the criteria listed above.
   Here, take the valuation function to be ${v(a) = 1 \, \forall \, a \, \in F - \{0\}}$, for ${F}$ field with unity 1.    
   \begin{itemize}
     \item ${v(a * b) = 1 \, \forall \, a, b \, \in F - \{0\}}$, since ${a * b \in F - \{0\} \forall \, a, b \, \in F - \{0\}}$, and ${v(a) = 1 \, \forall \, a \, \in F - \{0\}}$ \\ This satisfies the first condition of EuD, since ${v(a * b) = 1 \leq 1 = v(b) \, \forall \, a, b \, \in F - \{0\}}$
@@ -395,6 +409,111 @@ These ordering techniques can be applied to polynomials with an arbitrary number
 
 \section{Groebner Basis Characterization}
 
+Polynomial ideals can be specified by a basis; this specifies a linearly independent generating set for the ideal.  However, this basis is not unique - there are many possible configurations or potential elements which could make up a basis for the ideal.  
+
+A Groebner basis is a particular basis for a polynomial ideal, which satisfies various conditions, detailed below.  There are various advantages to this set.  The normalized Groebner basis is unique to each ideal, and can therefore be used as a sort of identifier for the ideal. 
+
+There are various logically equivalent definitions for what makes a basis a Groebner basis.  One definition is as follows: 
+
+\begin{defn}\label{Groebner Basis}
+  G is a Groebner basis for ideal $I = <p_1, \ldots, p_n>$ over polynomial ring $F[x_1, \ldots, x_m]$ for a particular monomial ordering iff
+  \begin{equation*}
+    p \in I \iff Reduce( p, G) = 0
+  \end{equation*}
+\end{defn}
+
+This definition, although concise, is not complete alone; the Reduce function has not been defined.
+
+This concept of reduction is essential to Groebner bases, and to the computation of the bases using Buchberger's Algorithm.  Reduction can be defined of a polynomial over another polynomial, or a polynomial over a set of polynomials (such as in the definition above, ${Reduce( p, G)}$, reduction of polynomial ${p}$ over set ${G}$).  
+
+Reducing polynomial ${p}$ over another polynomial ${q}$, ${Reduce( p, q)}$ amounts to multivariate division of ${\frac{p}{q}}$.  This is a recursive extension of the Euclidean algorithm for division of univariate polynomials, dependent on the monomial ordering specified.  The idea is to consider the multivariate polynomial as a "recursive univariate polynomial".  This concept is best described by an example: consider the polynomial ${}$ EXAMPLE ON THE SYMBOLIC MIDTERM FOR POLYNOMIAL LONG DIVISION.
+
+A polynomial ${p}$ is considered \textbf{reducible} over polynomial ${q}$ if a monomial in ${p}$ can be written as a multiple of the leading monomial of ${q}$.  It is \textbf{irreducible} if there are no monomials in ${p}$ which are multiples of the leading monomial os ${q}$.    
+
+\begin{note}
+  The \textbf{leading monomial} of a polynomial is the monomial with the highest order with respect to the monomial ordering specified.
+\end{note}   
+
+Reduction over a set ${G}$ of polynomials is the iterative application of the ${Reduce}$ over each of the polynomials in the set, until it is irreducible over the whole set.  This reduced polynomial is termed the \textbf{normal form} of the polynomial with respect to the set.
+
+Referring back to the definition of a Groebner basis above, the ${Reduce}$ can now be considered more precisely: a Groebner basis is a basis for a polynomial ideal ${I}$ over field ${F}$; polynomial ${p \in I}$ is a member of the basis if and only if it is irreducible over the basis.  This has the implication that every polynomial which is irreducible over the set is in the set; every other polynomial in the ideal has a leading monomial which is a multiple of one or more elements in the set.
+
+\subsection{Buchberger's Algorithm}
+
+The first algorithm for computing Groebner bases was proposed by Bruno Buchberger in 1965, when he presented the concept of the bases themselves.  This algorithm is fairly short in writing, but the complexity of the algorithm cannot be seen intuitively seen from the logic itself.  The algorithm is presented below in pseudocode.
+
+\begin{algorithm}
+\caption{Buchberger}\label{buchberger}
+\begin{algorithmic}[1]
+\Input $\quad P$ generating set for a polynomial ideal; $ord$ monomial ordering
+\Output Groebner Basis for the ideal generated by $P$
+\Procedure{Buchberger}{}
+\State $G \gets P$
+\State $k \gets length( G)$
+\State $B \gets \{[i, j] : 1 \leq i < j \leq k\}$\\
+\While{ $B \neq \phi$}
+  \State $[i, j] \gets selectpair( B, G)$
+  \State $B \gets B - \{[i, j]\}$
+  \State $h \gets Reduce( Spoly( G_i, G_j), G)$
+  \If{ $h \neq 0$}
+    \State $G \gets G \bigcup \{h\}; \qquad k \gets k + 1$
+    \State $B \gets B \bigcup \{[i, k] : 1 \leq i < k\}$
+  \EndIf
+\EndWhile\\
+\Return $G$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}  
+
+The basic idea is to start with a basis (i.e. a generating set) for the ideal, and repeatedly iterate over the set until all of the polynomials which are irreducible over the set are added to the set.  This is repeated until every combination of polynomials is either in the set or irreducible over the set.  Notice the call to ${Reduce}$; this is the reduction of a polynomial over the set ${G}$ as discussed above.   
+
+One new concept which the algorithm requires is the computation of \textbf{S-polynomials}.  Computation of S-polynomials is done through the following formula: 
+
+\begin{equation*}
+	Spoly( p, q) = LCM(M(p), M(q)) \left( \frac{p}{M(p)} - \frac{q}{M(q)}\right)
+\end{equation*}
+
+\begin{note}
+	A note on notation in the definition of S-polynomials, but which will be used elsewhere
+	\begin{itemize}
+		\item ${LCM}$ is the least common multiple
+		\item ${M(p)}$ is the leading monomial of polynomial ${p}$, with the monomial ordering considered
+	\end{itemize}
+\end{note}
+
+The S-polynomial is essentially an application of the reduction process; the result is the difference between the reduction of the LCM modulo ${p}$ and modulo ${q}$.  In the Buchberger algorithm, the S-polynomial is the tool by which it can be determined if the polynomial is reducible over the set and therefore whether or not to add it to the existing set.  To demonstrate the calculation process, an example of an S-polynomial derivation is included below.
+
+\begin{example}\label{S-polynomial}
+	Consider polynomials ${p, \, q \in }$ $\mathbb{Q}$, given by 
+	\begin{equation*}
+		p = 3x^2y - y^3 - 4 \qquad ; \qquad q = xy^3 + x^2 -9
+	\end{equation*}
+	under monomial ordering ${tdeg(x, y}$ (i.e. degree based ordering ${x > y}$)
+	
+	To find the S-polynomial ${Spoly( p, q)}$, first the leading monomials with respect to ${tdeg( x, y)}$ must be computed, in addition to their LCM.
+	\begin{eqnarray*}
+		M( p) &=& 3x^2y\\
+		M( q) &=& xy^3\\\\
+		LCM( M( p), M( q)) &=& 3x^2y^3
+	\end{eqnarray*}
+	
+	So then, to calculate the S-polynomial
+	\begin{eqnarray*}
+		Spoly( p, q) &=& 3x^2y^3(\frac{3x^2y - y^3 - 4}{3x^2y} - \frac{xy^3 + x^2 -9}{xy^3})
+					 &=& y^2(3x^2y - y^3 - 4) - 3x(xy^3 + x^2 -9)
+					 &=& -y^5 - 3x^3 - 4y^2 + 27x 
+	\end{eqnarray*}
+\end{example}
+
+At this point all the necessary constructs for applying Buchberger's algorithm are present.  To demonstrate how this process is applied, an example walkthrough of the algorithm's execution is included for clarity.  Recall that as input, the algorithm requires a generating set for the polynomial ideal, and a monomial ordering specified.
+
+EXAMPLE FROM NOTES
+
+\subsubsection{F4 Algorithm}
+
+Since the introduction of Groebner bases by Buchberger in 1965, there have been various improvements on his algorithm for basis computation.  Notably, there is the F4 algorithm, developed by Faugere.  There are F4 implementations in the Maple Groebner package (maplef4 algorithm, and efficient C implementation in the FGB algorithm).
+
+This is a more efficient ..... 
 
 
 \section{Chinese Remainder Algorithm}
