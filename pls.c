@@ -7,9 +7,7 @@
 
 /*
 
-derp2 := define_external( 'derp2', 'x'\                                      
-> ::ARRAY(1..i, 1..j, integer[4]), 'num'\                                      
-> ::(integer[4]), RETURN::(integer[4]), LIB="plstolib.so.1.0.1");
+derp2 := define_external( 'derp2', 'x'::ARRAY(1..i, 1..j, integer[4]), 'num'::(integer[4]), RETURN::ARRAY(integer[4]), LIB="plstolib.so.1.0.1");
 
 
 gcc -std=c99 -fPIC -g -c -Wall pls.c -lgmp
@@ -29,7 +27,7 @@ int derpyMethod( int x) {
 	return y;
 }
 
-void convertIntToMpz_md( int* theInt, mpz_t addTo, int offset) {
+int convertIntToMpz_md( int* theInt, mpz_t addTo, int offset) {
 	// from maple, ints are passed in in order of base 10 conversion
 
 	int i = 0;
@@ -47,58 +45,26 @@ void convertIntToMpz_md( int* theInt, mpz_t addTo, int offset) {
 	}
 
 	mpz_clear( temp);
+	return i + 1;
 }
 
-int derp2( int* x, int num) {
-	int i = 0;
-	int sum = 0;
-	while( i < num*2) {
-		sum += x[ i];
-		//printf( "\nomg%d", num);
-		++ i;
-	}
-
+// this method returns a "string" to maple, of a specified row in the matrix
+char* derp2( int* x, int num) {
+	
 	int offset = num;
 
 	mpz_t check;
 	mpz_init( check);
 	convertIntToMpz_md( x, check, offset);
 
+	size_t sz = mpz_sizeinbase (check, 10);
+	char *str = (char*)malloc( sz * sizeof(char)); 
+	mpz_get_str ( str, 10, check); // 10 is the base
 
+	mpz_clear( check);
 
-	// result = (int**)malloc( 4*sizeof(int*));
-	// *(*result[ 0]) = 1;
-	// *(*result[ 1]) = 2;
-	// *(*result[ 2]) = 3;
-	// *(*result[ 3]) = 4;
-
-	return sum;
+	return str;
 }
-
-void convertIntToMpz( int* theInt, mpz_t addTo) {
-	// from maple, ints are passed in in order of base 10 conversion
-
-	int i = 0;
-	int cur10 = 1;
-	mpz_t temp;
-	mpz_init( temp);
-	while( theInt[ i] != -1) {
-		mpz_set_ui( temp, theInt[ i]);
-		mpz_mul_ui( temp, temp, cur10);
-
-		mpz_add( addTo, addTo, temp);
-
-		cur10 *= 10;
-		++ i;
-	}
-
-	mpz_clear( temp);
-
-
-	// that was so inefficient
-	// i think, instead, converting to a string and then using set_str might be faster?
-}
-
 
 
 void compute_cra_int( mpz_t mis[], mpz_t modImgsNew[], mpz_t modImgsOld[], int coeffIndex) {
@@ -247,9 +213,11 @@ int countDigs( char *toCount) {
 */
 
 
-void cra_int( int oldPrime[], int newPrime, int** oldCoeffs, int newCoeffs[], int numCoeffs, int **returnVals) {
+char* cra_int( int* oldPrime, int newPrime, int* oldCoeffs, int* newCoeffs, int numCoeffs) {
 
 	//void cra_int( mpz_ptr mis, int misSize, mpz_ptr modImgs, int modImgsSize) {
+
+	// compute_cra_int( mpz_t mis[], mpz_t modImgsNew[], mpz_t modImgsOld[], int coeffIndex) {
 	
 	int misSize = 2;
 	//int modImgsSize = 6;
@@ -261,51 +229,55 @@ void cra_int( int oldPrime[], int newPrime, int** oldCoeffs, int newCoeffs[], in
 	int j;
 	for( j = 0; j < misSize; ++ j) {
 		mpz_init( mis[ j]);
-		//mpz_init( modImgs[ j]);
-
-		//mpz_set_ui( mis[ j], misInts[ j]);
-		//mpz_set_ui( modImgs[ j], modImgsInts[ j]);
 	}
 
 	mpz_set_ui( mis[ 0], newPrime);
-	convertIntToMpz( oldPrime, mis[ 1]);
+	convertIntToMpz_md( oldPrime, mis[ 1], 0);
+
+	int totalSize = 0;
+
+	char** theStrings = (char**)malloc( numCoeffs*sizeof(char*));
+
+	int currentOffset = 0;
 
 	for( j = 0; j < numCoeffs; ++ j) {
 		mpz_init( modImgsOld[ j]);
 		mpz_init( modImgsNew[ j]);
-		convertIntToMpz( oldCoeffs[ j], modImgsOld[ j]);
+		currentOffset = convertIntToMpz_md( oldCoeffs, modImgsOld[ j], currentOffset);
 		mpz_set_ui( modImgsNew[ j], newCoeffs[ j]);
 
 		// now, do the CRA for each pair of coeffs
 		// use modImgsOld at the particular coeff to solve
 
 		compute_cra_int( mis, modImgsNew, modImgsOld, j);
+
+		int curSize = mpz_sizeinbase (modImgsOld[ j], 10); 
+		theStrings[ j] = (char*)malloc( curSize*sizeof( char));
+		mpz_get_str ( theStrings[ j], 10, modImgsOld [j]); // 10 is the base
 	}
 
 
 	// return set
 	// how to return set...
-	// first, get array of strings for each value
+	
+	// return as the most obscene string you've ever had the misfortune of seeing in your life
 
-	//int *returnVals[ numCoeffs];
-
-	returnVals = (int**) malloc( numCoeffs * sizeof(int*));
-
+	char* obsceneString = (char*)malloc( (totalSize + numCoeffs)*sizeof( char)); 
+	int k = 0;
 	for( j = 0; j < numCoeffs; ++ j) {
-
-		char *tempString = NULL;
-
-		mpz_get_str( tempString, 10, modImgsOld[ j]);      // 10 is base 10
-
-		returnVals[ j] = (int*)malloc(countDigs(tempString) * sizeof(int));
-
-		int i = 0;
-		while( tempString[ i] != '\0') {
-			returnVals[ j][ i] = (int) (tempString[ i] - '0');
-			++ i;
+		int h = 0;
+		while ( theStrings[ j][ h] != 0) {
+			obsceneString[ k] = theStrings[ j][ h];
+			++ h;
+			++ k;
 		}
-
+		obsceneString[ k] = ';';
+		++ k;
 	}
+	obsceneString[ k] = ';';
+	++ k;
+	obsceneString[ k] = '\0';
+
 
 	// clear mpz mem
 	for( j = 0; j < numCoeffs; ++ j) {
@@ -317,6 +289,8 @@ void cra_int( int oldPrime[], int newPrime, int** oldCoeffs, int newCoeffs[], in
 	mpz_clear( mis[ 1]);
 
 	//return returnVals;
+
+	return obsceneString;
 
 
 
