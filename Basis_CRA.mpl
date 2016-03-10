@@ -25,16 +25,24 @@ end;
 # acMonom is a hack until Hilbert lucky is coded in (hopefully soon!!! :P )
 
 Basis_CRA := proc( B, ord, primes, theAlgoType)
-	local curBasis, newBasis, oldBasis, curPrime, i, isDone, isGoodPrime, informalPrimes, primeTime, theMonoms, newPrime, tempBasis, lastTempBasis;
+	local curBasis, newBasis, oldBasis, curPrime, i, isDone, isGoodPrime, informalPrimes, primeTime, theMonoms, newPrime, tempBasis, lastTempBasis, modBasisTime, craReconTime, fareyReconTime, tempTime;
 	
 	# one thing to check is if the built-in groebner basis does mod or mods for characteristic
 	
 	# incrementally run the basis for each prime, cra the results as they come in
 
+
+
+
+	# Did you profile the CRA code to determine the relative proportions of modular basis computation, CRA reconstruction, Farey reconstruction? 
+
+
 	informalPrimes := [ op(primes)];
 	
 	curPrime := informalPrimes[1];
+	modBasisTime := time();
 	curBasis := symmMod( Basis( B, ord, method=theAlgoType, characteristic=informalPrimes[1]), curPrime);
+	modBasisTime := time() - modBasisTime;
 	theMonoms := LeadingMonomial( curBasis, ord);
 
 	#print( theMonoms);
@@ -50,7 +58,9 @@ Basis_CRA := proc( B, ord, primes, theAlgoType)
 	curPrime := informalPrimes[1];
 
 	lastTempBasis := [];
+	fareyReconTime := time();
 	tempBasis, isGoodPrime := basisrecon( curPrime, curBasis);
+	fareyReconTime := time() - fareyReconTime;
 
 	if not isGoodPrime then
 		tempBasis := [];
@@ -68,19 +78,26 @@ Basis_CRA := proc( B, ord, primes, theAlgoType)
 		
 		newPrime := prevprime( informalPrimes[ nops( informalPrimes)]);
 	
+		tempTime := time();
 		newBasis := symmMod (Basis( B, ord, method=theAlgoType, characteristic=newPrime), newPrime);
+		modBasisTime := modBasisTime + (time() - tempTime);
 		theMonoms := LeadingMonomial( newBasis, ord);
 
 
 		#if theMonoms = (acMonoms mod newPrime) then
 
 			# now, combine curBasis and newBasis via cra
-			print( "OMFG");
+			#print( "OMFG");
+			craReconTime := time();
 			curBasis := CRA_sets( curBasis, curPrime, newBasis, newPrime, ord); 
-			print( "WHAT");
-			break;
+			craReconTime := time() - craReconTime;
+			#print( "WHAT");
+			#break;
+
 			lastTempBasis := tempBasis;
+			tempTime := time();
 			tempBasis, isGoodPrime := basisrecon( curPrime, curBasis);
+			fareyReconTime := fareyReconTime + (time() - tempTime);
 
 			if not isGoodPrime then
 				tempBasis := [];
@@ -99,7 +116,7 @@ Basis_CRA := proc( B, ord, primes, theAlgoType)
 		
 	end do;
 
-	return tempBasis, primeTime, i;
+	return tempBasis, primeTime, i, modBasisTime, fareyReconTime, craReconTime;
 	
 end;
 

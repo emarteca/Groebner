@@ -1,5 +1,5 @@
 exNum := 1:
-theMethod := 1:  #if 1 maple, 2 CRA, 3 Hensel
+theMethod := 2:  #if 1 maple, 2 CRA, 3 Hensel
 theAlgoType := buchberger: # could also be maplef4
 
 with( Groebner):
@@ -65,7 +65,7 @@ primes := [ prevprime( 2^16 - 1)]:
 		#acMonoms := LeadingMonomial( sol, totOrds[ exNum]):
 
 		tt := time():
-		sol, primeTime, numImgs := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, theAlgoType);
+		sol, primeTime, numImgs, modBasisTime, fareyReconTime, craReconTime := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, theAlgoType);
 		print( sol);
 		procTime := time():
 		tt := procTime - tt:
@@ -75,8 +75,12 @@ primes := [ prevprime( 2^16 - 1)]:
 		print( "Basis with CRA");
 		print( "\nTime: ");
 		print( tt);
-		print( "\nPrime Time: ");
-		print( primeTime);
+		print( "\nmodBasisTime: ");
+		print( modBasisTime);
+		print( "\nfareyReconTime: ");
+		print( fareyReconTime);
+		print( "\craReconTime: ");
+		print( craReconTime);
 		print( "\nNum images: ");
 		print( numImgs);
 		print( "\nSolution");
