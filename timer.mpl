@@ -1,5 +1,5 @@
-exNum := 4:
-theMethod := 2:  #if 1 maple, 2 CRA, 3 Hensel
+exNum := 1:
+theMethod := 1:  #if 1 maple, 2 CRA, 3 Hensel
 theAlgoType := buchberger: # could also be maplef4
 
 with( Groebner):
@@ -11,7 +11,7 @@ read( "pauerLucky.mpl"):
 read( "Basis_CRA.mpl"):
 read( "Basis_Hensel.mpl");
 
-read( "plsExamples.mpl"):
+read( "allTheExamples.mpl"):
 
 read( "SoUseful.mpl"):
 

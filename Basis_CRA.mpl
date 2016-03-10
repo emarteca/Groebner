@@ -114,11 +114,11 @@ CRA_sets := proc( curBasis, curPrime, newBasis, newPrime, ord)
 	
 	#`mod` := mods;
 
-	i := 2;
+	i := 1;
 	while ( i <= nops( curBasis)) do
 		liftBasis := [ op( liftBasis), CRA_int( [ curPrime, newPrime], [ curBasis[ i], newBasis[ i]])];
 
-
+(*
 
 		# int oldPrime[], int newPrime, int** oldCoeffs, int newCoeffs[], int numCoeffs, int **returnVals
 		
@@ -168,10 +168,10 @@ CRA_sets := proc( curBasis, curPrime, newBasis, newPrime, ord)
 		print( cLiftBasis);
 
 
-
+*)
 		
 		i := i + 1;
-		break;
+		#break;
 	end do;
 
 	return liftBasis;
