@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <malloc.h>
 
-
+typedef enum { false, true } bool;
 
 /*
 
@@ -27,15 +27,17 @@ int derpyMethod( int x) {
 	return y;
 }
 
-int convertIntToMpz_md( int* theInt, mpz_t addTo, int offset) {
+int convertIntToMpz_md( int* theInt, mpz_t addTo, int offset, bool isLastCoeff) {
 	// from maple, ints are passed in in order of base 10 conversion
 
-	int i = 0;
+	int i = offset;
 	int cur10 = 1;
 	mpz_t temp;
 	mpz_init( temp);
+	if ( theInt[ i] == -1)
+		++ i;
 	while( theInt[ i] != -1) {
-		mpz_set_ui( temp, theInt[ i + offset]);
+		mpz_set_ui( temp, theInt[ i]);
 		mpz_mul_ui( temp, temp, cur10);
 
 		mpz_add( addTo, addTo, temp);
@@ -43,9 +45,15 @@ int convertIntToMpz_md( int* theInt, mpz_t addTo, int offset) {
 		cur10 *= 10;
 		++ i;
 	}
-
+	++ i;
+	if ( !isLastCoeff) {
+		// now get rid of trailing zeroes (until the -1 at the start of the next number)
+		while ( theInt[ i] != -1)
+			++ i;
+	}
+	
 	mpz_clear( temp);
-	return i + 1;
+	return i;
 }
 
 // this method returns a "string" to maple, of a specified row in the matrix
@@ -55,7 +63,7 @@ char* derp2( int* x, int num) {
 
 	mpz_t check;
 	mpz_init( check);
-	convertIntToMpz_md( x, check, offset);
+	convertIntToMpz_md( x, check, offset, true);
 
 	size_t sz = mpz_sizeinbase (check, 10);
 	char *str = (char*)malloc( sz * sizeof(char)); 
@@ -117,6 +125,7 @@ void compute_cra_int( mpz_t mis[], mpz_t modImgsNew[], mpz_t modImgsOld[], int c
 
 	}
 
+
 	// now we need to find the v's (which are going to be polynomials now)
 
 	mpz_t vs[ misSize];
@@ -135,15 +144,21 @@ void compute_cra_int( mpz_t mis[], mpz_t modImgsNew[], mpz_t modImgsOld[], int c
 
 		mpz_init( vs[ i]);
 
+		// vs := [ op( vs), mods((modImgs[ i] - curTerm) * gammas[ i], mis[ i])];
+
 		mpz_sub( temp, modImgs[ i], curTerm);
 		mpz_mul( temp, temp, gammas[ i]);
 		symMod( temp, mis[ i]);
 
 		mpz_set( vs[ i], temp);
-		//mpz_clear( temp);
 
-		mpz_mul( temp, curProds[ i], vs[ i]);
-		mpz_add( curTerm, curTerm, temp);
+		// curTerm := curTerm + curProds[ i]*vs[ i];
+
+		mpz_t temp2;
+		mpz_init( temp2);
+
+		mpz_mul( temp2, curProds[ i], vs[ i]);
+		mpz_add( curTerm, curTerm, temp2);
 
 		mpz_clear( temp);
 	}
@@ -232,7 +247,7 @@ char* cra_int( int* oldPrime, int newPrime, int* oldCoeffs, int* newCoeffs, int 
 	}
 
 	mpz_set_ui( mis[ 0], newPrime);
-	convertIntToMpz_md( oldPrime, mis[ 1], 0);
+	convertIntToMpz_md( oldPrime, mis[ 1], 0, true);  // works fine here
 
 	int totalSize = 0;
 
@@ -243,8 +258,15 @@ char* cra_int( int* oldPrime, int newPrime, int* oldCoeffs, int* newCoeffs, int 
 	for( j = 0; j < numCoeffs; ++ j) {
 		mpz_init( modImgsOld[ j]);
 		mpz_init( modImgsNew[ j]);
-		currentOffset = convertIntToMpz_md( oldCoeffs, modImgsOld[ j], currentOffset);
+		currentOffset = convertIntToMpz_md( oldCoeffs, modImgsOld[ j], currentOffset, ( j == numCoeffs - 1));    // this isn't reading in the right input
+
+		//gmp_printf( "\nZA OLD COEFF: %Zd\t", modImgsOld[ j]);
+
 		mpz_set_ui( modImgsNew[ j], newCoeffs[ j]);
+		//gmp_printf( "ZA NEW COEFF: %Zd", modImgsNew[ j]);
+
+		symMod( modImgsOld[ j], mis[ 1]);
+		symMod( modImgsNew[ j], mis[ 0]);
 
 		// now, do the CRA for each pair of coeffs
 		// use modImgsOld at the particular coeff to solve

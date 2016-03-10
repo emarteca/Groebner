@@ -470,39 +470,39 @@ The basic idea is to start with a basis (i.e. a generating set) for the ideal, a
 One new concept which the algorithm requires is the computation of \textbf{S-polynomials}.  Computation of S-polynomials is done through the following formula: 
 
 \begin{equation*}
-	Spoly( p, q) = LCM(M(p), M(q)) \left( \frac{p}{M(p)} - \frac{q}{M(q)}\right)
+  Spoly( p, q) = LCM(M(p), M(q)) \left( \frac{p}{M(p)} - \frac{q}{M(q)}\right)
 \end{equation*}
 
 \begin{note}
-	A note on notation in the definition of S-polynomials, but which will be used elsewhere
-	\begin{itemize}
-		\item ${LCM}$ is the least common multiple
-		\item ${M(p)}$ is the leading monomial of polynomial ${p}$, with the monomial ordering considered
-	\end{itemize}
+  A note on notation in the definition of S-polynomials, but which will be used elsewhere
+  \begin{itemize}
+    \item ${LCM}$ is the least common multiple
+    \item ${M(p)}$ is the leading monomial of polynomial ${p}$, with the monomial ordering considered
+  \end{itemize}
 \end{note}
 
 The S-polynomial is essentially an application of the reduction process; the result is the difference between the reduction of the LCM modulo ${p}$ and modulo ${q}$.  In the Buchberger algorithm, the S-polynomial is the tool by which it can be determined if the polynomial is reducible over the set and therefore whether or not to add it to the existing set.  To demonstrate the calculation process, an example of an S-polynomial derivation is included below.
 
 \begin{example}\label{S-polynomial}
-	Consider polynomials ${p, \, q \in }$ $\mathbb{Q}$, given by 
-	\begin{equation*}
-		p = 3x^2y - y^3 - 4 \qquad ; \qquad q = xy^3 + x^2 -9
-	\end{equation*}
-	under monomial ordering ${tdeg(x, y}$ (i.e. degree based ordering ${x > y}$)
-	
-	To find the S-polynomial ${Spoly( p, q)}$, first the leading monomials with respect to ${tdeg( x, y)}$ must be computed, in addition to their LCM.
-	\begin{eqnarray*}
-		M( p) &=& 3x^2y\\
-		M( q) &=& xy^3\\\\
-		LCM( M( p), M( q)) &=& 3x^2y^3
-	\end{eqnarray*}
-	
-	So then, to calculate the S-polynomial
-	\begin{eqnarray*}
-		Spoly( p, q) &=& 3x^2y^3(\frac{3x^2y - y^3 - 4}{3x^2y} - \frac{xy^3 + x^2 -9}{xy^3})
-					 &=& y^2(3x^2y - y^3 - 4) - 3x(xy^3 + x^2 -9)
-					 &=& -y^5 - 3x^3 - 4y^2 + 27x 
-	\end{eqnarray*}
+  Consider polynomials ${p, \, q \in }$ $\mathbb{Q}$, given by 
+  \begin{equation*}
+    p = 3x^2y - y^3 - 4 \qquad ; \qquad q = xy^3 + x^2 -9
+  \end{equation*}
+  under monomial ordering ${tdeg(x, y}$ (i.e. degree based ordering ${x > y}$)
+  
+  To find the S-polynomial ${Spoly( p, q)}$, first the leading monomials with respect to ${tdeg( x, y)}$ must be computed, in addition to their LCM.
+  \begin{eqnarray*}
+    M( p) &=& 3x^2y\\
+    M( q) &=& xy^3\\\\
+    LCM( M( p), M( q)) &=& 3x^2y^3
+  \end{eqnarray*}
+  
+  So then, to calculate the S-polynomial
+  \begin{eqnarray*}
+    Spoly( p, q) &=& 3x^2y^3(\frac{3x^2y - y^3 - 4}{3x^2y} - \frac{xy^3 + x^2 -9}{xy^3})\\
+           &=& y^2(3x^2y - y^3 - 4) - 3x(xy^3 + x^2 -9)\\
+           &=& -y^5 - 3x^3 - 4y^2 + 27x 
+  \end{eqnarray*}
 \end{example}
 
 At this point all the necessary constructs for applying Buchberger's algorithm are present.  To demonstrate how this process is applied, an example walkthrough of the algorithm's execution is included for clarity.  Recall that as input, the algorithm requires a generating set for the polynomial ideal, and a monomial ordering specified.
@@ -516,7 +516,12 @@ Since the introduction of Groebner bases by Buchberger in 1965, there have been 
 This is a more efficient ..... 
 
 
+Regardless of the improvements in speed of these algorithms, one problem which they all face is intermediate expression swell, as discussed above.  Groebner basis computations, depending on the intial ideal, can give rise to unmanagable expression swell.  This cannot be avoided by using classic iterative algorithms; however, these are the only algorithms currently available.  Instead of inventing an entirely new algorithmic approach, which may not even be possible, another potential approach would be to use the regular algorithms over prime fields, and then reconstruct the solution to the original space via a homomorphism method.
+
+
 \section{Chinese Remainder Algorithm}
+
+
 
 
 \section{Hensel's Algorithm}

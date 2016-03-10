@@ -1,5 +1,5 @@
-exNum := 1:
-theMethod := 1:  #if 1 maple, 2 CRA, 3 Hensel
+exNum := 4:
+theMethod := 2:  #if 1 maple, 2 CRA, 3 Hensel
 theAlgoType := buchberger: # could also be maplef4
 
 with( Groebner):
@@ -11,7 +11,14 @@ read( "pauerLucky.mpl"):
 read( "Basis_CRA.mpl"):
 read( "Basis_Hensel.mpl");
 
-read( "allTheExamples.mpl"):
+read( "plsExamples.mpl"):
+
+read( "SoUseful.mpl"):
+
+# cra_int( int* oldPrime, int newPrime, int* oldCoeffs, int* newCoeffs, int numCoeffs)
+
+CRA_pls := define_external( 'cra_int', 'oldPrime'::ARRAY(integer[4]), 'newPrime'::(integer[8]), 'oldCoeffs'::(ARRAY(1..i, 1..j, integer[4])), 'newCoeffs'::ARRAY(integer[4]), 'numCoeffs'::(integer[4]), RETURN::(string), LIB="plstolib.so.1.0.1"):
+
 
 # so it looks like command line args aren't a thing in maple?
 # so, i'll just make a bash script run the maple script which is secretly a bash script
@@ -54,10 +61,12 @@ primes := [ prevprime( 2^16 - 1)]:
 	elif theMethod = 2 then
 
 		#sol := Basis( totBs[ exNum], totOrds[ exNum]):
+		#print( sol);
 		#acMonoms := LeadingMonomial( sol, totOrds[ exNum]):
 
 		tt := time():
 		sol, primeTime, numImgs := Basis_CRA( totBs[ exNum], totOrds[ exNum], primes, theAlgoType);
+		print( sol);
 		procTime := time():
 		tt := procTime - tt:
 		primeTime := tt - (procTime - primeTime):
