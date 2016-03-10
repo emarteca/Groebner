@@ -62,6 +62,8 @@ Basis_CRA := proc( B, ord, primes, theAlgoType)
 	tempBasis, isGoodPrime := basisrecon( curPrime, curBasis);
 	fareyReconTime := time() - fareyReconTime;
 
+	craReconTime := 0;
+
 	if not isGoodPrime then
 		tempBasis := [];
 	fi;
@@ -88,9 +90,9 @@ Basis_CRA := proc( B, ord, primes, theAlgoType)
 
 			# now, combine curBasis and newBasis via cra
 			#print( "OMFG");
-			craReconTime := time();
+			tempTime := time();
 			curBasis := CRA_sets( curBasis, curPrime, newBasis, newPrime, ord); 
-			craReconTime := time() - craReconTime;
+			craReconTime := craReconTime + (time() - tempTime);
 			#print( "WHAT");
 			#break;
 
@@ -184,8 +186,8 @@ CRA_sets := proc( curBasis, curPrime, newBasis, newPrime, ord)
 		print( cat( "PLS", liftBasis));
 		print( cLiftBasis);
 
-
 *)
+
 		
 		i := i + 1;
 		#break;

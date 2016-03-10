@@ -295,6 +295,8 @@ char* cra_int( int* oldPrime, int newPrime, int* oldCoeffs, int* newCoeffs, int 
 		}
 		obsceneString[ k] = ';';
 		++ k;
+
+		free( theStrings[ j]);
 	}
 	obsceneString[ k] = ';';
 	++ k;
@@ -309,6 +311,9 @@ char* cra_int( int* oldPrime, int newPrime, int* oldCoeffs, int* newCoeffs, int 
 
 	mpz_clear( mis[ 0]);
 	mpz_clear( mis[ 1]);
+
+	free( theStrings);
+
 
 	//return returnVals;
 
@@ -368,6 +373,8 @@ void symMod( mpz_t value, const mpz_t modBy) {
 			//gmp_printf("N = %Zd\n", value);
 		}
 	}
+
+	mpz_clear( checkValue);
 }
 
 // mpz_t convertToMpz( char)
@@ -395,6 +402,7 @@ int main() {
 	}
 
 	gmp_printf("pls = %Zd\n", pls);
+	mpz_clear( pls);
 
 
 	return 0;
