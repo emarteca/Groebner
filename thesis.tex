@@ -509,7 +509,7 @@ The S-polynomial is essentially an application of the reduction process; the res
   
   So then, to calculate the S-polynomial
   \begin{eqnarray*}
-    Spoly( p, q) &=& 3x^2y^3(\frac{3x^2y - y^3 - 4}{3x^2y} - \frac{xy^3 + x^2 -9}{xy^3})\\
+    Spoly( p, q) &=& 3x^2y^3\left(\frac{3x^2y - y^3 - 4}{3x^2y} - \frac{xy^3 + x^2 -9}{xy^3}\right)\\
            &=& y^2(3x^2y - y^3 - 4) - 3x(xy^3 + x^2 -9)\\
            &=& -y^5 - 3x^3 - 4y^2 + 27x 
   \end{eqnarray*}
@@ -526,7 +526,7 @@ Since the introduction of Groebner bases by Buchberger in 1965, there have been 
 This is a more efficient ..... 
 
 
-Regardless of the improvements in speed of these algorithms, one problem which they all face is intermediate expression swell, as discussed above.  Groebner basis computations, depending on the intial ideal, can give rise to unmanagable expression swell.  This cannot be avoided by using classic iterative algorithms; however, these are the only algorithms currently available.  Instead of inventing an entirely new algorithmic approach, which may not even be possible, another potential approach would be to use the regular algorithms over prime fields, and then reconstruct the solution to the original space via a modular homomorphism method.
+Regardless of the improvements in speed of these algorithms, one problem which they all face is intermediate expression swell, as discussed above.  Groebner basis computations, depending on the initial ideal, can give rise to unmanagable expression swell.  This cannot be avoided by using classic iterative algorithms; however, these are the only algorithms currently available.  Instead of inventing an entirely new algorithmic approach, which may not even be possible, another potential approach would be to use the regular algorithms over prime fields, and then reconstruct the solution to the original space via a modular homomorphism method.
 
 To discuss homomorphism methods, first the concept of a ring homomorphism must be introduced.
 
@@ -581,7 +581,32 @@ Before the modular reconstruction algorithms are discussed in detail, a new fact
 
 Post processing in modular polynomial space requires reconstruction back to ${\mathbb{Z}[x_1, x_2, \ldots, x_n]}$, which is done through either the Chinese Remainder Algorithm (henceforth the CRA) or Hensel's Algorithm, which will be described below.  Subsequent reconstruction from the integers to the rationals is done using an algorithm similar to Farey rational reconstruction, which is also described below (WHICH PAPER).  This chapter also discusses a new difficulty which arises when attempting to reconstruct - the idea of \textbf{lucky primes}. 
 
-\section{Chinese Remainder Algorithm} 
+\section{Chinese Remainder Theorem} 
+
+The Chinese Remainder Algorithm (CRA) is a method for reconstruction of an integer (or set of integers); it requires a set of modular images over various primes, which, combined provide a mixed-radix representation of the integer being reconstructed.  
+
+\subsection{Mixed Radix Representation}
+
+In general, when numbers are considered as representations of a sum of values, this is in terms of a set of multiples of successive powers of a particular base.  The general definition is
+
+\begin{defn}\label{Basic defn}
+  For a value ${x}$ in base ${b}$,
+  \begin{equation*}   x = \sum\limits_{i = 0}^{n}{a_ib^i}     \end{equation*}
+  For ${\{a_i\}}$ a list of coefficients of ${x}$ also in base ${b}$
+\end{defn}
+
+This representation is \textbf{single-radix}; the radix being the base in which the number is being represented.  \textbf{Mixed-radix representation} is a similar idea, however instead of a linear combination of successive powers of a particular base, it is built from a linear combination of products of successive multiple "bases" - there is not a consistent base for all numerical positions.  The idea is similar in that the sequence of terms in the sum are in the base of a multiple of the previous base, however the factor of this multiple is not constant.  
+
+One classic demonstrative example is in representing time: to tell the day, this is a sum of seconds and minutes and hours and days, each of which is a different successive radix.  There is no consistent base across all these terms, however each base is a multiple of the previous one (60 seconds in a minute, 60 minutes in an hour, 24 hours in a day, 7 days in a week).     
+
+The CRA uses the various modular images provided to iteratively construct a mixed-radix representation of the original value, in order to perform the reconstruction.
+
+
+\subsection{Chinese Remainder Algorithm} 
+
+The Chinese Remainder Theorem (CRT) made its earliest appearance in the 3rd century, in the book \textit{Sunzi's Mathematical Classic}, by Sun Tzu, a Chinese mathematician.  The description of the solution to algorithmic solution to this problem was then described in the 6th century by another mathematician, Aryabhata.  Gauss also described the CRT, when he introduced the concept of modular congruences, in his 1801 book \textit{Disquisitiones Arithmeticae}.  (this is cited from elwiki, but I'm sure it's in another, more socially acceptable source)
+
+The CRT 
 
 \section{Hensel's Algorithm}
 
@@ -593,14 +618,42 @@ The original basis in these algorithms is assumed to be the polynomial extended 
 
 Naively, it would seem that using the smaller primes would make this process more efficient - smaller primes would mean a smaller upper bound on the coefficients, and therefore a more computationally efficient basis computation.  However, not every prime is valid for use in the reconstruction.  This can be seen directly in the rational reconstruction algorithm; some primes may return an invalid fraction if their magnitude is insufficient compared to the other inputs to the function.  
 
-The CRA and Hensel's algorithm also have the potential for "bad" primes - this would be primes for which algebraic information is lost during processing in this modular space.  If the prime is 
+The CRA and Hensel's algorithm also have the potential for "bad" primes - this would be primes for which algebraic information is lost during processing in this modular space.  If during a computation there is a value for which this prime is a divisor, then this term would vanish when the basis is taken modulo the prime - then, this term can no longer be reconstructed, as it will no longer be present in any of later computations.
 
-Formally, 
+In Arnold's paper, she defines lucky primes as primes for which "we do not lose too much algebraic information" about ideal ${I \subseteq \mathbb{Q}[X]}$ when considering the ideal modulo prime p, ${I_p \subseteq \mathbb{Z}_p[X]}$.  For the modular lifting via CRA/Hensel, the required algebraic information is the set of leading terms of Groebner basis ${G}$ for ${I}$.
+
+Formally (by Arnold):
 \begin{defn}\label{Lucky Primes}
-
+  A prime integer ${p}$ is a \textbf{lucky prime} for ideal ${I \subseteq \mathbb{Q}[X]}$ ${\iff}$ ${Lp(G) = Lp(G_p)}$
 \end{defn}
 
+\begin{note}
+  A note on notation, with respect to the component parts of a polynomial.  Here, Arnold's notation will be adopted; note that in several other papers referenced the notation may not match precisely, and some translation is necessary to determine which of their notation is equivalent to which of Arnold's notation.  Here, Arnold's notation will be used throughout for consistency.  
+
+  In this case, the Groebner basis is considered over Noetherian ring ${R = \mathbb{Q}[X]}$ 
+  \begin{itemize}
+    \item ${lp(f)}$ is the leading power product of polynomial ${f \in R}$
+    \item ${lc(f)}$ is the leading coefficient of polynomial ${f \in R}$ (i.e. the coefficient of the leading power product)
+    \item ${lt(f)}$ is the leading term of polynomial ${f \in R}$.  This is can be computed as ${lt(f) = lc(f)lp(f)}$ 
+    \item ${Lp(f) = \{lp(f) \mid f \in R\}}$ is the set of leading power products of ${R}$
+    \item ${Lc(f) = \{lc(f) \mid f \in R\}}$ is the set of leading coefficients of ${R}$
+    \item ${Lt(f) = \{lt(f) \mid f \in R\}}$ is the set of leading terms of ${R}$
+  \end{itemize}
+\end{note}
+
+Considering the definition of lucky primes as above, this relies on the Groebner basis having already been computed for ideal ${I}$.  This leads to some difficulties in using this definition to determine whether or not a prime is lucky for the actual computation - if the luckiness can only be determined post-processing with a comparison to the actual Groebner basis, this makes the luckiness checking fairly useless.  Instead, it would be convenient to be able to tell if a prime is lucky before performing the entire computation and checking if it results in a valid basis at the end.  
+
+There are two alternate, more applicable definitions of lucky primes which will be considered in this case.
+
 \subsection{Hilbert and Pauer}
+
+The first definition to be considered is as given by Pauer in his paper on prime luckiness applied to Groebner bases.  
+
+\begin{defn}\label{Pauer lucky}
+  A prime ${p}$ is \textbf{Pauer lucky} for ideal ${I}$ if it does not divide any leading coefficient of any polynomial in ${G}$ the reduced Groebner basis of ${I}$.
+\end{defn}
+
+However, again, this relies on the true Groebner basis having been previously computes, which essentially nullifies the algorithm.  
 
 
 \begin{appendices}
