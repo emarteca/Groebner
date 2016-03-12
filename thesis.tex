@@ -57,6 +57,16 @@
 \end{quote}%
 }
 
+\newcounter{theoremcounter}
+\newenvironment{theorem}{\begin{quote}%
+    \refstepcounter{theoremcounter}%
+  \textbf{Theorem \arabic{theoremcounter}}%
+  \quad
+}{%
+\end{quote}%
+}
+
+
 \usepackage[pdftex,letterpaper=true,pagebackref=false]{hyperref} 
 
 \usepackage[toc,page]{appendix}
@@ -516,15 +526,81 @@ Since the introduction of Groebner bases by Buchberger in 1965, there have been 
 This is a more efficient ..... 
 
 
-Regardless of the improvements in speed of these algorithms, one problem which they all face is intermediate expression swell, as discussed above.  Groebner basis computations, depending on the intial ideal, can give rise to unmanagable expression swell.  This cannot be avoided by using classic iterative algorithms; however, these are the only algorithms currently available.  Instead of inventing an entirely new algorithmic approach, which may not even be possible, another potential approach would be to use the regular algorithms over prime fields, and then reconstruct the solution to the original space via a homomorphism method.
+Regardless of the improvements in speed of these algorithms, one problem which they all face is intermediate expression swell, as discussed above.  Groebner basis computations, depending on the intial ideal, can give rise to unmanagable expression swell.  This cannot be avoided by using classic iterative algorithms; however, these are the only algorithms currently available.  Instead of inventing an entirely new algorithmic approach, which may not even be possible, another potential approach would be to use the regular algorithms over prime fields, and then reconstruct the solution to the original space via a modular homomorphism method.
 
+To discuss homomorphism methods, first the concept of a ring homomorphism must be introduced.
 
-\section{Chinese Remainder Algorithm}
+\begin{defn}\label{Homom}
+  A mapping $\theta$ from ring ${R}$ to ring ${R'}$ is a ring homomorphism if
+  \begin{itemize}
+    \item ${\theta(a + b) = \theta(a) + \theta(b) \; \forall \, a, \, b \, \in R}$ 
+    \item ${\theta(a * b) = \theta(a) * \theta(b) \; \forall \, a, \, b \, \in R}$ 
+    \item ${\theta(1) = 1}$
+  \end{itemize}
 
+  Note that this also implies that ${\theta(0) = 0}$ and ${\theta(-a) = -\theta(a)}$ 
+\end{defn}
 
+Homomorphic mappings between rings preserve ring operations.  If a mapping satisfies the properties listed above (the homomorphism properties), then it is labelled a homomorphism.
 
+Homomorphisms have many uses in algebra; in this particular case, the homomorphisms considered are a specific instance of ring homomorphisms: the \textbf{modular polynomial ring homomorphisms}.  A modular polynomial homomorphism is a mapping from a polynomial extension over the integers to a polynomial extension over the integers modulo a particular prime i.e. a modular field ${\mathbb{Z}_m}$ for a particular integer ${m}$.  Formally, this is defined as:
+
+\begin{defn}\label{Modular Homom}
+  A modular polynomial ring homomorphism is a homomorphism mapping
+  \begin{equation*}\phi_m : \mathbb{Z}[x_1, \ldots, x_n] \rightarrow \mathbb{Z}_m[x_1, \ldots, x_n]\end{equation*}\\ where \\
+  \begin{eqnarray*}
+  \phi_m(x_i) = x_i; \; 1 \leq i \leq v; \quad and \\
+  \phi_m(a) = a\mod m
+  \end{eqnarray*}
+  where ${a \mod m}$ is the remainder of ${\frac{a}{b}}$
+\end{defn}
+
+Modular homomorphisms can be used to simplify a problem.  For instance, for a situation in which large integers or rational numbers are required, the inputs could be projected to their homomorphic images in a simpler modular space, where the size of the integers is bound by the modular base i.e. ${m}$ for ${\mathbb{Z}_m}$.  This has various advantages over using the non-modular space:
+\begin{itemize}
+  \item The size of the values (coefficients in the extended ${\mathbb{Z}_m}$) have a known bound of ${m}$.  This means that the space necessary for each value can be specified in advance, which is an advantage when programming and using integers of a particular precision, to ensure that the values do not overflow the precision.
+  \item The values will always be integers.\\The advantages of this are two-fold.  Firstly, this means that there are no rationals to contend with; this means less GCD computations, as there will be no need to reduce fractions to lowest terms post computation.  Not having fractions also simplified the computations in general, and reduces the amount of space required as only one value will be stored, rather than separate integers for the numerator and denominator.  Secondly, multiplicative inverses over the modular integers are also modular integers; this means that all computations involving "division" now consists of integer multiplication, again removing the GCD computations previously required.  It also means that the coefficient space of the polynomials is a field, so there are multiplicative inverses for all coefficients, unlike polynomials over the integers.
+\end{itemize}
+
+Working over a modular space seems like an optimal solution - this removes intermediate expression swell entirely, and the computational cost in both time and memory can be more accurately predicted (as the size of the values is known, and so the amount of memory necessary can be predicted, as can the time necessary to perform computations with these values).  However, there is a downside to this method: the final basis must be given in the space it originated in - either the rationals or the integers extended by a set of variables.  However, working with modular homomorphisms over a modular space means that the final basis returned from the computation will also be over this modular space.  
+
+Working over a modular space means that the basis must be reconstructed back to the original space before the computation is complete.  There are various methods for reconstruction back from a modular space to an integer space; here the methods used are the Chinese Remainder Algorithm and Hensel's Algorithm.  Each of these has its particular points in regards to efficiency, and will be explained in detail below.  Post reconstruction, the basis will be represented in the integers extended by the polynomials; then, another reconstruction must be done to build the basis back to the initial space (the rational numbers extended by the polynomials).    
+
+DIAGRAM WOULD BE NICE HERE showing the relation between initial space and final space, and the reconstruction algorithms
+
+Before the modular reconstruction algorithms are discussed in detail, a new factor must be taken into account: there is a new problem associated with modular reconstructions.  Previously, working with the Groebner computation algorithms directly, there is no consideration for any external factors.  However, now the characteristics of a modular space must be considered.  In particular, the modular space must be a field; every element ${a}$ in the space (excluding the additive inverse, 0) must have a multiplicative inverse in the space i.e. a unique corresponding element ${a^{-1}}$ in the space such that ${a*a^{-1} = 1 = a^{-1}*a}$.  To ensure that this is the case, the positive integer ${m}$ in space ${\mathbb{Z}_m}$ must be a prime.
+
+\begin{note}
+  For the modular space ${\mathbb{Z}_m}$ to be a field, ${m}$ must be a prime.  One of the criteria for a space being a field is that there are no zero divisors i.e. 
+  \begin{equation*}  \forall a, b \in \mathbb{Z}_m,\; a*b = 0 \, \textrm{means that either} \, a = 0 \, \textrm{or} \, b = 0 \end{equation*}
+  However, if the modular space is over ${m}$ not a prime, then this means that ${m}$ must have factors other than the trivial factors 1 and ${m}$.  So then, this means that there are nontrivial ${a, b}$ such that ${m = a*b, \, a, b < m}$.   This implies that these ${a, b \in \mathbb{Z}_m}$, since ${a, b < m}$.  From this, it follows that 
+  \begin{equation*} a*b = m = 0 \mod m \end{equation*}
+  Since ${a, b}$ are both nonzero for ${m}$ nonzero, this means that there are zero divisors in ${\mathbb{Z}_m}$.  Therefore, ${\mathbb{Z}_m}$ is not a field for composite ${m}$.
+\end{note}
+
+\chapter{Modular Homomorphism Methods and Reconstruction}
+
+Post processing in modular polynomial space requires reconstruction back to ${\mathbb{Z}[x_1, x_2, \ldots, x_n]}$, which is done through either the Chinese Remainder Algorithm (henceforth the CRA) or Hensel's Algorithm, which will be described below.  Subsequent reconstruction from the integers to the rationals is done using an algorithm similar to Farey rational reconstruction, which is also described below (WHICH PAPER).  This chapter also discusses a new difficulty which arises when attempting to reconstruct - the idea of \textbf{lucky primes}. 
+
+\section{Chinese Remainder Algorithm} 
 
 \section{Hensel's Algorithm}
+
+\section{Rational Reconstruction}
+
+The original basis in these algorithms is assumed to be the polynomial extended rational numbers, ${\mathbb{Q}[x_1, x_2, \ldots, x_n]}$.  As such, postprocessing must be done on the output of the CRA/Hensel reconstruction to build the basis back to the polynomials over the rationals.  
+
+\section{Lucky Primes}
+
+Naively, it would seem that using the smaller primes would make this process more efficient - smaller primes would mean a smaller upper bound on the coefficients, and therefore a more computationally efficient basis computation.  However, not every prime is valid for use in the reconstruction.  This can be seen directly in the rational reconstruction algorithm; some primes may return an invalid fraction if their magnitude is insufficient compared to the other inputs to the function.  
+
+The CRA and Hensel's algorithm also have the potential for "bad" primes - this would be primes for which algebraic information is lost during processing in this modular space.  If the prime is 
+
+Formally, 
+\begin{defn}\label{Lucky Primes}
+
+\end{defn}
+
+\subsection{Hilbert and Pauer}
 
 
 \begin{appendices}
@@ -553,6 +629,10 @@ This contains definitions which are presumed known and not explicitly declared i
     \item whenever ${p = a \cdot b}$, for ${a, b \in D}$, then either ${a}$ or ${b}$ is a unit (but not both, since ${p}$ is not a unit)
   \end{itemize}
 \end{defn}
+
+\begin{theorem}\label{FTFGAG}
+
+\end{theorem}
 
 \end{appendices}
 
