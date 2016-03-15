@@ -133,7 +133,7 @@ fareyPrecheckPrime := proc( curPrime, curBasis)
 		curPolyCoeffs := coeffs( i);
 		for j from 1 to nops( [curPolyCoeffs]) do
 			N := curPolyCoeffs[ j];
-			if 2*N*N > curPrime then
+			if gcd( N, curPrime) <> 1 then
 				return false;
 			fi;
 		od;
