@@ -98,11 +98,11 @@ Basis_CRA := proc( B, ord, primes, theAlgoType)
 
 			lastTempBasis := tempBasis;
 			tempTime := time();
-			#isGoodPrime := fareyPrecheckPrime( curPrime, curBasis);
-			#tempBasis := [];
-			#if isGoodPrime then
+			isGoodPrime := fareyPrecheckPrime( curPrime, curBasis);
+			tempBasis := [];
+			if isGoodPrime then
 				tempBasis, isGoodPrime := basisrecon( curPrime, curBasis);
-			#end if;
+			end if;
 			fareyReconTime := fareyReconTime + (time() - tempTime);
 
 			if not isGoodPrime then
@@ -133,7 +133,7 @@ fareyPrecheckPrime := proc( curPrime, curBasis)
 		curPolyCoeffs := coeffs(curBasis[ i]);
 		for j from 1 to nops( curPolyCoeffs) do
 			N := curPolyCoeffs[ j];
-			if 2*N*N >= curPrime then
+			if gcd( N, curPrime) <> 1 then
 				return false;
 			fi;
 		od;
