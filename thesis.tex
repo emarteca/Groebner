@@ -606,7 +606,15 @@ The CRA uses the various modular images provided to iteratively construct a mixe
 
 The Chinese Remainder Theorem (CRT) made its earliest appearance in the 3rd century, in the book \textit{Sunzi's Mathematical Classic}, by Sun Tzu, a Chinese mathematician.  The description of the solution to algorithmic solution to this problem was then described in the 6th century by another mathematician, Aryabhata.  Gauss also described the CRT, when he introduced the concept of modular congruences, in his 1801 book \textit{Disquisitiones Arithmeticae}.  (this is cited from elwiki, but I'm sure it's in another, more socially acceptable source)
 
-The CRT 
+The CRT has various representative definitions.  
+
+\begin{theorem}\label{Chinese Remainder Theorem}
+  
+\end{theorem}
+
+The CRA takes in as arguments a set of 
+
+
 
 \section{Hensel's Algorithm}
 
@@ -653,7 +661,46 @@ The first definition to be considered is as given by Pauer in his paper on prime
   A prime ${p}$ is \textbf{Pauer lucky} for ideal ${I}$ if it does not divide any leading coefficient of any polynomial in ${G}$ the reduced Groebner basis of ${I}$.
 \end{defn}
 
-However, again, this relies on the true Groebner basis having been previously computes, which essentially nullifies the algorithm.  
+However, again, this relies on the true Groebner basis having been previously computed which essentially nullifies the algorithm.  
+
+
+\chapter{Modular Groebner Basis Reconstruction}
+
+The modular reconstruction methods introduced above can be applied to Groebner basis computations; they can be used in conjunction with the regular basis algorithms, over modular prime fields.  In the non-modular case, the algorithm (Buchberger, F4, or otherwise) can be applied directly to the supplied ideal basis, producing a single result which is the desired basis.  However, in the modular reconstruction case, there are added computations.  
+
+For the CRA, various basis computations must be performed, each for the basis in a prime modular field, one for each of the primes necessary for the reconstruction.  The idea is that the various modular basis computations, coupled with the reconstruction code and the rational reconstruction will be more efficient (in both time and/or space) than the algorithm over the polynomial extended rational space, because of the elimination of the intermediate expression swell.  
+
+For the CRA case, the algorithm proceeds iteratively:
+\begin{enumerate}
+  \item pick a good prime ${p_n}$
+  \item perform a Groebner basis computation over ${\mathbb{Z}_{p_n}}$ coefficient field, returning ${G_{p_n}}$
+  \item then, run the CRA reconstruction with ${G_{p_n}}$ and the basis ${G_{p_1p_2 \cdots p_{n-1}}}$, to build the basis ${G_{p_1p_2 \cdots p_{n-1}p_n}}$ 
+  \item then, do the rational reconstruction on the new basis ${G_{p_1p_2 \cdots p_{n-1}p_n}}$ 
+  \item the termination condition is if the rational reconstruction result for ${G_{p_1p_2 \cdots p_{n-1}p_n}}$ succeeds, and is identical to the reconstruction of ${G_{p_n}}$
+  \item if the termination condition is not reached, then find another prime ${p_{n+1}}$ and repeat the process
+\end{enumerate}
+
+The algorithm selected for the Groebner basis computation does not change the process of the reconstruction; this is an external call.
+
+Arnolds presented the idea of using modular homomorphism methods for eliminating intermediate expression swell.  PLEASE GO ON
+
+\section{Maple}
+
+To test the comparative efficiency of the modular reconstruction algorithms and the straight basis computation, the algorithms were implemented in Maple.  Therefore, the tests were performed relative to the built-in Maple Groebner package.  Similar tests could be performed in other symbolic languages testing versus their built-in Groebner functionality, such as Mathematica, Python's sympy, etc.  
+
+Some technical details of the Maple Groebner basis package are discussed below:
+
+There are various versions of the basis computation algorithms available in the Maple Groebner package; these include the classic Buchberger algorithm, the F4 algorithm implemented in Maple (maplef4), and the F4 algorithm implemented as an external C library, FGB.  In Maple, when a Groebner basis computation is performed, this amounts to a call to the Basis command in the Groebner package - the arguments specified are the basis for the current ideal, the monomial ordering used, and optional arguments specifying the algorithm type used, and the characteristic prime if working over a modular prime coefficient field.   
+
+The current most efficient built-in basis algorithm in Maple is the FGB algorithm.  This is an efficient, optimized implementation of the Faugere F4 algorithm; it is written in C which also increases the efficiency of the algorithm.  However, this method suffers from lack of implementation of various options: for instance, it cannot be used for any monomial ordering other than degree-based (it does not support lex orderings).  In addition, when using the characteristic prime option to specify a modular field, FGB does not support primes greater than ${2^16}$, which becomes an issue when calling the modular reconstruction methods.  In these cases, various prime images are required, and this number increases as the primes are smaller.  In addition, smaller primes leads to the a higher probability of the primes being bad primes.  The comparative effect of efficiency between using more, smaller primes and fewer, larger primes will be examined in the results section.  However, note here that primes used for CRA/Hensel here were in the neighbourhood of ${2^32}$; in this way, the coefficients are guaranteed to be integers smaller than the maximum word space of the system, which means that the computations can be performed without external calls to (EXPLAIN THIS BETTER).  However, when using FGB the primes were restricted to the smaller size.
+
+The more efficient algorithms also cause issues for Hensel construction; Hensel requires another optional argument in the basis computation, output=extended, which specifies that the basis computation should return some intermediate matrices (the Syzygy matrix and ONE OTHER) as discussed in the Pauer (???) paper.  The Hensel lifting algorithm itself is implemented with these matrices as input.  However, the functionality of Faugere's algorithm is such that the intermediate matrices are not computed, and therefore output=extended is not an option for the non-Buchberger algorithms.  
+
+\chapter{Results}
+
+In order to obtain a wide range of data in order to have the potential to make conclusions, a set of problems must be constructed, representing the range of Groebner basis problems (a set of total degree, number of polynomials, coefficient size, integers/rationals, number of terms in the polynomial) was constructed and timing tests run on them with the various constructed algorithms, in order to compare.  These problems are included 
+
+PSEUDOCODE OF THE MAPLE CALL
 
 
 \begin{appendices}
