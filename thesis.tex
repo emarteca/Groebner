@@ -353,7 +353,33 @@ Ideals can be specified over the subset of rings which are classified as more pa
   
 \end{example}
 
-Noetherian Rings
+Another subtype of rings is a \textbf{Noetherian Ring}, introduced by Emmy Noether.  The idea of Noetherian rings relies on the \textbf{ascending chain condition} for ideals.
+
+\begin{defn}\label{Ascending Chain Condition}
+  The \textbf{ascending chain condition} is defined over a partially ordered set ${S}$ is satisfied if all increasing sequences over ${S}$ eventually converge to a constant.
+
+  Note: not every sequence must converge to the same constant, but they all must converge.
+\end{defn}
+
+The ascending chain condition for ideals is defined in terms of ordering by the subset relation i.e. for any chain of ideals in some ring ${R}$, and ${k > 1}$
+\begin{equation*}
+  I_1 \subseteq \cdots \subseteq I_k \subseteq \cdots
+\end{equation*}
+there is an ${n \gte k}$ such that 
+\begin{equation*}
+  I_n = I_{n+1} = \cdots
+\end{equation*}
+i.e. for every ascending chain of ideals in ${R}$, the ascending chain condition is satisfied.
+
+\begin{defn}\label{Noetherian rings}
+  A \textbf{Noetherian ring} is a ring where the ascending chain condition is satisfied for sequences of ideals.
+\end{defn}
+
+\begin{note}
+  Every finitely generated ring is Noetherian.
+
+  \textbf{Proof:} 
+\end{note}
 
 Polynomial Ideals
 
@@ -614,7 +640,36 @@ The CRT has various representative definitions.
 
 The CRA takes in as arguments a set of 
 
+A demonstrative example of the CRA is included below, over the integers.  Note that the process is the same for polynomials; every coefficient in the polynomial is reconstructed via the CRA.
 
+\begin{example}\label{CRA}
+  Consider the following modular equivalences:
+  \begin{eqnarray*}
+    x &=& 2 \mod 3\\
+    x &=& 3 \mod 7\\
+    x &=& 0 \mod 2\\
+    x &=& 0 \mod 5
+  \end{eqnarray*}  
+  2, 3, 5, 7 are all coprime; therefore, by the CRT, ${\exists}$ a unique solution$\mod$ 210 (where $\prod_{}^{}(2, 3, 5, 7) = 210$) 
+
+  Now, calculate the components for the algorithm, following the algorithm as pseudocoded above.
+  \begin{eqnarray*}
+    M_2 = \frac{210}{2} = 105 \qquad ; \qquad \gamma_2 = (105)^{-1} \mod 2 = 1\\
+    M_3 = \frac{210}{3} = 70 \qquad ; \qquad \gamma_3 = (70)^{-1} \mod 3 = 1\\
+    M_5 = \frac{210}{5} = 42 \qquad ; \qquad \gamma_5 = (42)^{-1} \mod 5 = 3\\
+    M_7 = \frac{210}{7} = 30 \qquad ; \qquad \gamma_7 = (30)^{-1} \mod 7 = 4
+  \end{eqnarray*}
+
+  Then, ${x}$ can be calculated as follows:
+  \begin{eqnarray*}
+    x &=& 0(M_2\gamma_2) + 2(M_3\gamma_3) + 0(M_5\gamma_5) + 3(M_7\gamma_7) \mod 210\\
+      &=& 0 + 140 + 0 + 360 \mod 210\\
+      &=& 500 \mod 210\\
+      &=& 80
+  \end{eqnarray*}
+
+  So, the unique solution for ${x}$ as given by the modular images is 30.
+\end{example}
 
 \section{Hensel's Algorithm}
 
@@ -701,6 +756,17 @@ The more efficient algorithms also cause issues for Hensel construction; Hensel 
 In order to obtain a wide range of data in order to have the potential to make conclusions, a set of problems must be constructed, representing the range of Groebner basis problems (a set of total degree, number of polynomials, coefficient size, integers/rationals, number of terms in the polynomial) was constructed and timing tests run on them with the various constructed algorithms, in order to compare.  These problems are included 
 
 PSEUDOCODE OF THE MAPLE CALL
+
+The results of the various algorithms running, with the various homomorphism implementations, were compared in terms of computational time.  
+
+\noindent \textbf{Technical Details:}
+
+The time computations were run on a VM server hosted at coscvm22.cs.laurentian.ca.  This VM was for the express purpose of these simulations, and as such there were no other user processes running on it.
+
+\noindent \textbf{OS:} 64-bit Ubuntu 14.04\\
+\textbf{Cores:} 6 logical cores\\
+\textbf{Maple install:} 64-bit Maple 15
+
 
 
 \begin{appendices}
