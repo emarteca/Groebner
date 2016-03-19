@@ -29,6 +29,10 @@
 \usepackage{amsmath,amssymb,amstext}
 \usepackage[pdftex]{graphicx}
 
+\newcommand\Tstrut{\rule{0pt}{2.6ex}}
+\newcommand\Bstrut{\rule[-0.9ex]{0pt}{0pt}}
+\newcommand{\TBstrut}{\Tstrut\Bstrut}
+
 \usepackage{lipsum}
 \newcounter{examplecounter}
 \newenvironment{example}{\begin{quote}%
@@ -66,6 +70,9 @@
 \end{quote}%
 }
 
+\newcounter{Table}[section]
+
+\usepackage{multirow}
 
 \usepackage[pdftex,letterpaper=true,pagebackref=false]{hyperref} 
 
@@ -365,7 +372,7 @@ The ascending chain condition for ideals is defined in terms of ordering by the 
 \begin{equation*}
   I_1 \subseteq \cdots \subseteq I_k \subseteq \cdots
 \end{equation*}
-there is an ${n \gte k}$ such that 
+there is an ${n \geq k}$ such that 
 \begin{equation*}
   I_n = I_{n+1} = \cdots
 \end{equation*}
@@ -747,7 +754,7 @@ Some technical details of the Maple Groebner basis package are discussed below:
 
 There are various versions of the basis computation algorithms available in the Maple Groebner package; these include the classic Buchberger algorithm, the F4 algorithm implemented in Maple (maplef4), and the F4 algorithm implemented as an external C library, FGB.  In Maple, when a Groebner basis computation is performed, this amounts to a call to the Basis command in the Groebner package - the arguments specified are the basis for the current ideal, the monomial ordering used, and optional arguments specifying the algorithm type used, and the characteristic prime if working over a modular prime coefficient field.   
 
-The current most efficient built-in basis algorithm in Maple is the FGB algorithm.  This is an efficient, optimized implementation of the Faugere F4 algorithm; it is written in C which also increases the efficiency of the algorithm.  However, this method suffers from lack of implementation of various options: for instance, it cannot be used for any monomial ordering other than degree-based (it does not support lex orderings).  In addition, when using the characteristic prime option to specify a modular field, FGB does not support primes greater than ${2^16}$, which becomes an issue when calling the modular reconstruction methods.  In these cases, various prime images are required, and this number increases as the primes are smaller.  In addition, smaller primes leads to the a higher probability of the primes being bad primes.  The comparative effect of efficiency between using more, smaller primes and fewer, larger primes will be examined in the results section.  However, note here that primes used for CRA/Hensel here were in the neighbourhood of ${2^32}$; in this way, the coefficients are guaranteed to be integers smaller than the maximum word space of the system, which means that the computations can be performed without external calls to (EXPLAIN THIS BETTER).  However, when using FGB the primes were restricted to the smaller size.
+The current most efficient built-in basis algorithm in Maple is the FGB algorithm.  This is an efficient, optimized implementation of the Faugere F4 algorithm; it is written in C which also increases the efficiency of the algorithm.  However, this method suffers from lack of implementation of various options: for instance, it cannot be used for any monomial ordering other than degree-based (it does not support lex orderings).  In addition, when using the characteristic prime option to specify a modular field, FGB does not support primes greater than ${2^{16}}$, which becomes an issue when calling the modular reconstruction methods.  In these cases, various prime images are required, and this number increases as the primes are smaller.  In addition, smaller primes leads to the a higher probability of the primes being bad primes.  The comparative effect of efficiency between using more, smaller primes and fewer, larger primes will be examined in the results section.  However, note here that primes used for CRA/Hensel here were in the neighbourhood of ${2^32}$; in this way, the coefficients are guaranteed to be integers smaller than the maximum word space of the system, which means that the computations can be performed without external calls to (EXPLAIN THIS BETTER).  However, when using FGB the primes were restricted to the smaller size.
 
 The more efficient algorithms also cause issues for Hensel construction; Hensel requires another optional argument in the basis computation, output=extended, which specifies that the basis computation should return some intermediate matrices (the Syzygy matrix and ONE OTHER) as discussed in the Pauer (???) paper.  The Hensel lifting algorithm itself is implemented with these matrices as input.  However, the functionality of Faugere's algorithm is such that the intermediate matrices are not computed, and therefore output=extended is not an option for the non-Buchberger algorithms.  
 
@@ -767,6 +774,139 @@ The time computations were run on a VM server hosted at coscvm22.cs.laurentian.c
 \textbf{Cores:} 6 logical cores\\
 \textbf{Maple install:} 64-bit Maple 15
 
+\refstepcounter{Table}
+\begin{center}
+  \begin{tabular}{ l || r | r | r || r | r || r | r ||}
+  \multicolumn{8}{l}{\textbf{Table \theTable}: total timings for select problems}\\
+  \hline 
+  & \multicolumn{3}{c}{Buchberger} & \multicolumn{2}{c}{MapleF4} & \multicolumn{2}{c}{FGB} \TBstrut\\
+  \hline
+  Problems & CRA (s) & Hensel (s) & Maple (s) & CRA (s) & Maple (s) & CRA (s) & Maple (s)\\
+  % Parameter & Average Relative Error & Variance of the Error \TBstrut \\ 
+  \hline\hline
+  arnborg1 & 0.723 & 18.969 & 0.423 & 0.532 & 0.312 & 0.1 & 0.036\\
+  arnborg2 & 36.884 & \textbf{\textit{DNF}} & 14.812 & 9.661 & 3.673 & 0.56 & 0.072\\
+  arnborg3 & 0.336 & 2340.014 & 0.2 & 0.264 & 0.139 & 0.159 & 0.036\\
+  arnborg5 & 3.436 & \textbf{\textit{DNF}} & 1.408 & 3.436 & 1.072 & 0.367 & 0.052\\
+  forsman1 & 0.192 & 0.891 & 0.084 & 0.239 & 0.136 & 0.063 & 0.028\\
+  forsman2 & 0.028 & \textbf{\textit{DNF}} & 0.015 & 0.032 & 0.016 & 0.052 & 0.023\\
+  forsman3 & 0.068 & \textbf{\textit{DNF}} & 0.108 & 0.068 & 0.028 & 0.059 & 0.024\\
+  forsman4 & 0.804 & \textbf{\textit{DNF}} & 0.243 & 0.468 & 0.099 & 0.129 & 0.043\\
+  katsura7 & 282.393 & \textbf{\textit{DNF}} & 24.604 & 153.189 & 38.533 & 16.554 & 0.496\\
+  hell-in & 1.795 & 1.944 & 0.12 & 2.253 & 0.116 & 1.977 & 0.039\\
+  kiyoshi5 & 1.128 & 1.212 & 0.016 & 1.152 & 0.024 & 2.321 & 0.044\\
+  caprasse & 0.416 & 10.684 & 0.283 & 0.384 & 0.204 & 0.572 & 0.053\\
+  mike2 & 38.936 & \textbf{\textit{DNF}} & 5.8 & 25.533 & 5.06 & 2.669 & 0.105\\
+  p27 & 247.147 & \textbf{\textit{DNF}} & 34.236 & 66.784 & 11.92 & 4.88 & 0.283\\
+  p33 & 0.443 & 1.176 & 0.035 & 0.4 & 0.08 & 0.519 & 0.04\\
+  p34 & 1.72 & 1.924 & 0.079 & 2.04 & 0.132 & 1.9 & 0.051\\
+  p41 & 20.956 & 89.82 & 0.456 & 27.987 & 1.08 & 16.964 & 0.264\\
+  trav1 & 0.028 & 0.1 & 0.028 & 0.04 & 0.059 & 0.053 & 0.04\\
+  cassou\_POSSO & 6.694 & \textbf{\textit{DNF}} & 2665.155 & 2.204 & 0.856 & 0.28 & 0.041\\
+  cyclic6 & 37.444 & \textbf{\textit{DNF}} & 14.949 & 10.076 & 3.636 & 0.527 & 0.065
+  \\ % [1ex]
+  \hline
+  \end{tabular}
+\end{center}
+
+\refstepcounter{Table}
+\begin{center}
+  \begin{tabular}{ l || r | r | r || r || r ||}
+  \multicolumn{6}{l}{\textbf{Table \theTable}: CRA profiling, Buchberger's algorithm (32-bit primes)}\TBstrut\\
+  \hline 
+  Problems & Mod Basis (s) & Farey (s) & CRA (s) & \textbf{Total} (s) & Images \\
+  % Parameter & Average Relative Error & Variance of the Error \TBstrut \\ 
+  \hline\hline
+  arnborg1 & 1.093 & 0.023 & 0 & 1.116 & 2\\
+  arnborg2 & 49.568 & 0.272 & 0.024 & 49.864 & 5\\
+  arnborg3 & 0.582 & 0.024 & 0.007 & 0.613 & 2\\
+  arnborg5 & 6.868 & 0.188 & 0.012 & 7.068 & 4\\
+  forsman1 & 0.144 & 0.008 & 0 & 0.152 & 2\\
+  forsman2 & 0.041 & 0.004 & 0 & 0.045 & 2\\
+  forsman3 & 0.332 & 0.016 & 0 & 0.348 & 2\\
+  forsman4 & 0.981 & 0.016 & 0.008 & 1.005 & 5\\
+  katsura7 & 399.268 & 14.618 & 0.442 & 414.328 & 13\\
+  hell-in & 1.467 & 1.464 & 0.04 & 2.971 & 21\\
+  kiyoshi5 & 0.534 & 1.461 & 0.041 & 2.036 & 71\\
+  caprasse & 0.78 & 0.044 & 0 & 0.824 & 2\\
+  mike2 & 54.882 & 1.807 & 0.1 & 56.789 & 8\\
+  p27 & 377.798 & 2.331 & 0.117 & 380.246 & 8\\
+  p33 & 0.302 & 0.297 & 0.017 & 0.616 & 17\\
+  p34 & 1.426 & 1.453 & 0.045 & 2.924 & 21\\
+  p41 & 20.023 & 14.799 & 0.553 & 35.375 & 41\\
+  trav1 & 0.032 & 0 & 0 & 0.032 & 2\\
+  cassou\_POSSO & 9.836 & 0.06 & 0.004 & 9.9 & 11\\
+  cyclic6 & 50.378 & 0.279 & 0.031 & 50.688 & 5
+  \\ % [1ex]
+  \hline
+  \end{tabular}
+\end{center}
+
+\refstepcounter{Table}
+\begin{center}
+  \begin{tabular}{ l || r | r | r || r || r ||}
+  \multicolumn{6}{l}{\textbf{Table \theTable}: CRA profiling, MapleF4 algorithm (32-bit primes)}\TBstrut\\
+  \hline 
+  Problems & Mod Basis (s) & Farey (s) & CRA (s) & \textbf{Total} (s) & Images \\
+  % Parameter & Average Relative Error & Variance of the Error \TBstrut \\ 
+  \hline\hline
+  arnborg1 & 0.816 & 0.036 & 0 & 0.852 & 2\\
+  arnborg2 & 11.825 & 0.274 & 0.012 & 12.111 & 5\\
+  arnborg3 & 0.437 & 0.028 & 0 & 0.465 & 2\\
+  arnborg5 & 4.2 & 0.168 & 0.013 & 4.381 & 4\\
+  forsman1 & 0.222 & 0.013 & 0 & 0.235 & 2\\
+  forsman2 & 0.043 & 0.012 & 0 & 0.055 & 2\\
+  forsman3 & 0.107 & 0.009 & 0 & 0.116 & 2\\
+  forsman4 & 0.644 & 0.012 & 0 & 0.656 & 5\\
+  katsura7 & 182.875 & 13.931 & 0.662 & 197.468 & 13\\
+  hell-in & 2.08 & 1.517 & 0.044 & 3.641 & 21\\
+  kiyoshi5 & 0.677 & 1.487 & 0.036 & 2.2 & 71\\
+  caprasse & 0.684 & 0.037 & 0 & 0.721 & 2\\
+  mike2 & 29.621 & 1.707 & 0.247 & 31.575 & 8\\
+  p27 & 93.244 & 3.572 & 0.127 & 96.943 & 8\\
+  p33 & 0.371 & 0.265 & 0.004 & 0.64 & 17\\
+  p34 & 2.093 & 1.536 & 0.048 & 3.677 & 21\\
+  p41 & 31.701 & 15.124 & 0.456 & 47.281 & 41\\
+  trav1 & 0.036 & 0.004 & 0 & 0.04 & 2\\
+  cassou\_POSSO & 3.381 & 0.08 & 0.016 & 3.477 & 11\\
+  cyclic6 & 11.676 & 0.283 & 0.021 & 11.98 & 5
+  \\ % [1ex]
+  \hline
+  \end{tabular}
+\end{center}
+
+\refstepcounter{Table}
+\begin{center}
+  \begin{tabular}{ l || r | r | r || r || r ||}
+  \multicolumn{6}{l}{\textbf{Table \theTable}: CRA profiling, FGB algorithm (16-bit primes)}\TBstrut\\
+  \hline 
+  Problems & Mod Basis (s) & Farey (s) & CRA (s) & \textbf{Total} (s) & Images \\
+  % Parameter & Average Relative Error & Variance of the Error \TBstrut \\ 
+  \hline\hline
+  arnborg1 & 0.063 & 0.033 & 0.004 & 0.1 & 4\\
+  arnborg2 & 0.259 & 0.277 & 0.024 & 0.56 & 7\\
+  arnborg3 & 0.08 & 0.071 & 0.008 & 0.159 & 4\\
+  arnborg5 & 0.142 & 0.186 & 0.039 & 0.367 & 6\\
+  forsman1 & 0.055 & 0.008 & 0 & 0.063 & 2\\
+  forsman2 & 0.048 & 0.004 & 0 & 0.052 & 4\\
+  forsman3 & 0.055 & 0.004 & 0 & 0.059 & 4\\
+  forsman4 & 0.109 & 0.016 & 0.004 & 0.129 & 8\\
+  katsura7 & 2.39 & 13.629 & 0.535 & 16.554 & 23\\
+  hell-in & 0.317 & 1.585 & 0.075 & 1.977 & 38\\
+  kiyoshi5 & 0.689 & 1.596 & 0.036 & 2.321 & 135\\
+  caprasse & 0.137 & 0.04 & 0.395 & 0.572 & 4\\
+  mike2 & 0.564 & 1.953 & 0.152 & 2.669 & 13\\
+  p27 & 1.974 & 2.736 & 0.17 & 4.88 & 12\\
+  p33 & 0.195 & 0.251 & 0.073 & 0.519 & 31\\
+  p34 & 0.289 & 1.51 & 0.101 & 1.9 & 38\\
+  p41 & 1.613 & 14.938 & 0.413 & 16.964 & 77\\
+  trav1 & 0.048 & 0.005 & 0 & 0.053 & 2\\
+  cassou\_POSSO & 0.169 & 0.075 & 0.036 & 0.28 & 19\\
+  cyclic6 & 0.235 & 0.271 & 0.021 & 0.527 & 7
+  \\ % [1ex]
+  \hline
+  \end{tabular}
+\end{center}
 
 
 \begin{appendices}
