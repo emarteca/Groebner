@@ -776,7 +776,7 @@ The time computations were run on a VM server hosted at coscvm22.cs.laurentian.c
 
 \refstepcounter{Table}
 \begin{center}
-  \begin{tabular}{ l || r | r | r || r | r || r | r ||}
+  \begin{tabular}{| l || r | r | r || r | r || r | r ||}
   \multicolumn{8}{l}{\textbf{Table \theTable}: total timings for select problems}\\
   \hline 
   & \multicolumn{3}{c}{Buchberger} & \multicolumn{2}{c}{MapleF4} & \multicolumn{2}{c}{FGB} \TBstrut\\
@@ -811,32 +811,32 @@ The time computations were run on a VM server hosted at coscvm22.cs.laurentian.c
 
 \refstepcounter{Table}
 \begin{center}
-  \begin{tabular}{ l || r | r | r || r || r ||}
+  \begin{tabular}{| l || r | r | r || r || r ||}
   \multicolumn{6}{l}{\textbf{Table \theTable}: CRA profiling, Buchberger's algorithm (32-bit primes)}\TBstrut\\
   \hline 
   Problems & Mod Basis (s) & Farey (s) & CRA (s) & \textbf{Total} (s) & Images \\
   % Parameter & Average Relative Error & Variance of the Error \TBstrut \\ 
   \hline\hline
-  arnborg1 & 1.093 & 0.023 & 0 & 1.116 & 2\\
-  arnborg2 & 49.568 & 0.272 & 0.024 & 49.864 & 5\\
-  arnborg3 & 0.582 & 0.024 & 0.007 & 0.613 & 2\\
-  arnborg5 & 6.868 & 0.188 & 0.012 & 7.068 & 4\\
-  forsman1 & 0.144 & 0.008 & 0 & 0.152 & 2\\
-  forsman2 & 0.041 & 0.004 & 0 & 0.045 & 2\\
-  forsman3 & 0.332 & 0.016 & 0 & 0.348 & 2\\
-  forsman4 & 0.981 & 0.016 & 0.008 & 1.005 & 5\\
-  katsura7 & 399.268 & 14.618 & 0.442 & 414.328 & 13\\
-  hell-in & 1.467 & 1.464 & 0.04 & 2.971 & 21\\
-  kiyoshi5 & 0.534 & 1.461 & 0.041 & 2.036 & 71\\
-  caprasse & 0.78 & 0.044 & 0 & 0.824 & 2\\
-  mike2 & 54.882 & 1.807 & 0.1 & 56.789 & 8\\
-  p27 & 377.798 & 2.331 & 0.117 & 380.246 & 8\\
-  p33 & 0.302 & 0.297 & 0.017 & 0.616 & 17\\
-  p34 & 1.426 & 1.453 & 0.045 & 2.924 & 21\\
-  p41 & 20.023 & 14.799 & 0.553 & 35.375 & 41\\
-  trav1 & 0.032 & 0 & 0 & 0.032 & 2\\
-  cassou\_POSSO & 9.836 & 0.06 & 0.004 & 9.9 & 11\\
-  cyclic6 & 50.378 & 0.279 & 0.031 & 50.688 & 5
+  arnborg1 & 0.715 & 0.008 & 0 & 0.723 & 2 \\
+   arnborg2 & 36.62 & 0.24 & 0.024 & 36.884 & 5 \\
+   arnborg3 & 0.308 & 0.028 & 0 & 0.336 & 2 \\
+   arnborg5 & 5.201 & 0.156 & 0.007 & 5.364 & 4 \\
+   forsman1 & 0.168 & 0.02 & 0.004 & 0.192 & 2 \\
+   forsman2 & 0.024 & 0.004 & 0 & 0.028 & 2 \\
+   forsman3 & 0.204 & 0 & 0.012 & 0.216 & 2 \\
+   forsman4 & 0.792 & 0.012 & 0 & 0.804 & 5 \\
+   katsura7 & 272.61 & 9.407 & 0.376 & 282.393 & 13 \\
+   hell-in & 1.041 & 0.726 & 0.028 & 1.795 & 21 \\
+   kiyoshi5 & 0.244 & 0.872 & 0.012 & 1.128 & 71 \\
+   caprasse & 0.395 & 0.017 & 0.004 & 0.416 & 2 \\
+   mike2 & 37.605 & 1.104 & 0.227 & 38.936 & 8 \\
+   p27 & 245.539 & 1.515 & 0.093 & 247.147 & 8 \\
+   p33 & 0.221 & 0.21 & 0.012 & 0.443 & 17 \\
+   p34 & 0.885 & 0.815 & 0.02 & 1.72 & 21 \\
+   p41 & 12.214 & 8.511 & 0.231 & 20.956 & 41 \\
+   trav1 & 0.028 & 0 & 0 & 0.028 & 2 \\
+   cassou\_POSSO & 6.622 & 0.068 & 0.004 & 6.694 & 11 \\
+   cyclic6 & 37.187 & 0.233 & 0.024 & 37.444 & 5
   \\ % [1ex]
   \hline
   \end{tabular}
@@ -844,32 +844,32 @@ The time computations were run on a VM server hosted at coscvm22.cs.laurentian.c
 
 \refstepcounter{Table}
 \begin{center}
-  \begin{tabular}{ l || r | r | r || r || r ||}
+  \begin{tabular}{| l || r | r | r || r || r ||}
   \multicolumn{6}{l}{\textbf{Table \theTable}: CRA profiling, MapleF4 algorithm (32-bit primes)}\TBstrut\\
   \hline 
   Problems & Mod Basis (s) & Farey (s) & CRA (s) & \textbf{Total} (s) & Images \\
   % Parameter & Average Relative Error & Variance of the Error \TBstrut \\ 
   \hline\hline
-  arnborg1 & 0.816 & 0.036 & 0 & 0.852 & 2\\
-  arnborg2 & 11.825 & 0.274 & 0.012 & 12.111 & 5\\
-  arnborg3 & 0.437 & 0.028 & 0 & 0.465 & 2\\
-  arnborg5 & 4.2 & 0.168 & 0.013 & 4.381 & 4\\
-  forsman1 & 0.222 & 0.013 & 0 & 0.235 & 2\\
-  forsman2 & 0.043 & 0.012 & 0 & 0.055 & 2\\
-  forsman3 & 0.107 & 0.009 & 0 & 0.116 & 2\\
-  forsman4 & 0.644 & 0.012 & 0 & 0.656 & 5\\
-  katsura7 & 182.875 & 13.931 & 0.662 & 197.468 & 13\\
-  hell-in & 2.08 & 1.517 & 0.044 & 3.641 & 21\\
-  kiyoshi5 & 0.677 & 1.487 & 0.036 & 2.2 & 71\\
-  caprasse & 0.684 & 0.037 & 0 & 0.721 & 2\\
-  mike2 & 29.621 & 1.707 & 0.247 & 31.575 & 8\\
-  p27 & 93.244 & 3.572 & 0.127 & 96.943 & 8\\
-  p33 & 0.371 & 0.265 & 0.004 & 0.64 & 17\\
-  p34 & 2.093 & 1.536 & 0.048 & 3.677 & 21\\
-  p41 & 31.701 & 15.124 & 0.456 & 47.281 & 41\\
-  trav1 & 0.036 & 0.004 & 0 & 0.04 & 2\\
-  cassou\_POSSO & 3.381 & 0.08 & 0.016 & 3.477 & 11\\
-  cyclic6 & 11.676 & 0.283 & 0.021 & 11.98 & 5
+  arnborg1 & 0.52 & 0.012 & 0 & 0.532 & 2 \\
+   arnborg2 & 9.376 & 0.279 & 0.006 & 9.661 & 5 \\
+   arnborg3 & 0.24 & 0.024 & 0 & 0.264 & 2 \\
+   arnborg5 & 3.252 & 0.18 & 0.004 & 3.436 & 4 \\
+   forsman1 & 0.226 & 0.013 & 0 & 0.239 & 2 \\
+   forsman2 & 0.028 & 0.004 & 0 & 0.032 & 2 \\
+   forsman3 & 0.068 & 0 & 0 & 0.068 & 2 \\
+   forsman4 & 0.456 & 0.008 & 0.004 & 0.468 & 5 \\
+   katsura7 & 143.325 & 9.604 & 0.26 & 153.189 & 13 \\
+   hell-in & 1.312 & 0.929 & 0.012 & 2.253 & 21 \\
+   kiyoshi5 & 0.37 & 0.766 & 0.016 & 1.152 & 71 \\
+   caprasse & 0.368 & 0.016 & 0 & 0.384 & 2 \\
+   mike2 & 24.343 & 1.129 & 0.061 & 25.533 & 8 \\
+   p27 & 65.269 & 1.444 & 0.071 & 66.784 & 8 \\
+   p33 & 0.234 & 0.146 & 0.02 & 0.4 & 17 \\
+   p34 & 1.219 & 0.793 & 0.028 & 2.04 & 21 \\
+   p41 & 19.183 & 8.666 & 0.138 & 27.987 & 41 \\
+   trav1 & 0.036 & 0.004 & 0 & 0.04 & 2 \\
+   cassou\_POSSO & 2.144 & 0.056 & 0.004 & 2.204 & 11 \\
+   cyclic6 & 9.533 & 0.428 & 0.115 & 10.076 & 5
   \\ % [1ex]
   \hline
   \end{tabular}
@@ -877,7 +877,7 @@ The time computations were run on a VM server hosted at coscvm22.cs.laurentian.c
 
 \refstepcounter{Table}
 \begin{center}
-  \begin{tabular}{ l || r | r | r || r || r ||}
+  \begin{tabular}{| l || r | r | r || r || r ||}
   \multicolumn{6}{l}{\textbf{Table \theTable}: CRA profiling, FGB algorithm (16-bit primes)}\TBstrut\\
   \hline 
   Problems & Mod Basis (s) & Farey (s) & CRA (s) & \textbf{Total} (s) & Images \\
