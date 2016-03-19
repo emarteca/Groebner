@@ -144,6 +144,8 @@ The problem of solving for a Groebner basis was resolved by Bruno Buchberger in 
 
 Buchberger's algorithm was the initial approach, and since then there have been various different solutions 
 
+USES FOR GROEBNER
+
 \section{Intermediate Expression Swell}
 
 Expression swell is a problem emergent in computer algebra.
@@ -758,9 +760,9 @@ The current most efficient built-in basis algorithm in Maple is the FGB algorith
 
 The more efficient algorithms also cause issues for Hensel construction; Hensel requires another optional argument in the basis computation, output=extended, which specifies that the basis computation should return some intermediate matrices (the Syzygy matrix and ONE OTHER) as discussed in the Pauer (???) paper.  The Hensel lifting algorithm itself is implemented with these matrices as input.  However, the functionality of Faugere's algorithm is such that the intermediate matrices are not computed, and therefore output=extended is not an option for the non-Buchberger algorithms.  
 
-\chapter{Results}
+\chapter{Methodology and Results}
 
-In order to obtain a wide range of data in order to have the potential to make conclusions, a set of problems must be constructed, representing the range of Groebner basis problems (a set of total degree, number of polynomials, coefficient size, integers/rationals, number of terms in the polynomial) was constructed and timing tests run on them with the various constructed algorithms, in order to compare.  These problems are included 
+In order to obtain a wide range of data to have the potential to make conclusions, a set of problems must be constructed, representing the range of Groebner basis problems (a set of total degree, number of polynomials, coefficient size, integers/rationals, number of terms in the polynomial) was constructed and timing tests run on them with the various constructed algorithms, in order to compare.  These problems are included 
 
 PSEUDOCODE OF THE MAPLE CALL
 
@@ -773,6 +775,17 @@ The time computations were run on a VM server hosted at coscvm22.cs.laurentian.c
 \noindent \textbf{OS:} 64-bit Ubuntu 14.04\\
 \textbf{Cores:} 6 logical cores\\
 \textbf{Maple install:} 64-bit Maple 15
+
+The timings were run with the Maple \texttt{time()} command.  This command returns the total CPU time used since the Maple session has started.  The time returned only includes the time for which maple was running, and not that during which the CPU was running other processes.  This is a more accurate measure of the time taken for the basis computation (as opposed to, for example, the bash \texttt{time} command).
+
+Various problems were selected, in order to represent a range of each of the main factors affecting complexity of Groebner basis computations, as discussed above: degree, number of variables, and initial coefficient size.  There are also a range of problems in terms of the number of generating polynomials in the initial ideal, and the sparsity of these polynomials (i.e. the number of nonzero coefficients in the polynomials).  This range is qualitatively described in the table below.
+
+TABLE HERE
+
+The above problems were attempted with the various algorithms (Buchberger, MapleF4, and FGB) and methods (Hensel, CRA, and regular Maple).  The overall results are summarized in the following table; these are the overall Maple timings for the problems running on the server.  Details of how the running was implemented are included in Appendix \ref{appendix:running}.
+
+-- here is the data
+
 
 \refstepcounter{Table}
 \begin{center}
@@ -803,11 +816,33 @@ The time computations were run on a VM server hosted at coscvm22.cs.laurentian.c
   p41 & 20.956 & 89.82 & 0.456 & 27.987 & 1.08 & 16.964 & 0.264\\
   trav1 & 0.028 & 0.1 & 0.028 & 0.04 & 0.059 & 0.053 & 0.04\\
   cassou\_POSSO & 6.694 & \textbf{\textit{DNF}} & 2665.155 & 2.204 & 0.856 & 0.28 & 0.041\\
-  cyclic6 & 37.444 & \textbf{\textit{DNF}} & 14.949 & 10.076 & 3.636 & 0.527 & 0.065
+  cyclic6 & 37.444 & \textbf{\textit{DNF}} & 14.949 & 10.076 & 3.636 & 0.527 & 0.065\\
+  cyclic7 & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}}\\
+  cyclic8 & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & 123.924\\
+  hcyclic8 & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}}\\
+  katsura8 & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}}\\
+  katsura9 & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}}\\
+  katsura10 & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}}\\
+  repulso1 & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}}\\
+  repulso2 & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}}\\
+  repulso3 & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}}\\
+  huygens3 & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}} & \textbf{\textit{DNF}}
   \\ % [1ex]
   \hline
   \end{tabular}
 \end{center}
+
+The table above shows 
+
+-- Trends: FGB is faster (wow); BB > F4 > FGB for time pretty consistently\\
+-- graphs here? hmmmmmm\\
+-- Hensel is shit; CRA is ok sometimes, Maple is always faster\\
+-- give up on Hensel - it's doomed anyway, since it literally needs BB to run which is trash compared to everything else\\
+-- hopeful: if the CRA recon is slow (or even the Farey), we could maybe optimize using external C calls (explained somewhere - maybe appendix about external C calls and how they work?)\\
+-- so, let's profile the CRA to see what proportion is what\\
+-- the sections are, modular basis comp through wte basis alg, cra recon, and farey recon\\
+-- using the built-in farey recon, but my own works, it's just a bit slower (could maybe optimize in C), or CRA in C\\
+-- results below, per alg\\
 
 \refstepcounter{Table}
 \begin{center}
@@ -817,7 +852,7 @@ The time computations were run on a VM server hosted at coscvm22.cs.laurentian.c
   Problems & Mod Basis (s) & Farey (s) & CRA (s) & \textbf{Total} (s) & Images \\
   % Parameter & Average Relative Error & Variance of the Error \TBstrut \\ 
   \hline\hline
-  arnborg1 & 0.715 & 0.008 & 0 & 0.723 & 2 \\
+   arnborg1 & 0.715 & 0.008 & 0 & 0.723 & 2 \\
    arnborg2 & 36.62 & 0.24 & 0.024 & 36.884 & 5 \\
    arnborg3 & 0.308 & 0.028 & 0 & 0.336 & 2 \\
    arnborg5 & 5.201 & 0.156 & 0.007 & 5.364 & 4 \\
@@ -850,7 +885,7 @@ The time computations were run on a VM server hosted at coscvm22.cs.laurentian.c
   Problems & Mod Basis (s) & Farey (s) & CRA (s) & \textbf{Total} (s) & Images \\
   % Parameter & Average Relative Error & Variance of the Error \TBstrut \\ 
   \hline\hline
-  arnborg1 & 0.52 & 0.012 & 0 & 0.532 & 2 \\
+   arnborg1 & 0.52 & 0.012 & 0 & 0.532 & 2 \\
    arnborg2 & 9.376 & 0.279 & 0.006 & 9.661 & 5 \\
    arnborg3 & 0.24 & 0.024 & 0 & 0.264 & 2 \\
    arnborg5 & 3.252 & 0.18 & 0.004 & 3.436 & 4 \\
@@ -908,13 +943,24 @@ The time computations were run on a VM server hosted at coscvm22.cs.laurentian.c
   \end{tabular}
 \end{center}
 
+-- that awkward moment when the mod basis comp is actually taking up all of the time\\
+-- graphs of maple vs only mod basis time\\
+-- so there's literally nothing we can do :'(\\
+-- except rewrite the Groebner package\\
+-- classic\\
+
+-- so yeah, then graph per image and it's fine\\
+-- also explain why this is literally impossible b/c limits and wordsize kappa\\
+
+
+-- future work\\
+-- sympy/mathematica/etc (check what they have)\\
+-- pls to rewrite maple groebner\\
+
 
 \begin{appendices}
 
-\section{Supplementary Definitions}
-\label{appendix:definitions}
-
-\appendix{}
+\chapter{Supplementary Definitions}\label{appendix:definitions}
 
 This contains definitions which are presumed known and not explicitly declared in the text, but are referred to in passing.  They are included here for clarity.
 
@@ -936,9 +982,106 @@ This contains definitions which are presumed known and not explicitly declared i
   \end{itemize}
 \end{defn}
 
-\begin{theorem}\label{FTFGAG}
 
-\end{theorem}
+\chapter{Implementation Details}\label{appendix:running}
+
+\section{Batch Running}
+
+This section gives a brief description of how the problems were timed.
+
+The examples are included each in their individual Maple files; there is another Maple file which reads them all in and stores their initial ideal basis, problem name, and monomial ordering in parallel arrays.  The initial approach was to have one Maple file, \texttt{timer.mpl}, which ran each method and algorithm on each of the problems sequentially, printing the output of each to a named file before proceeding to the next problem.  This simple, Maple-only approach looping through all the problems was the naive approach, however it ran into issues with Maple's garbage collection: by the time the second problem was being computed, the memory from the first problem had not yet been released and was still taking up space in the Maple VM.  This caused two issues.
+\begin{itemize}
+  \item If the order of problem computations was reversed (i.e. if problems ran in order A then B, and then B then A), then the timings were significantly different; the second problem to execute always took much more time than if the same problem was executed first.  This is due to the additional memory which is taken up by the time the second problem begins executing; all the memory from the first is still taken up, and the extra garbage collections necessary to make room for the second computation adds additional time to the run.
+  \item Another problem is the garbage collector itself; it seems to not deallocate memory even when the variable associated is reassigned or removed.  This leads to issues when multiple problems are computed sequentially in the same Maple session.  The Maple VM has a limited amount of memory on the server, and, even if this memory limit is increased, it is still a finite value.  The Groebner basis problems use so much memory that this limit is quickly reached, particularly when some of the Maple memory is already taken up from the previous problem.  When the memory limit is reached, the Maple session crashes with an error; this means that, if all the problems were computed in the same session, then the later problems would never be reached for computation as the kernel would run out of memory first.  
+\end{itemize} 
+The solution was to have one \texttt{timer.mpl} which computes one particular, specified problem, and a bash script to loop over all the problems and specify to the timer file which problem to run, and which combination of algorithm and method to use.
+
+\begin{note}
+  Maple does not provide the functionality of command line arguments as most programming languages provide.  For example, one cannot execute a Maple program by calling \begin{equation*}\texttt{maple mapleProgram arg1 arg2 ...}\end{equation*} specifying \texttt{arg1 arg2 ...} as command line arguments to the program.
+
+  To get around this, the bash sed utility was used to modify the flag variables to specify which problem, algorithm, and method to run the timer with.
+\end{note}
+
+Then, all the problems are executed in their own Maple sessions to avoid any memory inconsistencies.
+
+\section{Maple External C}
+
+
+\chapter{Supplementary Data}\label{appendix:supplData}
+
+The CRA was run using Buchberger and MapleF4 with 16-bit primes in addition to the 32-bit prime data included in the body of the thesis.  This was mainly done in order to have a more "level" comparison with the FGB CRA, which can only use 16-bit primes, as the option for larger primes has not been included in the CRA.  It was found that the 16-bit primes were slower than the 32-bit primes for Buchberger and F4; this seems to be due to the larger number of modular images which are necessary for the smaller primes, and that the majority of the time spent on CRA Groebner computations is in the calls to the modular basis computations in the Groebner package.
+
+The FGB 16-bit prime data is included above in the \textbf{Methodology and Results} chapter.  
+
+Note that, as above, the \textbf{DNF} problems are not included in the CRA data tables.
+
+\refstepcounter{Table}
+\begin{center}
+  \begin{tabular}{| l || r | r | r || r || r ||}
+  \multicolumn{6}{l}{\textbf{Table \theTable}: CRA profiling, Buchberger algorithm (16-bit primes)}\TBstrut\\
+  \hline 
+  Problems & Mod Basis (s) & Farey (s) & CRA (s) & \textbf{Total} (s) & Images \\
+  % Parameter & Average Relative Error & Variance of the Error \TBstrut \\ 
+  \hline\hline
+  arnborg1 & 1.093 & 0.023 & 0 & 1.116 & 4\\
+  arnborg2 & 49.568 & 0.272 & 0.024 & 49.864 & 7\\
+  arnborg3 & 0.582 & 0.024 & 0.007 & 0.613 & 4\\
+  arnborg5 & 6.868 & 0.188 & 0.012 & 7.068 & 6\\
+  forsman1 & 0.144 & 0.008 & 0 & 0.152 & 2\\
+  forsman2 & 0.041 & 0.004 & 0 & 0.045 & 4\\
+  forsman3 & 0.332 & 0.016 & 0 & 0.348 & 4\\
+  forsman4 & 0.981 & 0.016 & 0.008 & 1.005 & 8\\
+  katsura7 & 399.268 & 14.618 & 0.442 & 414.328 & 23\\
+  hell-in & 1.467 & 1.464 & 0.04 & 2.971 & 38\\
+  kiyoshi5 & 0.534 & 1.461 & 0.041 & 2.036 & 135\\
+  caprasse & 0.78 & 0.044 & 0 & 0.824 & 4\\
+  mike2 & 54.882 & 1.807 & 0.1 & 56.789 & 13\\
+  p27 & 377.798 & 2.331 & 0.117 & 380.246 & 12\\
+  p33 & 0.302 & 0.297 & 0.017 & 0.616 & 31\\
+  p34 & 1.426 & 1.453 & 0.045 & 2.924 & 38\\
+  p41 & 20.023 & 14.799 & 0.553 & 35.375 & 77\\
+  trav1 & 0.032 & 0 & 0 & 0.032 & 2\\
+  cassou\_POSSO & 9.836 & 0.06 & 0.004 & 9.9 & 19\\
+  cyclic6 & 50.378 & 0.279 & 0.031 & 50.688 & 7
+  \\ % [1ex]
+  \hline
+  \end{tabular}
+\end{center}
+
+\refstepcounter{Table}
+\begin{center}
+  \begin{tabular}{| l || r | r | r || r || r ||}
+  \multicolumn{6}{l}{\textbf{Table \theTable}: CRA profiling, MapleF4 algorithm (16-bit primes)}\TBstrut\\
+  \hline 
+  Problems & Mod Basis (s) & Farey (s) & CRA (s) & \textbf{Total} (s) & Images \\
+  % Parameter & Average Relative Error & Variance of the Error \TBstrut \\ 
+  \hline\hline
+  arnborg1 & 0.816 & 0.036 & 0 & 0.852 & 4\\
+  arnborg2 & 11.825 & 0.274 & 0.012 & 12.111 & 7\\
+  arnborg3 & 0.437 & 0.028 & 0 & 0.465 & 4\\
+  arnborg5 & 4.2 & 0.168 & 0.013 & 4.381 & 6\\
+  forsman1 & 0.222 & 0.013 & 0 & 0.235 & 2\\
+  forsman2 & 0.043 & 0.012 & 0 & 0.055 & 4\\
+  forsman3 & 0.107 & 0.009 & 0 & 0.116 & 4\\
+  forsman4 & 0.644 & 0.012 & 0 & 0.656 & 8\\
+  katsura7 & 182.875 & 13.931 & 0.662 & 197.468 & 23\\
+  hell-in & 2.08 & 1.517 & 0.044 & 3.641 & 38\\
+  kiyoshi5 & 0.677 & 1.487 & 0.036 & 2.2 & 135\\
+  caprasse & 0.684 & 0.037 & 0 & 0.721 & 4\\
+  mike2 & 29.621 & 1.707 & 0.247 & 31.575 & 13\\
+  p27 & 93.244 & 3.572 & 0.127 & 96.943 & 12\\
+  p33 & 0.371 & 0.265 & 0.004 & 0.64 & 31\\
+  p34 & 2.093 & 1.536 & 0.048 & 3.677 & 38\\
+  p41 & 31.701 & 15.124 & 0.456 & 47.281 & 77\\
+  trav1 & 0.036 & 0.004 & 0 & 0.04 & 2\\
+  cassou\_POSSO & 3.381 & 0.08 & 0.016 & 3.477 & 19\\
+  cyclic6 & 11.676 & 0.283 & 0.021 & 11.98 & 7
+  \\ % [1ex]
+  \hline
+  \end{tabular}
+\end{center}
+
+Referring back to the 32-bit data tables for the CRA with these algorithms respectively, it is noted that the number of modular images here is the same as those necessary for the 16-bit FGB CRA, and close to twice that of the 32-bit CRA.  This is expected, as less prime images are necessary as the size of the prime increases; less primes are required for the product to be larger enough for the reconstruction to stabilize at the unique solution.
 
 \end{appendices}
 
