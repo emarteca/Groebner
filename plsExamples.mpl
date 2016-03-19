@@ -22,7 +22,7 @@
 n1 := "arnborgII";
 
 read( "problems/arnborgII");
-ord1 := tdeg( op( X));
+ord1 := plex( op( X));
 B1 := F;
 
 
@@ -31,7 +31,7 @@ B1 := F;
 n2 := "arnborgIII";
 
 read( "problems/arnborgIII");
-ord2 := tdeg( op( X));
+ord2 := plex( op( X));
 B2 := F;
 
 # arnborgV --------------------------------------------------------------
@@ -39,7 +39,7 @@ B2 := F;
 n3 := "arnborgV";
 
 read( "problems/arnborgV");
-ord3 := tdeg( op( X));
+ord3 := plex( op( X));
 B3 := F;
 
 # forsman2 --------------------------------------------------------------
@@ -47,7 +47,7 @@ B3 := F;
 n4 := "forsman2";
 
 read( "problems/forsman2");
-ord4 := tdeg( op( X));
+ord4 := plex( op( X));
 B4 := F;
 
 # forsman3 --------------------------------------------------------------
@@ -55,7 +55,7 @@ B4 := F;
 n5 := "forsman3";
 
 read( "problems/forsman3");
-ord5 := tdeg( op( X));
+ord5 := plex( op( X));
 B5 := F;
 
 # cyclic6 --------------------------------------------------------------
@@ -63,7 +63,7 @@ B5 := F;
 n6 := "cyclic6";
 
 read( "problems/cyclic6");
-ord6 := tdeg( op( X));
+ord6 := plex( op( X));
 B6 := F;
 
 # cyclic7 --------------------------------------------------------------
@@ -71,7 +71,7 @@ B6 := F;
 n7 := "cyclic7";
 
 read( "problems/cyclic7");
-ord7 := tdeg( op( X));
+ord7 := plex( op( X));
 B7 := F;
 
 # cyclic8 --------------------------------------------------------------
@@ -79,7 +79,7 @@ B7 := F;
 n8 := "cyclic8";
 
 read( "problems/cyclic8");
-ord8 := tdeg( op( X));
+ord8 := plex( op( X));
 B8 := F;
 
 # cyclic9 --------------------------------------------------------------
@@ -87,7 +87,7 @@ B8 := F;
 n9 := "cyclic9";
 
 read( "problems/cyclic9");
-ord9 := tdeg( op( X));
+ord9 := plex( op( X));
 B9 := F;
 
 # hcyclic8 --------------------------------------------------------------
@@ -95,7 +95,7 @@ B9 := F;
 n10 := "hcyclic8";
 
 read( "problems/hcyclic8");
-ord10 := tdeg( op( X));
+ord10 := plex( op( X));
 B10 := F;
 
 # katsura7 --------------------------------------------------------------
@@ -103,7 +103,7 @@ B10 := F;
 n11 := "katsura7";
 
 read( "problems/katsura7");
-ord11 := tdeg( op( X));
+ord11 := plex( op( X));
 B11 := F;
 
 # katsura8 --------------------------------------------------------------
@@ -111,7 +111,7 @@ B11 := F;
 n12 := "katsura8";
 
 read( "problems/katsura8");
-ord12 := tdeg( op( X));
+ord12 := plex( op( X));
 B12 := F;
 
 # katsura9 --------------------------------------------------------------
@@ -119,7 +119,7 @@ B12 := F;
 n13 := "katsura9";
 
 read( "problems/katsura9");
-ord13 := tdeg( op( X));
+ord13 := plex( op( X));
 B13 := F;
 
 # katsura10 --------------------------------------------------------------
@@ -127,7 +127,7 @@ B13 := F;
 n14 := "katsura10";
 
 read( "problems/katsura10");
-ord14 := tdeg( op( X));
+ord14 := plex( op( X));
 B14 := F;
 
 # repulso1 --------------------------------------------------------------
@@ -135,7 +135,7 @@ B14 := F;
 n15 := "repulso1";
 
 read( "problems/repulso1");
-ord15 := tdeg( op( X));
+ord15 := plex( op( X));
 B15 := F;
 
 # repulso2 --------------------------------------------------------------
@@ -143,7 +143,7 @@ B15 := F;
 n16 := "repulso2";
 
 read( "problems/repulso2");
-ord16 := tdeg( op( X));
+ord16 := plex( op( X));
 B16 := F;
 
 # repulso3 --------------------------------------------------------------
@@ -151,7 +151,7 @@ B16 := F;
 n17 := "repulso3";
 
 read( "problems/repulso3");
-ord17 := tdeg( op( X));
+ord17 := plex( op( X));
 B17 := F;
 
 

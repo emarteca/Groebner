@@ -11,7 +11,7 @@
 n1 := "arnborgI";
 
 read( "problems/arnborgI");
-ord1 := tdeg( op( X));
+ord1 := plex( op( X));
 B1 := F;
 
 
@@ -20,7 +20,7 @@ B1 := F;
 n2 := "arnborgIII";
 
 read( "problems/arnborgIII");
-ord2 := tdeg( op( X));
+ord2 := plex( op( X));
 B2 := F;
 
 
@@ -29,7 +29,7 @@ B2 := F;
 n3 := "forsman4";
 
 read( "problems/forsman4");
-ord3 := tdeg( op( X));
+ord3 := plex( op( X));
 B3 := F;
 
 
@@ -38,7 +38,7 @@ B3 := F;
 n4 := "hell-in";
 
 read( "problems/hell-in");
-ord4 := tdeg( op( X));
+ord4 := plex( op( X));
 B4 := F;
 
 # hell-in (given F and X) ---------------------------------------------------------------
@@ -55,7 +55,7 @@ B10 := F;
 n5 := "kiyoshi5";
 
 read( "problems/kiyoshi5");
-ord5 := tdeg( op( X));
+ord5 := plex( op( X));
 B5 := F;
 
 
@@ -64,14 +64,14 @@ B5 := F;
 n6 := "p34";
 
 read( "problems/p34");
-ord6 := tdeg( op (X));
+ord6 := plex( op (X));
 B6 := F;
 
 # huygens3 (given F and vars) -----------------------------------------------------------
 
 n7 := "huygens3";
 read( "problems/huygens3");
-ord7 := tdeg( op( vars));
+ord7 := plex( op( vars));
 B7 := F;
 
 # p17 (given F and X) -------------------------------------------------------------------

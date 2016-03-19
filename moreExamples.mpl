@@ -13,7 +13,7 @@
 n1 := "caprasse";
 
 read( "problems/caprasse");
-ord1 := tdeg( op( X));
+ord1 := plex( op( X));
 B1 := F;
 
 
@@ -22,7 +22,7 @@ B1 := F;
 n2 := "forsman1";
 
 read( "problems/forsman1");
-ord2 := tdeg( op( X));
+ord2 := plex( op( X));
 B2 := F;
 
 
@@ -31,7 +31,7 @@ B2 := F;
 n3 := "mike2";
 
 read( "problems/mike2");
-ord3 := tdeg( op( X));
+ord3 := plex( op( X));
 B3 := F;
 
 
@@ -40,7 +40,7 @@ B3 := F;
 n4 := "p27";
 
 read( "problems/p27");
-ord4 := tdeg( op( X));
+ord4 := plex( op( X));
 B4 := F;
 
 # p33 ---------------------------------------------------------------
@@ -48,7 +48,7 @@ B4 := F;
 n5 := "p33";
 
 read( "problems/p33");
-ord5 := tdeg( op( X));
+ord5 := plex( op( X));
 B5 := F;
 
 
@@ -57,21 +57,21 @@ B5 := F;
 n6 := "p41";
 
 read( "problems/p41");
-ord6 := tdeg( op (X));
+ord6 := plex( op (X));
 B6 := F;
 
 # trav1 -----------------------------------------------------------
 
 n7 := "trav1";
 read( "problems/trav1");
-ord7 := tdeg( op( X));
+ord7 := plex( op( X));
 B7 := F;
 
 # cassou_POSSO -------------------------------------------------------------------
 
 n8 := "cassou_POSSO";
 read( "problems/cassou_POSSO");
-ord8 := tdeg( op( X));
+ord8 := plex( op( X));
 B8 := F;
 
 
