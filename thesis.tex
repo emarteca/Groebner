@@ -558,8 +558,15 @@ EXAMPLE FROM NOTES
 
 Since the introduction of Groebner bases by Buchberger in 1965, there have been various improvements on his algorithm for basis computation.  Notably, there is the F4 algorithm, developed by Faugere.  There are F4 implementations in the Maple Groebner package (maplef4 algorithm, and efficient C implementation in the FGB algorithm).
 
-This is a more efficient ..... 
+The F4 algorithm made it possible to compute various problems which could not be solved with the Buchberger approach, for instance the cyclic9 problem.  
 
+The F4 algorithm proceeds similarly to the Buchberger algorithm, with the main difference (and efficiency gain) in the polynomial reduction stage.  This reduction can be paired with the Buchberger criteria for elimination of redundant S-polynomials as in the Buchberger algorithm.  
+
+The F4 approach to polynomial reduction replaces the sequential polynomial divisions with a Gaussian elimination row reduction of a single matrix of polynomials.
+
+As explained by Roune in his summary of Faugere's original paper detailing the F4 algorithm, reduction of a polynomial ${f}$ over a set of ${k}$ polynomials ${\{r_1, \ldots, r_k\}}$      
+ 
+\subsection{Modular Homomorphisms}
 
 Regardless of the improvements in speed of these algorithms, one problem which they all face is intermediate expression swell, as discussed above.  Groebner basis computations, depending on the initial ideal, can give rise to unmanagable expression swell.  This cannot be avoided by using classic iterative algorithms; however, these are the only algorithms currently available.  Instead of inventing an entirely new algorithmic approach, which may not even be possible, another potential approach would be to use the regular algorithms over prime fields, and then reconstruct the solution to the original space via a modular homomorphism method.
 
