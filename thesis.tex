@@ -70,7 +70,8 @@
 \end{quote}%
 }
 
-\newcounter{Table}[section]
+\newcounter{Table}
+\usepackage{scrextend}
 
 \usepackage{multirow}
 
@@ -387,7 +388,9 @@ i.e. for every ascending chain of ideals in ${R}$, the ascending chain condition
 \begin{note}
   Every finitely generated ring is Noetherian.
 
-  \textbf{Proof:} 
+  \textbf{Proof:} If the ring is finitely generated, then this also means that all ideals in this ring are also finitely generated.  This in turn means that there are only finitely many ideals.  
+
+  From this, it follows that the ascending chain condition is satisfied, as any ascending chain will be finite.  Therefore, the ring must be Noetherian.
 \end{note}
 
 Polynomial Ideals
@@ -678,14 +681,33 @@ The CRA uses the various modular images provided to iteratively construct a mixe
 
 \subsection{Chinese Remainder Algorithm} 
 
-The Chinese Remainder Theorem (CRT) made its earliest appearance in the 3rd century, in the book \textit{Sunzi's Mathematical Classic}, by Sun Tzu, a Chinese mathematician.  The description of the solution to algorithmic solution to this problem was then described in the 6th century by another mathematician, Aryabhata.  Gauss also described the CRT, when he introduced the concept of modular congruences, in his 1801 book \textit{Disquisitiones Arithmeticae}.  (this is cited from elwiki, but I'm sure it's in another, more socially acceptable source)
+The Chinese Remainder Problem made its earliest appearance in the 3rd century, in the book \textit{Sunzi's Mathematical Classic}, by Sun Tzu, a Chinese mathematician.  The description of the solution to algorithmic solution to this problem was then described in the 6th century by another mathematician, Aryabhata.  Gauss also described this, when he introduced the concept of modular congruences, in his 1801 book \textit{Disquisitiones Arithmeticae}.  (this is cited from elwiki, but I'm sure it's in another, more socially acceptable source)
 
-The CRT has various representative definitions.  
+\noindent The \textit{Chinese Remainder Problem} can be stated as: 
+\begin{addmargin}[2em]{2em}% 2em left and right
+  Given a set of moduli ${\{m_i\} \subset \mathbb{Z}}$ and corresponding residues ${\{u_i\} \subset \mathbb{Z}}$, where ${i}$ ranges from 0 to ${n \in \mathbb{Z}}$; find an integer ${u}$ which satisfies the congruences
+  \begin{equation*}
+    u \equiv u_i \mod m_i\, ; \quad \forall i \in [0, n]
+  \end{equation*} 
+\end{addmargin}
+
+The algorithm for solving this problem is essentially an inversion of the modular homomorphism (i.e. rebuilding the original integer ${u}$ from various of its modular images).  
+
+The Chinese Remainder Problem specifies \textit{an} integer; however there are conditions under which the solution to this problem is unique.   
 
 \begin{theorem}\label{Chinese Remainder Theorem}
-  
+  Given the set ${\{m_i\} \subset \mathbb{Z}}$, where ${i \in [0, n] \subset Z}$ be a set where all elements are pairwise relatively prime i.e.
+  \begin{equation*}
+    gcd( m_j, m_k) = 1 \; \forall \, j \neq k
+  \end{equation*}
+  and ${\{u_i\} \subset \mathbb{Z}_{m_i}}$ be the corresponding residues.  Then, for any fixed integer ${a \in \mathbb{Z} \; \exists}$ a unique integer ${u \in \mathbb{Z}}$ which satisfies the following conditions:
+  \begin{itemize}
+    \item ${a \leq a + m}$, where ${m = \prod_{i=0}^{n}m_i}$
+    \item ${u \equiv u_i \mod m_i\, ; \forall i \in [0, n] \subset \mathbb{Z}}$
+  \end{itemize}  
 \end{theorem}
 
+The process of solving the Chinese Remainder Problem 
 The CRA takes in as arguments a set of 
 
 A demonstrative example of the CRA is included below, over the integers.  Note that the process is the same for polynomials; every coefficient in the polynomial is reconstructed via the CRA.
@@ -1005,7 +1027,6 @@ The column headers are:
   \item Images: the number of modular images which were required
 \end{itemize} 
 
-\refstepcounter{Table}
 \refstepcounter{Table}
 \begin{center}
   \begin{tabular}{| l || r | r | r || r || r ||}
