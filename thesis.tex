@@ -560,11 +560,43 @@ Since the introduction of Groebner bases by Buchberger in 1965, there have been 
 
 The F4 algorithm made it possible to compute various problems which could not be solved with the Buchberger approach, for instance the cyclic9 problem.  
 
-The F4 algorithm proceeds similarly to the Buchberger algorithm, with the main difference (and efficiency gain) in the polynomial reduction stage.  This reduction can be paired with the Buchberger criteria for elimination of redundant S-polynomials as in the Buchberger algorithm.  
+The F4 algorithm proceeds similarly to the Buchberger algorithm, with the main difference (and efficiency gain) in the polynomial reduction stage.  This reduction can be paired with the Buchberger criteria for elimination of redundant S-polynomials as in the Buchberger algorithm.  Like the Buchberger algorithm, F4 can be applied to polynomial ideals in ${\mathbb{Q}[\bar x]}$, ${\mathbb{Z}[\bar x]}$, or ${\mathbb{Z}_p[\bar x]}$ for some prime ${p}$, ${\bar x = \{x_1, \ldots, x_n\}}$ set of indeterminates.   
 
-The F4 approach to polynomial reduction replaces the sequential polynomial divisions with a Gaussian elimination row reduction of a single matrix of polynomials.
+The F4 approach to polynomial reduction replaces the Buchberger's sequential polynomial divisions for reduction over a set (the ${Reduce}$ method detailed above) with a row reduction ro row-echelon form of a single matrix of polynomials.
 
-As explained by Roune in his summary of Faugere's original paper detailing the F4 algorithm, reduction of a polynomial ${f}$ over a set of ${k}$ polynomials ${\{r_1, \ldots, r_k\}}$      
+As explained by Roune in his summary of Faugere's original paper detailing the F4 algorithm, reduction of a polynomial ${f}$ over a set of ${k}$ polynomials ${W = \{r_1, \ldots, r_k\}}$ consists of the following steps:
+\begin{itemize}
+  \item From the given polynomial ${f}$ and set of polynomials ${W}$ to reduce over, construct a matrix ${A}$
+  \item Compute row-echelon form of ${A}$, denoted ${\bar A}$
+  \item Reduced form of ${f}$ can be read from ${\bar A}$
+\end{itemize}      
+CITE THIS (f4\_shortVersion.pdf)
+
+Rather than having a unique ${A}$ matrix for each ${f}$ to reduce, the ${A}$ matrix can be built in such a way as to allow many polynomials to be reduced simultaneously, and post-reduction of ${A}$ all the reduced polynomials can be read off from ${\bar A}$. 
+
+Construction of ${A}$ must be done in such a way as to allow polynomial division to be emulated by reduction of ${A}$.  Here, the method is detailed as from Roune's paper:
+
+First, assume that the set has been normalized, and that all polynomials have a leading coefficient of 1.  
+
+Then, consider the functionality of the polynomial division algorithm for a set: this takes the leading monomial of the intermediate stage of the division, say polynomial ${h}$, and attempts to find a polynomial ${r_i}$ in the set such that the ${Lm(r_i) \mid Lm(h)}$; if such an ${r_i}$ exists in the set ${W}$, then the next intermediate result in the division would be ${h - tr_i}$, where ${t = \frac{Lm(h)}{Lm(r_i)}}$.  
+
+To include this computation in the reduction of ${A}$, then there must be a row in ${A}$ that corresponds to the subtraction term required for the polynomial division of ${h}$, i.e. ${tr_i}$.  Then, the next step in the polynomial division will require another ${W}$-entry, some ${r_j}$.  In order to generalize the algorithm, instead of attempting to predict which monomials will be included in the reduced term ${h - t_ri}$ (in order to find which is the leading monomial), simply include all monomials of ${h}$ and ${tr_i}$ except for the leading monomial.
+
+The step-by-step for the algorithm of construction of ${A}$ is as presented by Roune:
+\begin{enumerate}
+  \item Add ${f}$ to ${A}$, and take ${M}$ as the set of monomials of ${f}$
+  \item If ${M}$ is the empty set, then the algorithm terminates and A is in its final form
+  \item Remove $m = {Lm(M)}$ from ${M}$
+  \item If ${m}$ is irreducible by all ${r_i \in W}$, then return to step 2
+  \item Select monomials ${t,\, r_i}$ such that ${Lm(tr_i) = m}$
+  \item Add ${tr_i}$ to ${A}$, and the monomials of ${tr_i}$ not including ${m}$ to the set of monomials ${M}$ and return to step 2
+\end{enumerate}
+
+Once ${A}$ has been constructed, then it can be reduced by some method specified and the F4 algorithm proceeds to repeat this step for every polynomial ${f}$ in the ideal's generating set.
+
+The row reduction of ${A}$ to achieve ${\bar A}$ in row-echelon form can also be optimized.  Classic Gaussian elimination could be used to perform this reduction; however, since the ${A}$ matrix is constructed with many zero entries, faster methods of reduction using sparse-matrix techniques could be taken advantage of.  There are advanced linear algebra packages available which make this reduction efficient; using existing techniques also reduces the complexity of coding the F4 algorithm itself.
+
+The FGB Groebner computation method included in the Maple Groebner package is an optimized C implementation of the F4 algorithm included as an external library, also written by Faugere.  The algorithm is the same as F4, however it makes use of the lower-level optimizations available in C which are not present in Maple.     
  
 \subsection{Modular Homomorphisms}
 
