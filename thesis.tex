@@ -487,7 +487,7 @@ Referring back to the definition of a Groebner basis above, the ${Reduce}$ can n
 
 The first algorithm for computing Groebner bases was proposed by Bruno Buchberger in 1965, when he presented the concept of the bases themselves.  This algorithm is fairly short in writing, but the complexity of the algorithm cannot be seen intuitively seen from the logic itself.  The algorithm is presented below in pseudocode.
 
-\begin{algorithm}
+\begin{algorithm}[H]
 \caption{Buchberger}\label{buchberger}
 \begin{algorithmic}[1]
 \Input $\quad P$ generating set for a polynomial ideal; $ord$ monomial ordering
@@ -554,7 +554,7 @@ At this point all the necessary constructs for applying Buchberger's algorithm a
 
 EXAMPLE FROM NOTES
 
-\subsubsection{F4 Algorithm}
+\subsection{F4 Algorithm}
 
 Since the introduction of Groebner bases by Buchberger in 1965, there have been various improvements on his algorithm for basis computation.  Notably, there is the F4 algorithm, developed by Faugere.  There are F4 implementations in the Maple Groebner package (maplef4 algorithm, and efficient C implementation in the FGB algorithm).
 
@@ -682,9 +682,73 @@ A demonstrative example of the CRA is included below, over the integers.  Note t
 
 \section{Hensel's Algorithm}
 
+Hensel's algorithm, like 
+
 \section{Rational Reconstruction}
 
 The original basis in these algorithms is assumed to be the polynomial extended rational numbers, ${\mathbb{Q}[x_1, x_2, \ldots, x_n]}$.  As such, postprocessing must be done on the output of the CRA/Hensel reconstruction to build the basis back to the polynomials over the rationals.  
+
+One common approach for rational reconstruction is using the Farey rational map.  The method as described by B\"ohm in his paper \textit{The Use of Bad Primes in Rational Reconstruction} is included below for explanation; this is also the method which was programmed in Maple as part of the modular methods.
+
+The idea of rational reconstruction is to build back a number ${x \in \mathbb{Q}}$ from a modular image in ${\mathbb{Z}_p}$. 
+
+The notation from the B\"ohm paper is used for clarity if reference is made to this paper.
+
+Consider the rational number ${x \in \mathbb{Q}}$ which is being reconstructed.  Then, since ${x \in \mathbb{Q}}$ then ${x = \frac{a}{b}}$ for some ${a,\,b \in \mathbb{Z}}$ and some integer ${N \geq 2}$, with ${\gcd(a, b) = 1,\, \gcd(b, N) = 1}$ then
+\begin{equation*}
+  x_N = \left(\frac{a}{b}\right)_N = (a + N\mathbb{Z})(b + N\mathbb{Z})^{-1} \in \frac{\mathbb{Z}}{N\mathbb{Z}}
+\end{equation*}   
+
+Note that ${x_N}$ is a modular integer; as such, it is an equivalence class of rationals modulo ${N}$ i.e. the infinite set of rationals ${\frac{a}{b}}$ which are all equal modulo ${N}$.  This set is a member of the fraction field ${\frac{\mathbb{Z}}{N\mathbb{Z}}}$, which itself is isomorphic to ${\mathbb{Z}_N}$.
+
+This approach to rational reconstruction uses the idea of a Farey rational map, which is defined (using B\"ohm's notation) for an integer ${B > 0}$ as:
+\begin{equation*}
+  F_B = \left\{\frac{a}{b} \in \mathbb{Z}\; : \; \gcd(a, b) = 1,\, 0 \leq a \leq B,\, 0 < |b| \leq B\right\}
+\end{equation*}
+Basically, the Farey rational map contains all the rational numbers (representatives of the equivalence classes of rational numbers i.e. fractions in lowest terms, where the GCD of the numerator and the denominator is 0) where the absolute value of the numerator and denominator range from 0 (1 for the denominator) to ${B}$.  This set will be finite for a finite ${B}$.
+
+Then, define for ${m \in \frac{\mathbb{Z}}{N\mathbb{Z}}}$:
+\begin{equation*}
+  \mathbb{Q}_{N, m} = \left\{\frac{a}{b} \in \mathbb{Q}\; : \; \gcd(a, b) = 1,\, \gcd(b, N) = 1,\, \left(\frac{a}{b}\right)_N = m\right\}
+\end{equation*}
+the set of rational numbers which are congruent to ${m}$ modulo ${N}$.  
+
+As B\"ohm states, the set ${\mathbb{Q}_N}$ can be expressed as the union of all the ${\mathbb{Q}_{N, m}}$ where ${m}$ ranges from 0 to ${N - 1}$.  This is fairly intuitive; each set is the equivalence class of ${m}$ modulo ${N}$ over the rational numbers; as such, the set of all possible ${m}$ ranges from 0 to ${N - 1}$ inclusive, as this is the range of the ${N}$-modular integers.  Therefore, there are ${N}$ distict equivalence classes, and the union of these sets is the entire set ${\mathbb{Q}_N}$ itself (as equivalence classes, by definition, form a partition of the set the relation is defined over; here, the relation is modulo, which is an equivalence relation).  
+
+If ${B}$ is an integer where ${B \leq \sqrt(\frac{N - 1}{2})}$, then the \textbf{Farey map} can be defined as the mapping
+\begin{equation*}
+  \phi_{B, N}:\; F_B \bigcap \mathbb{Q}_N \rightarrow \frac{\mathbb{Z}}{N\mathbb{Z}},\quad \frac{a}{b} \rightarrow \left(\frac{a}{b}\right)_N
+\end{equation*}
+
+This mapping is well-defined and injective (as stated by B\"ohm).  This returns the original rational ${x}$.  To maximize image returned from this mapping with respect to ${N}$, choose ${B}$ to be the largest possible value for the ${N}$ specified.
+
+The following algorithm calculates the Farey preimage as discussed in the B\"ohm paper; it returns the inverse image ${\phi_{B, N}^{-1}(y)}$ if ${y}$ is in the image of the Farey map with respect to the mapping ${\phi}$; if this value cannot be computed (for example, if the value attempting to be reconstructed does not fit the acceptance criteria, essentially amounting to the inverse image of modular integer ${N}$).
+
+\begin{algorithm}[H]
+\caption{Farey Reconstruction}\label{farey}
+\begin{algorithmic}[1]
+\Input $\quad$Integers $\; N \geq 2 \;$ and $\; 0 \leq r \leq N - 1$
+\Output $\texttt{false} \,$or a rational number$\, a/b \,$ with$\, gcd(a, b) = 1,\, gcd(b, N) = 1,$ $\; a/b \equiv r $ mod $ N, \, 0 \leq a \leq \sqrt{(N-1)/2}, \, 0 \leq \abs{b} \leq \sqrt{(N-1)/2}.$ 
+\Procedure{FareyRecon}{}
+\State $a \gets [ N, r]$
+\State $b \gets [ 0, 1]$
+\State $i \gets 0$
+\While{ $2a_{i+2}^2 \geq N-1$ } 
+  \State $i \gets i + 1$
+  \State $q \gets \text{floor}( a_i / a_{i+1})$
+  \State $a_{i+2} \gets a_i - qa_{i+1}$
+  \State $b_{i+2} \gets a_i - qb_{i+1}$
+\EndWhile\\  
+\If { $2b_{i+2}^2 < N-1$ \textbf{ and} $gcd( a_{i+2}, b_{i+2}) = 1$ } 
+  \State \quad \Return $[ a_{i+2}, b_{i+2}]$
+\Else 
+  \State \quad \Return false
+\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+Notice the algorithm returns the correct value for the rational reconstruction if it fits the acceptance criteria, otherwise it returns false in order to indicate to the user that there was an error in the computation; this would indicate that the value used to attempt the calculations was a "bad prime" with respect to rational reconstruction.
 
 \section{Lucky Primes}
 
@@ -784,6 +848,8 @@ TABLE HERE
 
 The above problems were attempted with the various algorithms (Buchberger, MapleF4, and FGB) and methods (Hensel, CRA, and regular Maple).  The overall results are summarized in the following table; these are the overall Maple timings for the problems running on the server.  Details of how the running was implemented are included in Appendix \ref{appendix:running}.
 
+\section{Raw Data}
+
 -- here is the data
 
 
@@ -832,18 +898,75 @@ The above problems were attempted with the various algorithms (Buchberger, Maple
   \end{tabular}
 \end{center}
 
-The table above shows 
+\begin{note}
+  The cells marked \textit{\textbf{DNF}} indicate that this problem "did not finish"; in these cases it was due to the Maple kernel running out of memory and crashing with a "not enough memory available" or "object too large" error.  
+\end{note}
 
--- Trends: FGB is faster (wow); BB > F4 > FGB for time pretty consistently\\
--- graphs here? hmmmmmm\\
--- Hensel is shit; CRA is ok sometimes, Maple is always faster\\
--- give up on Hensel - it's doomed anyway, since it literally needs BB to run which is trash compared to everything else\\
--- hopeful: if the CRA recon is slow (or even the Farey), we could maybe optimize using external C calls (explained somewhere - maybe appendix about external C calls and how they work?)\\
--- so, let's profile the CRA to see what proportion is what\\
--- the sections are, modular basis comp through wte basis alg, cra recon, and farey recon\\
--- using the built-in farey recon, but my own works, it's just a bit slower (could maybe optimize in C), or CRA in C\\
--- results below, per alg\\
+The table above shows various expected trends.
 
+\begin{itemize}
+  \item Across all algorithms, the FGB is the fastest i.e. FGB Maple is faster than MapleF4 Maple and Buchberger Maple; and the same result can be seen for the CRA
+  \item  Maple is faster than the CRA, which in turn is faster than Hensel, on a per-algorithm basis
+\end{itemize}
+
+These trends can also be visually represented by way of bar graphs.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{bb_tests.png}
+  \caption{Buchberger's algorithm, comparing the methods \label{fig:bb_tests}}
+\end{figure}
+
+This graph represents the timings of the methods run with the modular computations done using Buchberger's algorithm, with 32-bit primes.  The \textbf{DNF} Hensel problems show up as no Hensel bar on the chart.  The Hensel problems are seen to be slower than the CRA and Maple in every case in which Hensel terminates.  Similarly, the CRA seems to be consistently slower than the nonmodular Maple Buchberger, although there are 2 problems in this selection (forsman3 and cassou\_POSSO) in which the CRA was faster.
+
+Similar graphs can be made for the MapleF4 and FGB algorithms.  Note, however, that there is no Hensel data in either of these cases; this is because the Hensel method requires the Buchberger's output=extended option, as discussed above.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{f4_tests.png}
+  \caption{MapleF4 algorithm, comparing the methods \label{fig:f4_tests}}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{fgb_tests.png}
+  \caption{FGB algorithm, comparing the methods \label{fig:fgb_tests}}
+\end{figure}
+
+These graphs show the same trends as the Buchberger plot; the CRA is consistently slower than the nonmodular Maple in almost every case.  At this point, various conclusions could be drawn.
+
+With regards to Hensel, this approach seems like a lost cause.  There are several points against it: for one, it seems to be slower in every case than the CRA and straight Maple approach in the Buchberger case.  In many cases, the algorithm did not terminate, while for the same problem it did terminate for other methods.  More importantly, Hensel can only be run with the modular basis computations using Buchberger's algorithm; since it relies on output=extended, it cannot make use of the faster basis computation algorithms available.  %lolol
+
+However, although the CRA is still consistently slower than Maple, there are still potential efficiency improvements to the CRA.
+
+\section{Potential Improvements to the CRA} 
+
+The CRA computation can be broken down into stages:
+
+\begin{enumerate}
+  \item Modular basis computations, to generate modular images for reconstruction
+  \item CRA reconstruction itself
+  \item Farey reconstruction
+\end{enumerate}
+
+The modular basis computations are done using the Maple Groebner package, with whichever algorithm was selected; if this is the stage with the least time efficiency, then there is no clear approach to solving the problem.  This would mean that the Groebner package itself is not well-suited for the CRA, and fixing this would involve editing the Maple package itself, which cannot be done as a user as they do not provide the source code for their compiled libraries.
+
+However, if the primary time cost is with either the CRA or Farey reconstruction, then this problem could potentially be addressed by other means.  Maple provides user the option of writing their own external libraries (in either C, Java, or FORTRAN).  In this case, approach would be to use C and the GMP MPZ library.  This is the GNU MultiPrecision package; the C MPZ library allows for manipulation of multiprecision integers as objects in C.  Using this, the CRA could be written in C and linked as an external library to Maple, in order to speed up the computation.  C is naturally faster than Maple, and allows for optimization using multithreading and other lower level functionality which is not available in Maple.  In addition, although the current code is using the Maple \texttt{iratrecon} reconstruction method, the Farey reconstruction could also be written in C and linked in similar to the CRA reconstruction.
+
+The technical details of passing arguments and linking the library are included in \textbf{Appendix} \ref{appendix:running}.  
+
+Profiling of the CRA runs was done to compare the proportion of total time during each stage of the CRA basis computations.  The results are included for all 3 algorithms in the tables below.  
+
+The column headers are:
+\begin{itemize}
+  \item Mod Basis: time spent performing modular basis computations with the Groebner package (in seconds)
+  \item Farey: time spent running rational reconstructions (in seconds)
+  \item CRA: time spent running CRA reconstructions (in seconds)
+  \item Total: total time for the CRA basis computation (sum of the above 3 terms) (in seconds)
+  \item Images: the number of modular images which were required
+\end{itemize} 
+
+\refstepcounter{Table}
 \refstepcounter{Table}
 \begin{center}
   \begin{tabular}{| l || r | r | r || r || r ||}
@@ -943,20 +1066,43 @@ The table above shows
   \end{tabular}
 \end{center}
 
--- that awkward moment when the mod basis comp is actually taking up all of the time\\
--- graphs of maple vs only mod basis time\\
--- so there's literally nothing we can do :'(\\
--- except rewrite the Groebner package\\
--- classic\\
+Examination of the above tables yields the unfortunate conclusion that the majority of the time spent during the CRA basis computations is spent doing the modular basis computations with the Groebner package; this is consistent across all 3 algorithms.  Since the Groebner package is unmodifiable by the user, this means that this section of the CRA process cannot be optimized.  Graphs were made comparing the total modular basis computation time (i.e. the section of CRA basis computation time spent on modular images alone) with the nonmodular Maple computation.
 
--- so yeah, then graph per image and it's fine\\
--- also explain why this is literally impossible b/c limits and wordsize kappa\\
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{bb_mapleVsCRA_modBasisTime.png}
+  \caption{Buchberger's algorithm, comparing nonmodular to CRA mod basis time \label{fig:f4_tests}}
+\end{figure}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{f4_mapleVsCRA_modBasisTime.png}
+  \caption{MapleF4 algorithm, comparing nonmodular to CRA mod basis time \label{fig:f4_tests}}
+\end{figure}
 
--- future work\\
--- sympy/mathematica/etc (check what they have)\\
--- pls to rewrite maple groebner\\
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{fgb_mapleVsCRA_modBasisTime.png}
+  \caption{FGB algorithm, comparing nonmodular to CRA mod basis time \label{fig:f4_tests}}
+\end{figure}  
 
+The above plots show that even with the modular basis computation time alone, the CRA basis method is already slower than the nonmodular basis computation.  Therefore, any added efficiency in terms of the Farey and CRA reconstruction methods using C or another optimization method would effectively be irrelevant, as the method cannot be any faster than the modular basis time alone, and this cannot be changed by the user.  
+
+One potential alteration to the method would be to use different-sized primes; 16-bit primes were also used, however this was found to be slower (data included in \textbf{Appendix} \ref{appendix:supplData}).  
+
+Going the other way and using bigger primes could be another approach, however this is also flawed.  The 64-bit Maple has a word-size of 64 bits; using primes greater than 32-bit would mean that their product would no longer be word-size, and therefore the computations would be less efficient.  In additon, increasing the prime size would increase the intermediate expression swell.  Consider that in the limit of the primes reaching the maximum size of the final basis coefficients, then this modular computation would be exactly equivalent to the nonmodular method, and both methods should be equal in necessary time.  Removing the efficiency of using word-size primes for the computations means that the modular computations will not be faster than the nonmodular methods; at fastest, they would be equal to the nonmodular methods.  
+
+So in conclusion, it seems that the current Maple Groebner package makes the attempted modular homomorphism methods redundant.  No added efficiency was observed; in fact, the modular approach was consistently slower than the basic nonmodular approach, for all available algorithms.  
+
+However, this does not mean that the modular approach to Groebner basis computation is a dead end. 
+
+\section{Future Research}    
+
+Although in this case (considering Maple and the current Groebner package) the modular homomorphism approach turned out to decrease the time efficiency of the basis computations, there are various avenues to potentially explore in future research.  
+
+In terms of Maple, the main roadblock is the inefficiency of the current modular basis computations.  Potentially, if a new release of Maple were to include a more efficient algorithm for the modular basis computation, this could tip the scales in favour of the modular approach.  Considering improvements to the existing Maple code, if the FGB code could include the capability of working over 32-bit primes this would increase the efficiency of the modular methods building the images using this algorithm.  The 32-bit primes were seen to be more efficient than the 16-bit primes for the other 2 algorithms, so it seems a logical conclusion that 32-bit prime processing would be faster in FGB as well.  
+
+There are also computer algebra systems other than Maple.  Mathematica, Singular, and Python's sympy package all have Groebner plugins available; the experiment could be repeated using other available software packages.  EXPLAIN A BIT ABOUT THESE; MAYBE PYTHON HAS OPENSOURCE GROEBNER SHIT
 
 \begin{appendices}
 
