@@ -707,8 +707,43 @@ The Chinese Remainder Problem specifies \textit{an} integer; however there are c
   \end{itemize}  
 \end{theorem}
 
-The process of solving the Chinese Remainder Problem 
-The CRA takes in as arguments a set of 
+The process of solving the Chinese Remainder Problem is generally done using Garner's algorithm.  Developed in the 1950s, this algorithm reconstructs the unique number satisfying the modular congruences provided (provided there is a unique solution, satisfying the conditions as given by the Chinese Remainder Theorem) by representing it in mixed-radix form.  
+
+Garner's Chinese Remainder Algorithm is given below in pseudocode.
+
+\begin{algorithm}[H]
+\caption{Garner's Algorithm for Chinese Remainder}\label{CRA}
+\begin{algorithmic}[1]
+\Input $\; \; $ set of pairwise relatively prime moduli ${\{m_i\} \subset \mathbb{Z}}$, and corresponding residues ${u_i \in \mathbb{Z}_{m_i}}$
+\Output unique integer ${u \in \mathbb{Z}_m}$ (with ${m = \prod_{i=0}^{n}m_i}$), such that the congruences are satisfied ${\forall i}$  
+\Procedure{CRA\_int}{}
+\State // first: compute the modular inverses required
+\State // this will be using a procedure $inverse( a, q)$ which computes ${a^{-1} \mod q}$
+\For{ $k$ from 1 to $n$}
+  \State $curTerm \gets curTerm * m_k$
+  \State $curProds_k \gets curTerm$\\
+  \State $\gamma_k \gets reciprocal( curTerm, m_{k+1})$
+\EndFor\\
+
+\State // now need to compute the $v$'s (the mixed-radix coefficients)\\
+\State $curTerm \gets 0$
+
+\For{ $k$ from 0 to $n$}
+  \State $v_k \gets ((m_k - curTerm) * \gamma_k) \mod m_k$
+  \State $curTerm \gets curTerm + curProds_k * v_k$
+\EndFor\\
+
+\State // now, compute $u$; the sum of the mixed-radix representation
+
+\State $u \gets 0$
+\For{ $k$ from 0 to $n$}
+  \State $u \gets u + v_k * curProds_k$
+\EndFor\\\\
+
+\Return $u$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm} 
 
 A demonstrative example of the CRA is included below, over the integers.  Note that the process is the same for polynomials; every coefficient in the polynomial is reconstructed via the CRA.
 
@@ -740,6 +775,8 @@ A demonstrative example of the CRA is included below, over the integers.  Note t
 
   So, the unique solution for ${x}$ as given by the modular images is 30.
 \end{example}
+
+This algorithm reconstructs an integer from its modular images provided, over the modular integers modulo the product of the moduli.  However, this method is equally applicable to polynomials with integer coefficients.  In this case, the arguments to the procedure would be the same list of moduli, and the polynomial residues.  These residues can be thought of as sets of coefficient residues; each coefficient can be reconstructed essentially separately, using Garner's algorithm.  There will be no mixing of terms, as each coefficient (by definition of a polynomial) corresponds to a unique power product.               
 
 \section{Hensel's Algorithm}
 
