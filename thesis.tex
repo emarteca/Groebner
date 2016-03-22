@@ -476,7 +476,7 @@ This concept of reduction is essential to Groebner bases, and to the computation
 
 Reducing polynomial ${p}$ over another polynomial ${q}$, ${Reduce( p, q)}$ amounts to multivariate division of ${\frac{p}{q}}$.  This is a recursive extension of the Euclidean algorithm for division of univariate polynomials, dependent on the monomial ordering specified.  The idea is to consider the multivariate polynomial as a "recursive univariate polynomial".  This concept is best described by an example: consider the polynomial ${}$ EXAMPLE ON THE SYMBOLIC MIDTERM FOR POLYNOMIAL LONG DIVISION.
 
-A polynomial ${p}$ is considered \textbf{reducible} over polynomial ${q}$ if a monomial in ${p}$ can be written as a multiple of the leading monomial of ${q}$.  It is \textbf{irreducible} if there are no monomials in ${p}$ which are multiples of the leading monomial os ${q}$.    
+A polynomial ${p}$ is considered \textbf{reducible} over polynomial ${q}$ if a monomial in ${p}$ can be written as a multiple of the leading monomial of ${q}$.  It is \textbf{irreducible} if there are no monomials in ${p}$ which are multiples of the leading monomial of ${q}$.    
 
 \begin{note}
   The \textbf{leading monomial} of a polynomial is the monomial with the highest order with respect to the monomial ordering specified.
@@ -780,7 +780,50 @@ This algorithm reconstructs an integer from its modular images provided, over th
 
 \section{Hensel's Algorithm}
 
-Hensel's algorithm, like 
+The Chinese Remainder Algorithm (CRA) is one reconstruction method for rebuilding an integer post processing in over the modular integers.  However, one major drawback to the CRA is that it requires many modular images in order for the reconstruction to proceed.  As the size of the coefficients being rebuilt increases, so too does the number of images which have to be stored and iterated over.  It would be convenient to have a reconstruction method which requires fewer modular images in order to rebuild these larger coefficients.   
+
+Hensel's algorithm is another reconstruction method, similar in aim to the CRA; however, unlike the CRA's mixed-radix representation it uses the idea of ${p}$-adic representation.
+
+\subsection{${p}$-adic Representation}
+
+Recall the mixed-radix representation for integers as used in the CRA.  There is another representation technique for integers which instead uses a sum of successive products of a single prime.  Rather than reconstruction ending in a sum of the mixed radix representations such as in the CRA as
+\begin{equation*}
+  u = v_0 + v_1(m_0) + v_2(m_0m_1) + \ldots + v_n(\prod_{i=0}^{n-1}m_i)
+\end{equation*}
+for the moduli ${m_i}$, mixed-radix coefficients ${v_i}$, ${p}$-adic representation involves reconstructing ${u}$ as 
+\begin{equation*}
+  u = u_0 + u_1p + u_2p^2 + \ldots + u_np^n
+\end{equation*}
+for some prime ${p}$, ${n}$ such that ${p^{n+1} > 2 \mid u \mid}$, and ${u_i \in \mathbb{Z}_p\, i \in [0, n] \subset \mathbb{Z}}$.  This seems to be an identical approach to the regular single-radix representation; and indeed, if the positive modular representation is used, then the ${p}$-adic representation is equal to single-radix, over base ${p}$, for ${u}$ positive.  However, the symmetric representation makes more sense to use, as it allows the ${u}$ to be negative (consider, if positive modular representation was used, that none of the ${u_i}$ would be negative; and, since ${p^k > 0 \; \forall k \in \mathbb{Z}}$ for positive ${p}$ then ${u}$ can only be a sum of products of positive integers, which is always positive).  
+
+Hensel's Algorithm reconstructs images using the ${p}$-adic representation, for a particular prime ${p}$.
+
+\subsection{Hensel's Algorithm}
+
+Here, consider that, similarly to the CRA, where extension of the methods to the polynomial case is simple, involving the application of the method to each of the coefficients of the method, Hensel's reconstruction algorithm can also be applied to solving modular congruences with polynomials instead of integers.  Here, the method presented will be for the univariate polynomial case.  
+
+The idea is to have a reconstruction method equivalent to the CRA, but which only uses one prime image to invert the modular homomorphim ${\phi_p\; : \; \mathbb{Z}[x] \rightarrow \mathbb{Z}_p[x]}$.  Rather than starting with multiple images such as in the CRA, here we start with image ${u_0(x) \in \mathbb{Z}_p}$ of the requested solution ${u(x) \in \mathbb{Z}}$.
+
+\begin{theorem}\label{hensel's lemma}
+  Hensel's Lemma: Given ${p \in \mathbb{Z}}$ prime, and ${a(x) \in \mathbb{Z}[x]}$ univariate polynomial with integer coefficients; and given ${u^{(1)}(x),\, w^{(1)}(x) \in \mathbb{Z}_p[x]}$ relatively prime univariate polynomials over the ${p}$-modular integers such that
+  \begin{equation*}
+    a(x) \equiv u^{(1)}(x)w^{(1)}(x) \mod p
+  \end{equation*}
+
+  Then, for any integer ${k \geq 1 \; \exists \; u^{(k)}(x),\, w^{(k)}(x) \in \mathbb{Z}_{p^k}[x]}$ such that 
+  \begin{equation*}
+    a(x) \equiv u^{(k)}(x)w^{(k)}(x) \mod p^k
+  \end{equation*}
+  and ${u^{(k)}(x) \equiv u^{(1)}(x) \mod p}$, ${w^{(k)}(x) \equiv w^{(1)}(x) \mod p}$. 
+
+  Note: the proof is not given here; refer to CN for the full proof.
+\end{theorem}           
+
+The Hensel construction (given by Hensel's lemma above) is built from the linear ${p}$-adic Newton's iteration.  The idea essentially amounts to iteratively building up the ${p}$-adic representation of ${u}$ from the first image given (rather than computing many separate images over different moduli as in the CRA).  The problem from the outset is that there is not enough information from the single modular image to perform the next iterative reconstruction.  
+
+\subsection{Lucky Prime Efficiency Comparison}
+
+Although Hensel's algorithm is more efficient in terms of the number of images stored in compared with the CRA, it does have its drawbacks.  In particular, when considering "vulnerability" to bad primes, the CRA can simply discard this modular image, however the Hensel algorithm, since it relies on only one prime and images over its successive power products, has a harder time dealing with these.  The CRA can easily detect a bad prime (so long as the first prime iterated over is lucky) by comparing the number of terms in the polynomials or taking the modulus of the previous basis with respect to this new prime to ensure the same answer is achieved.  Then, this modular basis computation has been wasted, however the reconstruction can continue with a new prime.  The Hensel lifting, on the other hand, cannot detect bad primes as easily, since all its computations are based on this prime and it has no other primes to compare results with.  As such, bad primes are not effectively found until the computation is done and the correctness of the output can be verified.  If the prime was bad, the entire Hensel process was a computational waste of time; as such, when using Hensel, the preemptive removal of bad primes is paramount.
 
 \section{Rational Reconstruction}
 
@@ -997,7 +1040,7 @@ The above problems were attempted with the various algorithms (Buchberger, Maple
 \end{center}
 
 \begin{note}
-  The cells marked \textit{\textbf{DNF}} indicate that this problem "did not finish"; in these cases it was due to the Maple kernel running out of memory and crashing with a "not enough memory available" or "object too large" error.  
+  The cells marked \textit{\textbf{DNF}} indicate that this problem "did not finish" (or ran out of mem -- RECHECK FILES); in these cases it was due to the Maple kernel running out of memory and crashing with a "not enough memory available" or "object too large" error.  
 \end{note}
 
 The table above shows various expected trends.
@@ -1199,7 +1242,7 @@ Although in this case (considering Maple and the current Groebner package) the m
 
 In terms of Maple, the main roadblock is the inefficiency of the current modular basis computations.  Potentially, if a new release of Maple were to include a more efficient algorithm for the modular basis computation, this could tip the scales in favour of the modular approach.  Considering improvements to the existing Maple code, if the FGB code could include the capability of working over 32-bit primes this would increase the efficiency of the modular methods building the images using this algorithm.  The 32-bit primes were seen to be more efficient than the 16-bit primes for the other 2 algorithms, so it seems a logical conclusion that 32-bit prime processing would be faster in FGB as well.  
 
-There are also computer algebra systems other than Maple.  Mathematica, Singular, and Python's sympy package all have Groebner plugins available; the experiment could be repeated using other available software packages.  EXPLAIN A BIT ABOUT THESE; MAYBE PYTHON HAS OPENSOURCE GROEBNER SHIT
+There are also computer algebra systems other than Maple.  Mathematica, Singular, and Python's sympy package all have Groebner plugins available; the experiment could be repeated using other available software packages.  EXPLAIN A BIT ABOUT THESE; MAYBE PYTHON HAS OPENSOURCE GROEBNER SCHTUFF
 
 \begin{appendices}
 
