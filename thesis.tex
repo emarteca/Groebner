@@ -120,12 +120,16 @@
 \setlength{\parskip}{\medskipamount}
 
 
-\renewcommand{\baselinestretch}{1} 
+%\renewcommand{\baselinestretch}{1} 
+\usepackage{setspace}
+\usepackage{etoolbox}
 
 \let\origdoublepage\cleardoublepage
 \newcommand{\clearemptydoublepage}{%
   \clearpage{\pagestyle{empty}\origdoublepage}}
 \let\cleardoublepage\clearemptydoublepage
+
+\doublespacing
 
 %======================================================================
 %   L O G I C A L    D O C U M E N T -- the content of your thesis
@@ -819,7 +823,9 @@ The idea is to have a reconstruction method equivalent to the CRA, but which onl
   Note: the proof is not given here; refer to CN for the full proof.
 \end{theorem}           
 
-The Hensel construction (given by Hensel's lemma above) is built from the linear ${p}$-adic Newton's iteration.  The idea essentially amounts to iteratively building up the ${p}$-adic representation of ${u}$ from the first image given (rather than computing many separate images over different moduli as in the CRA).  The problem from the outset is that there is not enough information from the single modular image to perform the next iterative reconstruction.  
+The Hensel construction (given by Hensel's lemma above) is built from the linear ${p}$-adic Newton's iteration.  The idea essentially amounts to iteratively building up the ${p}$-adic representation of ${u}$ from the first image given (rather than computing many separate images over different moduli as in the CRA).  The problem from the outset is that there is not enough information from the single modular image to perform the next iterative reconstruction.  Extra information, usually in the form of a set of nonlinear equations which ${u(x)}$ must satisfy, is also provided to the algorithm.  
+
+HOW MUCH SHOULD I REALLY EXPLAIN HERE ABOUT HENSEL  
 
 \subsection{Lucky Prime Efficiency Comparison}
 
@@ -949,9 +955,38 @@ For the CRA case, the algorithm proceeds iteratively:
   \item if the termination condition is not reached, then find another prime ${p_{n+1}}$ and repeat the process
 \end{enumerate}
 
-The algorithm selected for the Groebner basis computation does not change the process of the reconstruction; this is an external call.
+Hensel's algorithm proceeds similarly.  In this case, the algorithm is presented as in the Pauer paper, which is also referenced and explained by Arnolds.  Since the Hensel algorithm requires more initial information in order to proceed with the lifting (as stated in the explanation of the Hensel algorithm above, usually a system of equations which the initial modular image must satisfy).  
 
-Arnolds presented the idea of using modular homomorphism methods for eliminating intermediate expression swell.  PLEASE GO ON
+Here, the process of the ${p}$-adic lifting is as summarized in the Arnolds paper.  
+
+Given an ideal ${I_{p} = \; <\bar f_1, \ldots, \bar f_r> \; \subseteq \mathbb{Z}_{p}[\bar x]}$, the goal is to lift this to ${I_{p^i} = \; <\bar f_1, \ldots, \bar f_r> \; \subseteq \mathbb{Z}_{p^i}[\bar x]}$, for some positive integer power ${i}$ of ${p}$.  Take ${F = \{f_1, \ldots, f_r\}}$ the set of generating polynomials for the ideal ${I}$.  
+
+This procedure also begins with the assumption that the prime ${p}$ chosen is lucky for this ideal.
+
+The steps of the process for lifting from a reduced Groebner ${G_p}$ for ${I_p}$ to monic reduced Groebner basis ${G_{p^i}}$ for ${I_{p^i}}$ is as described in the Arnolds paper.
+
+\begin{enumerate}
+  \item Compute ${G_p}$ for lucky prime ${p}$.  Also, consider the sets ${G_p}$ and ${F}$ (as above) as column vectors, and calculate the transformation matrix ${Z^{(1)}F \equiv G_p \mod p}$
+  \item Then similarly, for ${i}$, it is necessary to find the matrices ${Z^{(i)}F \equiv G^{(i)} \mod p^i \quad}$ and ${\quad G^{(i)} \equiv G_p \mod p}$.  From this step, the reduced monic basis ${G_{p^i}}$ for ${I_{p^i}}$ can be computed.
+  \item This computation is done recursively (iterating up to ${i}$); from the ${Z^{(i-1)}}$ and ${G_{p^{i-1}}}$ for step ${i-1,\, i > 1}$, first compute intermediate matrices ${Z', G'}$ where
+  \begin{equation*}
+    Z^{(i)} = Z^{(i-1)} + p^{i-1}Z'
+  \end{equation*}
+  and similarly
+  \begin{equation*}
+    G^{(i)} = G^{(i-1)} + p^{i-1}G'
+  \end{equation*}
+  with ${F^{(i)},\, G^{(i)}}$ defined as above: ${Z^{(i)}F \equiv G^{(i)} \mod p^i \quad}$
+  This is done by solving the resultant modular congruence in terms of the intermediate matrices ${Z'}$ and ${G'}$:
+  \begin{equation*}
+    (Z^{(i-1)} + p^{i-1}Z')F \equiv G^{(i-1)} + p^{i-1}G'\mod p^i \quad
+  \end{equation*}
+  \item To solve this congruence, use Pauer's technique as presented in the Arnolds paper; using the originally computed modulo-${p}$ Groebner basis ${G_p}$ to reduce ${G'}$ to a new set ${G''}$ where there are no overlapping power products between ${G''}$ and ${Lp(G_p)}$.  \\ Consider ${M}$ the matrix of polynomials used in this reduction of ${G'}$.  Then, ${G' = MG_p + G''}$.\\ Take ${Z'' = Z' - MZ^{(1)}}$, with ${Z^{(1)}}$ as defined for the base case above.  These new sets ${Z'',\, G''}$ are solutions for the congruence above.
+  \item Compute ${G_{p^i}}$ the reduced monic Groebner basis of ${I_{p^i}}$, with ${G_{p^i} = G^{(i)} = G_{p^{i-1}} + p^{i-1}G'}$
+  \item Now that the ${G_{p^i}}$ has been computed, check the termination condition: apply Farey reconstruction (or another method of rational reconstruction) to rebuild the basis over the rationals.  If this result is the same as the rebuilt basis for ${i-1}$ then the result has stabilized, and the algorithm terminates.  Otherwise, repeat this process for ${i+1}$.
+\end{enumerate}      
+
+Note that in either case (CRA or Hensel), the result must be verified for correctness before the computed basis can be returned as the solution.  This check is necessary as there is not a guarantee that the prime (or first prime in the CRA) over which the bases were computed were actually lucky primes.  This check is fairly straightforward: the S-polynomials for every pair of polynomials in the computed basis ${G}$ must be verified to be equal to zero.  If this check fails, then the algorithm must restart from the outset.  Note that the Hensel approach is more vulnerable to bad primes, as seen above.
 
 \section{Maple}
 
@@ -961,9 +996,11 @@ Some technical details of the Maple Groebner basis package are discussed below:
 
 There are various versions of the basis computation algorithms available in the Maple Groebner package; these include the classic Buchberger algorithm, the F4 algorithm implemented in Maple (maplef4), and the F4 algorithm implemented as an external C library, FGB.  In Maple, when a Groebner basis computation is performed, this amounts to a call to the Basis command in the Groebner package - the arguments specified are the basis for the current ideal, the monomial ordering used, and optional arguments specifying the algorithm type used, and the characteristic prime if working over a modular prime coefficient field.   
 
-The current most efficient built-in basis algorithm in Maple is the FGB algorithm.  This is an efficient, optimized implementation of the Faugere F4 algorithm; it is written in C which also increases the efficiency of the algorithm.  However, this method suffers from lack of implementation of various options: for instance, it cannot be used for any monomial ordering other than degree-based (it does not support lex orderings).  In addition, when using the characteristic prime option to specify a modular field, FGB does not support primes greater than ${2^{16}}$, which becomes an issue when calling the modular reconstruction methods.  In these cases, various prime images are required, and this number increases as the primes are smaller.  In addition, smaller primes leads to the a higher probability of the primes being bad primes.  The comparative effect of efficiency between using more, smaller primes and fewer, larger primes will be examined in the results section.  However, note here that primes used for CRA/Hensel here were in the neighbourhood of ${2^32}$; in this way, the coefficients are guaranteed to be integers smaller than the maximum word space of the system, which means that the computations can be performed without external calls to (EXPLAIN THIS BETTER).  However, when using FGB the primes were restricted to the smaller size.
+The current most efficient built-in basis algorithm in Maple is the FGB algorithm.  This is an efficient, optimized implementation of the Faugere F4 algorithm; it is written in C which also increases the efficiency of the algorithm.  However, this method suffers from lack of implementation of various options: for instance, it cannot be used for any monomial ordering other than degree-based (it does not support lex orderings).  In addition, when using the characteristic prime option to specify a modular field, FGB does not support primes greater than ${2^{16}}$, which becomes an issue when calling the modular reconstruction methods.  In these cases, various prime images are required, and this number increases as the primes are smaller.  In addition, smaller primes leads to the a higher probability of the primes being bad primes.  The comparative effect of efficiency between using more, smaller primes and fewer, larger primes will be examined in the results section.  However, note here that primes used for CRA/Hensel here were in the neighbourhood of ${2^{32}}$; in this way, the coefficients are guaranteed to be integers smaller than the maximum word space of the system, which means that the computations can be performed without external calls to (EXPLAIN THIS BETTER).  However, when using FGB the primes were restricted to the smaller size.
 
-The more efficient algorithms also cause issues for Hensel construction; Hensel requires another optional argument in the basis computation, output=extended, which specifies that the basis computation should return some intermediate matrices (the Syzygy matrix and ONE OTHER) as discussed in the Pauer (???) paper.  The Hensel lifting algorithm itself is implemented with these matrices as input.  However, the functionality of Faugere's algorithm is such that the intermediate matrices are not computed, and therefore output=extended is not an option for the non-Buchberger algorithms.  
+The more efficient algorithms also cause issues for Hensel construction; Hensel requires another optional argument in the basis computation, output=extended, which specifies that the basis computation should the Syzygy matrix, ${Z^{(1)}}$ as discussed above in the description of the Hensel Groebner approach from the Arnolds paper.  The Hensel lifting algorithm itself is implemented with this matrices as input.  However, the functionality of Faugere's algorithm is such that the intermediate matrices are not computed, and therefore output=extended is not an option for the non-Buchberger algorithms.  
+
+The algorithm selected for the Groebner basis computation does not change the process of the reconstruction; this is an external call.
 
 \chapter{Methodology and Results}
 
@@ -993,7 +1030,7 @@ The above problems were attempted with the various algorithms (Buchberger, Maple
 
 -- here is the data
 
-
+\singlespacing
 \refstepcounter{Table}
 \begin{center}
   \begin{tabular}{| l || r | r | r || r | r || r | r ||}
@@ -1038,6 +1075,7 @@ The above problems were attempted with the various algorithms (Buchberger, Maple
   \hline
   \end{tabular}
 \end{center}
+\doublespacing
 
 \begin{note}
   The cells marked \textit{\textbf{DNF}} indicate that this problem "did not finish" (or ran out of mem -- RECHECK FILES); in these cases it was due to the Maple kernel running out of memory and crashing with a "not enough memory available" or "object too large" error.  
@@ -1054,7 +1092,7 @@ These trends can also be visually represented by way of bar graphs.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{bb_tests.png}
+  \includegraphics[scale=0.7]{bb_tests.png}
   \caption{Buchberger's algorithm, comparing the methods \label{fig:bb_tests}}
 \end{figure}
 
@@ -1064,13 +1102,13 @@ Similar graphs can be made for the MapleF4 and FGB algorithms.  Note, however, t
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{f4_tests.png}
+  \includegraphics[scale=0.7]{f4_tests.png}
   \caption{MapleF4 algorithm, comparing the methods \label{fig:f4_tests}}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{fgb_tests.png}
+  \includegraphics[scale=0.7]{fgb_tests.png}
   \caption{FGB algorithm, comparing the methods \label{fig:fgb_tests}}
 \end{figure}
 
@@ -1107,6 +1145,7 @@ The column headers are:
   \item Images: the number of modular images which were required
 \end{itemize} 
 
+\singlespacing
 \refstepcounter{Table}
 \begin{center}
   \begin{tabular}{| l || r | r | r || r || r ||}
@@ -1205,24 +1244,25 @@ The column headers are:
   \hline
   \end{tabular}
 \end{center}
+\doublespacing
 
 Examination of the above tables yields the unfortunate conclusion that the majority of the time spent during the CRA basis computations is spent doing the modular basis computations with the Groebner package; this is consistent across all 3 algorithms.  Since the Groebner package is unmodifiable by the user, this means that this section of the CRA process cannot be optimized.  Graphs were made comparing the total modular basis computation time (i.e. the section of CRA basis computation time spent on modular images alone) with the nonmodular Maple computation.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{bb_mapleVsCRA_modBasisTime.png}
+  \includegraphics[scale=0.7]{bb_mapleVsCRA_modBasisTime.png}
   \caption{Buchberger's algorithm, comparing nonmodular to CRA mod basis time \label{fig:f4_tests}}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{f4_mapleVsCRA_modBasisTime.png}
+  \includegraphics[scale=0.7]{f4_mapleVsCRA_modBasisTime.png}
   \caption{MapleF4 algorithm, comparing nonmodular to CRA mod basis time \label{fig:f4_tests}}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{fgb_mapleVsCRA_modBasisTime.png}
+  \includegraphics[scale=0.7]{fgb_mapleVsCRA_modBasisTime.png}
   \caption{FGB algorithm, comparing nonmodular to CRA mod basis time \label{fig:f4_tests}}
 \end{figure}  
 
@@ -1301,6 +1341,7 @@ The FGB 16-bit prime data is included above in the \textbf{Methodology and Resul
 
 Note that, as above, the \textbf{DNF} problems are not included in the CRA data tables.
 
+\singlespacing
 \refstepcounter{Table}
 \begin{center}
   \begin{tabular}{| l || r | r | r || r || r ||}
@@ -1366,6 +1407,7 @@ Note that, as above, the \textbf{DNF} problems are not included in the CRA data 
   \hline
   \end{tabular}
 \end{center}
+\doublespacing
 
 Referring back to the 32-bit data tables for the CRA with these algorithms respectively, it is noted that the number of modular images here is the same as those necessary for the 16-bit FGB CRA, and close to twice that of the 32-bit CRA.  This is expected, as less prime images are necessary as the size of the prime increases; less primes are required for the product to be larger enough for the reconstruction to stabilize at the unique solution.
 
