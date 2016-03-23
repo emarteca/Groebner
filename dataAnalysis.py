@@ -94,7 +94,7 @@ for i in range( len( cra_bb)):
 
 ax.set_ylabel('Time (log scaled)', fontsize=13)
 ax.set_xticks(ind+width)
-ax.set_xticklabels( ('arnborgI', 'arnborgII', 'arnborgIII', 'arnborgV', 'forsman1', 'forsman2', 'forsman3', 'forsman4', 'katsura7', 'hell-in', 'kiyoshi5', 'caprasse', 'mike2', 'p27', 'p33', 'p34', 'p41', 'trav1', 'cassou_POSSO', 'cyclic6'), ha='right', rotation=50, fontsize=9)
+ax.set_xticklabels( ('arnborgI', 'arnborgII', 'arnborgIII', 'arnborgV', 'forsman1', 'forsman2', 'forsman3', 'forsman4', 'katsura7', 'hellin', 'kiyoshi5', 'caprasse', 'mike2', 'czap27', 'czap33', 'czap34', 'czap41', 'trav1', 'cassou_POSSO', 'cyclic6'), ha='right', rotation=50, fontsize=9)
 ax.set_ylim([ 10**(-2), 3*10**3])
 
 
