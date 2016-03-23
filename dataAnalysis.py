@@ -42,29 +42,29 @@ width = 0.2       # the width of the bars
 fig = plt.figure()
 ax = fig.add_subplot( 111)
 
-rects1 = ax.bar(ind, maple_bb, width, color='b', log=True, label='Maple')
-rects2 = ax.bar(ind+width, cra_bb, width, color='r', log=True, label='CRA')
-# rects3 = ax.bar(ind+2*width, hensel_bb, width, color='y', log=True, label='Hensel')
+# rects1 = ax.bar(ind, maple_bb, width, log=True, label='Maple', color='white', edgecolor='black')
+# rects2 = ax.bar(ind+width, cra_bb, width, log=True, label='CRA', color='grey', edgecolor='black')
+# rects3 = ax.bar(ind+2*width, hensel_bb, width, log=True, label='Hensel', color='black', edgecolor='black')
 
-# rects1 = ax.bar(ind, maple_f4, width, color='b', log=True, label='Maple')
-# rects2 = ax.bar(ind+width, cra_f4, width, color='r', log=True, label='CRA')
+# rects1 = ax.bar(ind, maple_f4, width, log=True, label='Maple', color='white', edgecolor='black')
+# rects2 = ax.bar(ind+width, cra_f4, width, log=True, label='CRA', color='grey', edgecolor='black')
 
-# rects1 = ax.bar(ind, maple_fgb, width, color='b', log=True, label='Maple')
-# rects2 = ax.bar(ind+width, cra_fgb, width, color='r', log=True, label='CRA')
-
-
-
-# rects1 = ax.bar(ind, maple_bb, width, color='b', log=True, label='BB')
-# rects2 = ax.bar(ind+width, maple_f4, width, color='r', log=True, label='F4')
-# rects3 = ax.bar(ind+2*width, maple_fgb, width, color='y', log=True, label='FGB')
-
-# rects1 = ax.bar(ind, cra_bb, width, color='b', log=True, label='BB')
-# rects2 = ax.bar(ind+width, cra_f4, width, color='r', log=True, label='F4')
-# rects3 = ax.bar(ind+2*width, cra_fgb, width, color='y', log=True, label='FGB')
+rects1 = ax.bar(ind, maple_fgb, width, log=True, label='Maple', color='white', edgecolor='black')
+rects2 = ax.bar(ind+width, cra_fgb, width, log=True, label='CRA', color='grey', edgecolor='black')
 
 
-# rects1 = ax.bar(ind, numImgs_cra_f4, width, color='b', log=False, label='F4/BB')
-# rects2 = ax.bar(ind+width, numImgs_cra_fgb, width, color='r', log=False, label='FGB')
+
+# rects1 = ax.bar(ind, maple_bb, width, log=True, label='BB', color='white', edgecolor='black')
+# rects2 = ax.bar(ind+width, maple_f4, width, log=True, label='F4', color='grey', edgecolor='black')
+# rects3 = ax.bar(ind+2*width, maple_fgb, width, log=True, label='FGB', color='black', edgecolor='black')
+
+# rects1 = ax.bar(ind, cra_bb, width, log=True, label='BB', color='white', edgecolor='black')
+# rects2 = ax.bar(ind+width, cra_f4, width, log=True, label='F4', color='grey', edgecolor='black')
+# rects3 = ax.bar(ind+2*width, cra_fgb, width, log=True, label='FGB', color='black', edgecolor='black')
+
+
+# rects1 = ax.bar(ind, numImgs_cra_f4, width, log=False, label='F4/BB', color='white', edgecolor='black')
+# rects2 = ax.bar(ind+width, numImgs_cra_fgb, width, log=False, label='FGB', color='grey', edgecolor='black', hatch="/")
 
 
 timeOverNum_bb = cra_bb
@@ -77,24 +77,24 @@ for i in range( len( cra_bb)):
 	timeOverNum_bb[ i] = timeOverNum_bb[ i]/numImgs_cra_f4[ i];
 
 
-# rects1 = ax.bar(ind, timeOverNum_bb, width, color='b', log=True, label='BB')
-# rects2 = ax.bar(ind+width, timeOverNum_f4, width, color='r', log=True, label='F4')
-# rects3 = ax.bar(ind+2*width, timeOverNum_fgb, width, color='y', log=True, label='FGB')
+# rects1 = ax.bar(ind, timeOverNum_bb, width, log=True, label='BB', color='white', edgecolor='black')
+# rects2 = ax.bar(ind+width, timeOverNum_f4, width, log=True, label='F4', color='grey', edgecolor='black')
+# rects3 = ax.bar(ind+2*width, timeOverNum_fgb, width, log=True, label='FGB', color='black', edgecolor='black')
 
 
-# rects1 = ax.bar(ind, maple_bb, width, color='b', log=True, label='Maple')
-# rects2 = ax.bar(ind+width, timeOverNum_, width, color='r', log=True, label='CRA')
+# rects1 = ax.bar(ind, maple_bb, width, log=True, label='Maple', color='white', edgecolor='black')
+# rects2 = ax.bar(ind+width, timeOverNum_, width, log=True, label='CRA', color='grey', edgecolor='black')
 
-# rects1 = ax.bar(ind, maple_f4, width, color='b', log=True, label='Maple')
-# rects2 = ax.bar(ind+width, timeOverNum_f4, width, color='r', log=True, label='CRA')
+# rects1 = ax.bar(ind, maple_f4, width, log=True, label='Maple', color='white', edgecolor='black',)
+# rects2 = ax.bar(ind+width, timeOverNum_f4, width, log=True, label='CRA', color='grey', edgecolor='black')
 
-#rects1 = ax.bar(ind, maple_fgb, width, color='b', log=True, label='Maple')
-#rects2 = ax.bar(ind+width, timeOverNum_fgb, width, color='r', log=True, label='CRA')
+#rects1 = ax.bar(ind, maple_fgb, width, log=True, label='Maple', color='white', edgecolor='black')
+#rects2 = ax.bar(ind+width, timeOverNum_fgb, width, log=True, label='CRA', color='grey', edgecolor='black')
 
 
 ax.set_ylabel('Time (log scaled)', fontsize=13)
 ax.set_xticks(ind+width)
-ax.set_xticklabels( ('arnborgI', 'arnborgII', 'arnborgIII', 'arnborgV', 'forsman1', 'forsman2', 'forsman3', 'forsman4', 'katsura7', 'hell-in', 'kiyoshi5', 'caprasse', 'mike2', 'p27', 'p33', 'p34', 'p41', 'trav1', 'cassou_POSSO', 'cyclic6'), ha='right', rotation=50)
+ax.set_xticklabels( ('arnborgI', 'arnborgII', 'arnborgIII', 'arnborgV', 'forsman1', 'forsman2', 'forsman3', 'forsman4', 'katsura7', 'hell-in', 'kiyoshi5', 'caprasse', 'mike2', 'p27', 'p33', 'p34', 'p41', 'trav1', 'cassou_POSSO', 'cyclic6'), ha='right', rotation=50, fontsize=9)
 ax.set_ylim([ 10**(-2), 3*10**3])
 
 

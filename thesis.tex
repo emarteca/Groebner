@@ -306,7 +306,7 @@ The categorization of the initial space determines what structure the univariate
   \item ${D[x]}$ is a \textbf{EuD} for ${D}$ a \textbf{field}, with valuation function ${v(p(x)) = deg(p(x))}$ 
 \end{itemize}  
 
-This leads to a few interesting points: for one thing, there will never be a polynomial field.  A polynomial extension over a field results in a EuD, and not a field.  This makes sense, as for a space to be a field every non-zero element in the set would need to have an inverse also in the set - and polynomials do not have inverses in the polynomial space (i.e. there are no polynomials ${p_1(x) \neq 1, p_2(x) \neq 1}$ such that ${p_1(x) \cdot p_2(x) = 1 \, \forall \, x}$).  So, a polynomial space cannot be a field.
+This leads to a few interesting points: for one thing, a polynomial ring is never a polynomial field.  A polynomial extension over a field results in a EuD, and not a field.  This makes sense, as for a space to be a field every non-zero element in the set would need to have an inverse also in the set - and polynomials do not have inverses in the polynomial space (i.e. there are no non-constant polynomials ${p_1(x),\, p_2(x)}$ such that ${p_1(x) \cdot p_2(x) = 1}$).  So, a polynomial space cannot be a field.
 
 Another point to consider is the extension of the concept to multivariate polynomials.  To approach this problem, multivariate polynomials can be represented as univariate polynomials extended recursively by the other variables.  This way, the same definitions and group relationships can be used in figuring out what type of space will be present.  
 
@@ -328,53 +328,49 @@ Ideals are another algebraic structure, building off of rings and ring structure
 
 \begin{defn}\label{defn: Ideals}
   An additive subgroup N of ring ${(R, +, *)}$ is an \textbf{ideal} iff 
-  \begin{equation*} aN \subseteq R \qquad ; \qquad Nb \subseteq R \; \forall a, b \in R \end{equation*}
+  \begin{equation*} aN \subseteq R \qquad ; \qquad Nb \subseteq R \;\; \forall a, b \in R \end{equation*}
   This criterion can be written equivalently as
-  \begin{equation*} a*n, \, n*a \in N \, \forall \, n \in N, \, a \in R \end{equation*}
+  \begin{equation*} a*n, \, n*a \in N \;\; \forall \, n \in N, \, a \in R \end{equation*}
   
-  In other words: ideals are groups over a ring which are closed with respect to the ring's multiplication operation i.e. every ideal N contains all of its cosets (and both left and right).  
+  In other words: ideals are subgroups within a ring which are closed with respect to the ring's multiplication operation (i.e. every ideal N contains all of its left and right multiplicative cosets).  
 \end{defn}
 
 The idea of an ideal can be demonstrated in part by the following simple example.  
 
 \begin{example}\label{ex: Simple ideal}
-  One classic demonstrative example of an ideal is the even numbers over the integers.\\ 
-  The even numbers forms an additive subgroup of the integers, since 
+  One classic demonstrative example of an ideal is the subset of even numbers within the integers.  The even integers forms an additive subgroup of the integers, since 
   \begin{itemize}
-    \item the set of even numbers is non-empty (contains the additive identity, 0)
-    \item every even number ${x}$ has additive inverse ${-x}$ which is also an even number for all even ${x}$
-    \item the set is closed under addition, since the sum of 2 even numbers is always even
+    \item the set of even integers is non-empty (contains the additive identity, 0)
+    \item every even number ${2n}$ has additive inverse ${-2n}$ which is also an even number for all even ${2n}$, ${n \in \mathbb{Z}}$
+    \item the set is closed under addition, since the sum of two even numbers is always even
   \end{itemize}
-  Now, for this group to be an ideal, it must satisfy the "absorption" property with respect to integer multiplication.\\
-  However, consider the multiplication of integers:
+  Now, for this group to be an ideal, it must satisfy the above "absorption" property with respect to integer multiplication.  However, consider the multiplication of integers:
   \begin{itemize}
     \item the product of 2 even integers is an even integer
     \item the product of an even and an odd integer is an even integer
   \end{itemize}
-  So, the integer ring over integer multiplication and addition is an ideal.
+  So, the even integers forms an ideal within the ring ${(\mathbb(Z), +, \cdot)}$.
 \end{example}
 
-The idea for ideals is similar to that of previous algebraic objects, however now it takes into account the idea of cosets.
+The concept of an ideal within a ring is analogous to the concept of a normal subgroup within a group. % CITE FRALEIGH
 
-All ideals are subrings in the ring in which they are considered.  Similarly to other sub-structures (subgroups, subrings, etc), ideals share the idea of proper and trivial.  In this case, a \textbf{proper ideal} is one which is a proper subring i.e. in which the set is a proper subset of the set considered in the ring.  If the ideal is an improper subring i.e. the set is the ring set itself, then this is labelled as a \textbf{unit ideal}.  
+All ideals are subrings in the ring in which they are considered.  Similarly to other sub-structures (subgroups, subrings, etc), ideals share the idea of proper and trivial.  In this case, a \textbf{proper ideal} is one which is a proper subring; i.e. in which the set is a proper subset of the ring.  If the ideal is an improper subring, i.e. the set is the ring set itself, then this is labelled as a \textbf{unit ideal}.  
 
-A simple extension to the idea of ideals is the concept of \textbf{principal ideals}.  This subset of ideals contains those which can be generated by a single element i.e. cyclic ideals.  Rings in which all ideals are principal are labelled \textbf{principal ideal rings}.  Note that if a ring is cyclic, then all ideals will be principal.  This is the case since in a cyclic ring, all subrings are cyclic.  Since ideals are subrings, it follows that all ideals in a cyclic ring are also cyclic.  Therefore, cyclic rings are principal ideal rings.  However, the converse does not hold i.e. the existence of a principal ideal does not mean that the ring itself is a principal ideal ring.  
+A simple extension to the idea of ideals is the concept of \textbf{principal ideals}.  This subset of ideals contains those which can be generated by a single element, i.e. cyclic ideals.  Rings in which all ideals are principal are labelled \textbf{principal ideal rings}.  Note that if a ring is cyclic, then all ideals will be principal.  This is the case since in a cyclic ring, all subrings are cyclic.  Since ideals are subrings, it follows that all ideals in a cyclic ring are also cyclic.  Therefore, cyclic rings are principal ideal rings.  However, the converse does not hold; i.e. the existence of a principal ideal does not mean that the ring itself is a principal ideal ring.  
 
 Ideals can be specified over the subset of rings which are classified as more particular algebraic structures such as integral domains and fields.  In this case, the one of more interest is the \textbf{principal ideal domain}, which is an integral domain in which every ideal is principal.  
 
-\begin{example}\label{ex: Principal ideal}
+% \begin{example}\label{ex: Principal ideal}
   
-\end{example}
+% \end{example}
 
-Another subtype of rings is a \textbf{Noetherian Ring}, introduced by Emmy Noether.  The idea of Noetherian rings relies on the \textbf{ascending chain condition} for ideals.
+Another subtype of rings is a \textbf{Noetherian ring}, introduced by Emmy Noether.  The idea of Noetherian rings relies on the \textbf{ascending chain condition} for ideals.
 
 \begin{defn}\label{Ascending Chain Condition}
-  The \textbf{ascending chain condition} is defined over a partially ordered set ${S}$ is satisfied if all increasing sequences over ${S}$ eventually converge to a constant.
-
-  Note: not every sequence must converge to the same constant, but they all must converge.
+  The \textbf{ascending chain condition}, defined over a partially ordered set ${S}$, is satisfied if all increasing sequences over ${S}$ eventually converge to a constant.  (Note that not every sequence must converge to the same constant, but they all must converge.)
 \end{defn}
 
-The ascending chain condition for ideals is defined in terms of ordering by the subset relation i.e. for any chain of ideals in some ring ${R}$, and ${k > 1}$
+The ascending chain condition for ideals is defined in terms of ordering by the subset relation; i.e. for any chain of ideals in some ring ${R}$, and ${k > 1}$
 \begin{equation*}
   I_1 \subseteq \cdots \subseteq I_k \subseteq \cdots
 \end{equation*}
@@ -382,7 +378,7 @@ there is an ${n \geq k}$ such that
 \begin{equation*}
   I_n = I_{n+1} = \cdots
 \end{equation*}
-i.e. for every ascending chain of ideals in ${R}$, the ascending chain condition is satisfied.
+That is, for every ascending chain of ideals in ${R}$, the ascending chain condition is satisfied.
 
 \begin{defn}\label{Noetherian rings}
   A \textbf{Noetherian ring} is a ring where the ascending chain condition is satisfied for sequences of ideals.
@@ -396,7 +392,17 @@ i.e. for every ascending chain of ideals in ${R}$, the ascending chain condition
   From this, it follows that the ascending chain condition is satisfied, as any ascending chain will be finite.  Therefore, the ring must be Noetherian.
 \end{note}
 
-Polynomial Ideals
+A particular subset of ideals are the \textbf{polynomial ideals}.  This forms the set of ideals within polynomial rings, i.e. coefficient rings extended by one or more indeterminates.  These are of particular interest in this case, as Groebner bases are formed for polynomial ideals.
+
+\begin{example}\label{ex:polynom ideals}
+  Within a polynomial ring ${R[x]}$, the ideal generated by the set ${\{p_1(x), \ldots, p_k(x)\} \; \in R[x]}$ is 
+  \begin{equation*}
+    <p_1(x), \ldots p_k(x)> = \left\{\sum_{i=1}^{k} a_i(x)p_i(x) \;\; : \;\; a_i(x) \in R[x]\right\}
+  \end{equation*}
+  which is the set of all combinations of multiples of the ${p_i}$ by elements in the ring ${R[x]}$.  This generating set ${\{p_1(x), \ldots, p_k(x)\}}$ is referred to as a \textbf{basis} of this ideal.
+
+  Note that this example is for univariate polynomial ideals, however the idea can be simply extended to multivariate polynomial ideals.
+\end{example}
 
 
 
@@ -420,31 +426,29 @@ Groebner bases are computed with respect to a particular monomial ordering; such
   In the case where the coefficient field is ordered, a monomial ordering between monomials of the same degree can also be defined, considering the ordering of their respective coefficients.  For example, when considering polynomials over the integers, ${3x > 2x}$ since ${3 > 2}$, regardless of the fact that both these monomials are of degree 1.
 \end{note}
 
-The idea of ordering can be extended to multivariate polynomials, however this requires slightly more work, as the concept is not as intuitive.  While ordering for univariate polynomials is strictly degree-based, when considering multivariate polynomials, the ordering must be considered both degree-wise and lexicographically.  The same polynomials can be ordered in various different ways depending on the monomial ordering chosen; this in turn can have large effects on the efficiency of algorithms working over this polynomial space, including the Groebner basis algorithms.
+The idea of ordering can be extended to multivariate polynomials, however this requires slightly more work, as the concept is not as intuitive.  While ordering for univariate polynomials is strictly degree-based, when considering multivariate polynomials, the ordering can be considered both degree-wise and lexicographically.  The monomials within a polynomial can be ordered in various different ways depending on the monomial ordering chosen; this in turn can have large effects on the efficiency of algorithms working over this polynomial space, including the Groebner basis algorithms.
 
-Whether degree-based or lexicographical (known henceforth as lex) ordering is selected, the variables must still be ordered with respect to each other i.e. an ordering must be chosen.  Then, in degree ordering the total degree is the first factor considered; so, monomials with a higher total degree are considered greater regardless of the degrees of the individual variables making up the monomial.  Then, if the total degree is the same, ordering is lexicographical given the order specified.  For lex, the ordering is the variable ordering specified.
+Whether degree-based or lexicographical (known henceforth as lex) ordering is selected, the variables must still be ordered with respect to each other; i.e. an ordering must be chosen.  Then, in degree ordering the total degree is the first factor considered; so, monomials with a higher total degree are considered greater regardless of the degrees of the individual variables making up the monomial.  Then, if the total degree is the same, ordering is lexicographical given the order specified.  For lex ordering, the ordering is the variable ordering specified.
+
+Since lex ordering considers both the lex ordering specified, and, in the event of a tie, the degree-based ordering, the condition of a tie has already been resolved.  However, for degree-based orderings, ties can be broken by either using a lex ordering, or a reverse-lex ordering.  This choice depends on the implementation of the ordering; for instance, in Maple, the degree-based ordering \texttt{tdeg} uses reverse-lex in the event of a tie.
 
 To explain the differences and functionality of degree and lex ordering, demonstrative examples will be used.  
 
 \begin{example}\label{ex: Multivariate degree ordering}
-  Consider the polynomials ${x^2y^2, xy^3, x^3y, x^4y}$, with ordering ${x > y}$.\\
+  Consider the polynomials ${x^2y^2, xy^3, x^3y, x^4y}$, where ${x > y}$.\\
   The degree-based ordering would be as follows:
-  ${x^4y >}$ everything else, since it has total degree 5 (sum of exponents) while the rest of the monomials have total degree 4.\\
-  Then, ${x^3y > x^2y^2 > xy^3}$ since, when the total degrees are identical, then the ordering is based on the degree of the "greater" variable.
+  ${x^4y >}$ everything else, since it has total degree 5 (sum of exponents) while the rest of the monomials have total degree 4.  Then, ${x^3y > x^2y^2 > xy^3}$ since, when the total degrees are identical, then the ordering is based on the degree of the "greater" variable.
 
   Similarly, if the initial variable ordering chosen was ${y > x}$, the ordering would be as follows:
-  ${x^4y >}$ everything else, since total degree is still 5.  Then, ${xy^3 > x^2y^2 > x^3y}$, since now ordering is with respect to y i.e. y is the "greater" variable.
+  ${x^4y >}$ everything else, since total degree is still 5.  Then, ${xy^3 > x^2y^2 > x^3y}$, since now ordering is with respect to ${y}$ i.e. ${y}$ is the "greater" variable.
 \end{example}
 
 In contrast, consider the same example but with lex ordering instead.
 \begin{example}\label{ex: Multivariate lex ordering}
-  Consider again the polynomials ${x^2y^2, xy^3, x^3y, x^4y}$, with ordering ${x > y}$.\\
-  The lex ordering would be as follows:
-  Then, ${x^4y > x^3y > x^2y^2 > xy^3}$ since the ordering is chosen with respect to the degree of ${x}$ alone (in the event of a tie in degree, then the ordering would be considered with respect to the degree of ${y}$).
+  Consider again the polynomials ${x^2y^2, xy^3, x^3y, x^4y}$, with ${x > y}$.  The lex ordering would order these as ${x^4y > x^3y > x^2y^2 > xy^3}$ since the ordering is chosen with respect to the degree of ${x}$ alone (in the event of a tie in degree, then the ordering would be considered with respect to the degree of ${y}$).
 
   Similarly, if the initial variable ordering chosen was ${y > x}$, the ordering would be as follows:
-  ${xy^3 > x^2y^2 >}$ the other terms, since degree in ${y}$ is the ordering factor (recall, the remaining terms have ${y^1}$).\\
-  Then, for the remaining terms, ${x^4y > x^3y}$ since, as they have the same degree in ${y}$, ordering is now considered with respect to degree in ${x}$.
+  ${xy^3 > x^2y^2 > x^4y > x^3y}$, since degree in ${y}$ is the ordering factor (recall, the remaining terms have ${y^1}$).  Then, for the remaining terms, ${x^4y > x^3y}$ since, as they have the same degree in ${y}$, ordering is now considered with respect to degree in ${x}$.
 \end{example}
 
 These ordering techniques can be applied to polynomials with an arbitrary number of variables.  Although not immediately clear from the concepts, the monomial ordering chosen (either degree-based or lex, and, within this choice, the ordering of the variables chosen) can have a large effect on the efficiency of the Groebner basis computations.  The same problem can be considered with different orderings and have massively different timings for the computations (as will be seen below with tested examples).
@@ -452,9 +456,9 @@ These ordering techniques can be applied to polynomials with an arbitrary number
 
 \section{Groebner Basis Characterization}
 
-Polynomial ideals can be specified by a basis; this specifies a linearly independent generating set for the ideal.  However, this basis is not unique - there are many possible configurations or potential elements which could make up a basis for the ideal.  
+Polynomial ideals can be specified by a basis; this specifies a generating set for the ideal.  However, this basis is not unique - there are many possible configurations or potential elements which could make up a basis for the ideal.  
 
-A Groebner basis is a particular basis for a polynomial ideal, which satisfies various conditions, detailed below.  There are various advantages to this set.  The normalized Groebner basis is unique to each ideal, and can therefore be used as a sort of identifier for the ideal. 
+A Groebner basis is a particular type of basis for a polynomial ideal, which satisfies various conditions, detailed below.  There are various advantages to these sets.  The normalized Groebner basis is unique to each ideal, and can therefore be used as a sort of identifier for the ideal. 
 
 The following definition presents various logically equivalent definitions for what makes a basis a Groebner basis. 
 
@@ -471,11 +475,11 @@ The following definition presents various logically equivalent definitions for w
   \end{equation*}
 \end{defn}
 
-This definition, although concise, is not complete alone; the Reduce function has not been defined.
+This definition, although concise, is not complete as it stands; the \textit{Reduce} function has not been defined.
 
-This concept of reduction is essential to Groebner bases, and to the computation of the bases using Buchberger's Algorithm.  Reduction can be defined of a polynomial over another polynomial, or a polynomial over a set of polynomials (such as in the definition above, ${Reduce( p, G)}$, reduction of polynomial ${p}$ over set ${G}$).  
+This concept of reduction is essential to Groebner bases, and to the computation of the bases using Buchberger's algorithm.  Reduction can be defined for a polynomial relative to another polynomial, or for a polynomial relative to a set of polynomials.  (In the definition above, ${Reduce( p, G)}$ refers to reduction of polynomial ${p}$ relative to set ${G}$.)  
 
-Reducing polynomial ${p}$ over another polynomial ${q}$, ${Reduce( p, q)}$ amounts to multivariate division of ${\frac{p}{q}}$.  This is a recursive extension of the Euclidean algorithm for division of univariate polynomials, dependent on the monomial ordering specified.  The idea is to consider the multivariate polynomial as a "recursive univariate polynomial".  This concept is best described by an example: consider the polynomial ${}$ EXAMPLE ON THE SYMBOLIC MIDTERM FOR POLYNOMIAL LONG DIVISION.
+Reducing polynomial ${p}$ over another polynomial ${q}$, ${Reduce( p, q)}$ amounts to multivariate division of ${p}$ by ${q}$, with remainder ${r}$.  This is a recursive extension of the Euclidean algorithm for division of univariate polynomials, dependent on the monomial ordering specified.  The idea is to consider the multivariate polynomial as a "recursive univariate polynomial".  This concept is best described by an example: consider the polynomial ${}$ EXAMPLE ON THE SYMBOLIC MIDTERM FOR POLYNOMIAL LONG DIVISION.
 
 A polynomial ${p}$ is considered \textbf{reducible} over polynomial ${q}$ if a monomial in ${p}$ can be written as a multiple of the leading monomial of ${q}$.  It is \textbf{irreducible} if there are no monomials in ${p}$ which are multiples of the leading monomial of ${q}$.    
 
@@ -483,9 +487,9 @@ A polynomial ${p}$ is considered \textbf{reducible} over polynomial ${q}$ if a m
   The \textbf{leading monomial} of a polynomial is the monomial with the highest order with respect to the monomial ordering specified.
 \end{note}   
 
-Reduction over a set ${G}$ of polynomials is the iterative application of the ${Reduce}$ over each of the polynomials in the set, until it is irreducible over the whole set.  This reduced polynomial is termed the \textbf{normal form} of the polynomial with respect to the set.
+Reduction relative to a set ${G}$ of polynomials is the iterative application of the ${Reduce}$ procedure over each of the polynomials in the set, until it is irreducible with respect to every polynomial in the set.  This reduced polynomial is termed the \textbf{normal form} of the polynomial with respect to the set.
 
-Referring back to the definition of a Groebner basis above, the ${Reduce}$ can now be considered more precisely: a Groebner basis is a basis for a polynomial ideal ${I}$ over field ${F}$; polynomial ${p \in I}$ is a member of the basis if and only if it is irreducible over the basis.  This has the implication that every polynomial which is irreducible over the set is in the set; every other polynomial in the ideal has a leading monomial which is a multiple of one or more elements in the set.
+Referring back to the definition of a Groebner basis above, the ${Reduce}$ procedure can now be considered more precisely: a Groebner basis is a basis for a polynomial ideal ${I}$ over field ${F}$ when polynomial ${p \in I}$ is a member of the basis if and only if the reduction of every polynomial with respect to the set ${G}$ is zero.  
 
 \subsection{Buchberger's Algorithm}
 
@@ -494,7 +498,7 @@ The first algorithm for computing Groebner bases was proposed by Bruno Buchberge
 \begin{algorithm}[H]
 \caption{Buchberger}\label{buchberger}
 \begin{algorithmic}[1]
-\Input $\quad P$ generating set for a polynomial ideal; $ord$ monomial ordering
+\Input $\quad P$, generating set for a polynomial ideal; $ord$, a monomial ordering (used to define leading monomials)
 \Output Groebner Basis for the ideal generated by $P$
 \Procedure{Buchberger}{}
 \State $G \gets P$
@@ -514,7 +518,7 @@ The first algorithm for computing Groebner bases was proposed by Bruno Buchberge
 \end{algorithmic}
 \end{algorithm}  
 
-The basic idea is to start with a basis (i.e. a generating set) for the ideal, and repeatedly iterate over the set until all of the polynomials which are irreducible over the set are added to the set.  This is repeated until every combination of polynomials is either in the set or irreducible over the set.  Notice the call to ${Reduce}$; this is the reduction of a polynomial over the set ${G}$ as discussed above.   
+The basic idea is to start with a basis (i.e. a generating set) for the ideal, and repeatedly iterate over the set until all of the polynomials which are irreducible over the set are added to the set.  This is repeated until every combination of polynomials is either in the set its reduction with respect to the set is 0.  Notice the call to ${Reduce}$; this is the reduction of a polynomial over the set ${G}$ as discussed above.   
 
 One new concept which the algorithm requires is the computation of \textbf{S-polynomials}.  Computation of S-polynomials is done through the following formula: 
 
@@ -526,7 +530,7 @@ One new concept which the algorithm requires is the computation of \textbf{S-pol
   A note on notation in the definition of S-polynomials, but which will be used elsewhere
   \begin{itemize}
     \item ${LCM}$ is the least common multiple
-    \item ${M(p)}$ is the leading monomial of polynomial ${p}$, with the monomial ordering considered
+    \item ${M(p)}$ is the leading monomial of polynomial ${p}$ with respect to the chosen monomial ordering 
   \end{itemize}
 \end{note}
 
@@ -535,11 +539,9 @@ The S-polynomial is essentially an application of the reduction process; the res
 \begin{example}\label{S-polynomial}
   Consider polynomials ${p, \, q \in }$ $\mathbb{Q}$, given by 
   \begin{equation*}
-    p = 3x^2y - y^3 - 4 \qquad ; \qquad q = xy^3 + x^2 -9
+    p = 3x^2y - y^3 - 4 \qquad , \qquad q = xy^3 + x^2 -9
   \end{equation*}
-  under monomial ordering ${tdeg(x, y}$ (i.e. degree based ordering ${x > y}$)
-  
-  To find the S-polynomial ${Spoly( p, q)}$, first the leading monomials with respect to ${tdeg( x, y)}$ must be computed, in addition to their LCM.
+  under the degree-based monomial ordering with ${x > y}$.  To find the S-polynomial ${Spoly( p, q)}$, first the leading monomials must be computed, in addition to their LCM.
   \begin{eqnarray*}
     M( p) &=& 3x^2y\\
     M( q) &=& xy^3\\\\
@@ -558,15 +560,11 @@ At this point all the necessary constructs for applying Buchberger's algorithm a
 
 EXAMPLE FROM NOTES
 
-\subsection{F4 Algorithm}
+\subsection{The F4 Algorithm}
 
-Since the introduction of Groebner bases by Buchberger in 1965, there have been various improvements on his algorithm for basis computation.  Notably, there is the F4 algorithm, developed by Faugere.  There are F4 implementations in the Maple Groebner package (maplef4 algorithm, and efficient C implementation in the FGB algorithm).
+Since the introduction of Groebner bases by Buchberger in 1965, there have been various improvements on his algorithm for basis computation.  Notably, there is the F4 algorithm, developed by Faugere.  There are F4 implementations in the Maple Groebner package (maplef4 algorithm, and an efficient C implementation in the FGB algorithm).  The F4 algorithm made it possible to compute various problems which could not be solved with the Buchberger approach, for instance the cyclic9 problem.  The F4 algorithm proceeds similarly to the Buchberger algorithm, with the main difference (and efficiency gain) in the polynomial reduction stage.  This reduction can be paired with the Buchberger criteria for elimination of redundant S-polynomials as in the Buchberger algorithm.  Like the Buchberger algorithm, F4 can be applied to polynomial ideals in ${\mathbb{Q}[\bar x]}$, ${\mathbb{Z}[\bar x]}$, or ${\mathbb{Z}_p[\bar x]}$ for some prime ${p}$, where ${\bar x = \{x_1, \ldots, x_n\}}$ is the ordered set of indeterminates.   
 
-The F4 algorithm made it possible to compute various problems which could not be solved with the Buchberger approach, for instance the cyclic9 problem.  
-
-The F4 algorithm proceeds similarly to the Buchberger algorithm, with the main difference (and efficiency gain) in the polynomial reduction stage.  This reduction can be paired with the Buchberger criteria for elimination of redundant S-polynomials as in the Buchberger algorithm.  Like the Buchberger algorithm, F4 can be applied to polynomial ideals in ${\mathbb{Q}[\bar x]}$, ${\mathbb{Z}[\bar x]}$, or ${\mathbb{Z}_p[\bar x]}$ for some prime ${p}$, ${\bar x = \{x_1, \ldots, x_n\}}$ set of indeterminates.   
-
-The F4 approach to polynomial reduction replaces the Buchberger's sequential polynomial divisions for reduction over a set (the ${Reduce}$ method detailed above) with a row reduction ro row-echelon form of a single matrix of polynomials.
+The F4 approach to polynomial reduction replaces the Buchberger's sequential polynomial divisions for reduction over a set (the ${Reduce}$ method detailed above) with a row reduction to row-echelon form of a single matrix of polynomials.
 
 As explained by Roune in his summary of Faugere's original paper detailing the F4 algorithm, reduction of a polynomial ${f}$ over a set of ${k}$ polynomials ${W = \{r_1, \ldots, r_k\}}$ consists of the following steps:
 \begin{itemize}
@@ -576,13 +574,9 @@ As explained by Roune in his summary of Faugere's original paper detailing the F
 \end{itemize}      
 CITE THIS (f4\_shortVersion.pdf)
 
-Rather than having a unique ${A}$ matrix for each ${f}$ to reduce, the ${A}$ matrix can be built in such a way as to allow many polynomials to be reduced simultaneously, and post-reduction of ${A}$ all the reduced polynomials can be read off from ${\bar A}$. 
+Rather than having a unique ${A}$ matrix for each ${f}$ to reduce, the ${A}$ matrix can be built in such a way as to allow many polynomials to be reduced simultaneously, and, after the reduction of ${A}$ to ${\bar A}$, all the reduced polynomials can be read off from ${\bar A}$.  Construction of ${A}$ must be done in such a way as to allow polynomial division to be emulated by reduction of ${A}$.  Here, the method is detailed as from Roune's paper.
 
-Construction of ${A}$ must be done in such a way as to allow polynomial division to be emulated by reduction of ${A}$.  Here, the method is detailed as from Roune's paper:
-
-First, assume that the set has been normalized, and that all polynomials have a leading coefficient of 1.  
-
-Then, consider the functionality of the polynomial division algorithm for a set: this takes the leading monomial of the intermediate stage of the division, say polynomial ${h}$, and attempts to find a polynomial ${r_i}$ in the set such that the ${Lm(r_i) \mid Lm(h)}$; if such an ${r_i}$ exists in the set ${W}$, then the next intermediate result in the division would be ${h - tr_i}$, where ${t = \frac{Lm(h)}{Lm(r_i)}}$.  
+First, assume that the set has been normalized, and that all polynomials have a leading coefficient of 1.  Then, consider the functionality of the polynomial division algorithm for a set: this takes the leading monomial of the intermediate stage of the division, say polynomial ${h}$, and attempts to find a polynomial ${r_i}$ in the set such that the ${Lm(r_i) \mid Lm(h)}$; if such an ${r_i}$ exists in the set ${W}$, then the next intermediate result in the division would be ${h - tr_i}$, where $${t = \frac{Lm(h)}{Lm(r_i)}}$$.  
 
 To include this computation in the reduction of ${A}$, then there must be a row in ${A}$ that corresponds to the subtraction term required for the polynomial division of ${h}$, i.e. ${tr_i}$.  Then, the next step in the polynomial division will require another ${W}$-entry, some ${r_j}$.  In order to generalize the algorithm, instead of attempting to predict which monomials will be included in the reduced term ${h - t_ri}$ (in order to find which is the leading monomial), simply include all monomials of ${h}$ and ${tr_i}$ except for the leading monomial.
 
@@ -604,7 +598,7 @@ The FGB Groebner computation method included in the Maple Groebner package is an
  
 \subsection{Modular Homomorphisms}
 
-Regardless of the improvements in speed of these algorithms, one problem which they all face is intermediate expression swell, as discussed above.  Groebner basis computations, depending on the initial ideal, can give rise to unmanagable expression swell.  This cannot be avoided by using classic iterative algorithms; however, these are the only algorithms currently available.  Instead of inventing an entirely new algorithmic approach, which may not even be possible, another potential approach would be to use the regular algorithms over prime fields, and then reconstruct the solution to the original space via a modular homomorphism method.
+Regardless of the improvements in speed of these algorithms, one problem which they all face is intermediate expression swell, as discussed previously.  Groebner basis computations, depending on the initial ideal, can give rise to unmanagable expression swell.  This cannot be avoided by using classic iterative algorithms; however, these are the only algorithms currently available.  Instead of inventing an entirely new algorithmic approach, which may not even be possible, another potential approach would be to use the regular algorithms over prime fields, and then reconstruct the solution to the original space via a modular homomorphism method.
 
 To discuss homomorphism methods, first the concept of a ring homomorphism must be introduced.
 
@@ -613,33 +607,29 @@ To discuss homomorphism methods, first the concept of a ring homomorphism must b
   \begin{itemize}
     \item ${\theta(a + b) = \theta(a) + \theta(b) \; \forall \, a, \, b \, \in R}$ 
     \item ${\theta(a * b) = \theta(a) * \theta(b) \; \forall \, a, \, b \, \in R}$ 
-    \item ${\theta(1) = 1}$
-  \end{itemize}
-
-  Note that this also implies that ${\theta(0) = 0}$ and ${\theta(-a) = -\theta(a)}$ 
+  \end{itemize} 
 \end{defn}
+Note that this also implies that ${\theta(0) = 0}$ and ${\theta(-a) = -\theta(a)}$.  Moreover, if ${R}$ is a ring with unity, then ${\theta(1)}$ is the unity of ${R'}$.  Homomorphic mappings between rings preserve ring operations.  If a mapping satisfies the properties listed above (the homomorphism properties), then it is labelled a homomorphism.
 
-Homomorphic mappings between rings preserve ring operations.  If a mapping satisfies the properties listed above (the homomorphism properties), then it is labelled a homomorphism.
-
-Homomorphisms have many uses in algebra; in this particular case, the homomorphisms considered are a specific instance of ring homomorphisms: the \textbf{modular polynomial ring homomorphisms}.  A modular polynomial homomorphism is a mapping from a polynomial extension over the integers to a polynomial extension over the integers modulo a particular prime i.e. a modular field ${\mathbb{Z}_m}$ for a particular integer ${m}$.  Formally, this is defined as:
+Homomorphisms have many uses in algebra; in this particular case, the homomorphisms considered are a specific instance of ring homomorphisms: the \textbf{modular polynomial ring homomorphisms}.  A modular polynomial homomorphism is a mapping from a polynomial extension over the integers to a polynomial extension over the integers modulo a particular prime, i.e. a modular field ${\mathbb{Z}_m}$ for a particular positive integer ${m}$.  Formally, this is defined as:
 
 \begin{defn}\label{Modular Homom}
   A modular polynomial ring homomorphism is a homomorphism mapping
   \begin{equation*}\phi_m : \mathbb{Z}[x_1, \ldots, x_n] \rightarrow \mathbb{Z}_m[x_1, \ldots, x_n]\end{equation*}\\ where \\
   \begin{eqnarray*}
-  \phi_m(x_i) = x_i; \; 1 \leq i \leq v; \quad and \\
-  \phi_m(a) = a\mod m
+  \phi_m(x_i) = x_i; \; 1 \leq i \leq v; \quad \\ \textrm{and} \\
+  \phi_m(a) = a (\mod m)
   \end{eqnarray*}
-  where ${a \mod m}$ is the remainder of ${\frac{a}{b}}$
+  where ${a (\mod m)}$ is the remainder of the division of ${a}$ by ${m}$.
 \end{defn}
 
-Modular homomorphisms can be used to simplify a problem.  For instance, for a situation in which large integers or rational numbers are required, the inputs could be projected to their homomorphic images in a simpler modular space, where the size of the integers is bound by the modular base i.e. ${m}$ for ${\mathbb{Z}_m}$.  This has various advantages over using the non-modular space:
+Modular homomorphisms can be used to simplify a problem.  For instance, for a situation in which large integers or rational numbers are required, the inputs could be projected to their homomorphic images in a simpler modular space, where the size of the integers is bound by the modular base (i.e. ${m}$ for ${\mathbb{Z}_m}$).  This has various advantages over using the non-modular space:
 \begin{itemize}
   \item The size of the values (coefficients in the extended ${\mathbb{Z}_m}$) have a known bound of ${m}$.  This means that the space necessary for each value can be specified in advance, which is an advantage when programming and using integers of a particular precision, to ensure that the values do not overflow the precision.
-  \item The values will always be integers.\\The advantages of this are two-fold.  Firstly, this means that there are no rationals to contend with; this means less GCD computations, as there will be no need to reduce fractions to lowest terms post computation.  Not having fractions also simplified the computations in general, and reduces the amount of space required as only one value will be stored, rather than separate integers for the numerator and denominator.  Secondly, multiplicative inverses over the modular integers are also modular integers; this means that all computations involving "division" now consists of integer multiplication, again removing the GCD computations previously required.  It also means that the coefficient space of the polynomials is a field, so there are multiplicative inverses for all coefficients, unlike polynomials over the integers.
+  \item The values will always be integers.  The advantages of this are two-fold.  Firstly, this means that there are no rationals to contend with; this means less GCD computations, as there will be no need to reduce fractions to lowest terms post computation.  Not having fractions also simplifies the computations in general, and reduces the amount of space required as only one value will be stored, rather than separate integers for the numerator and denominator.  Secondly, multiplicative inverses over the modular integers are also modular integers; this means that all computations involving "division" now consists of integer multiplication, again removing the GCD computations previously required.  It also means that when ${m}$ is a prime, the coefficient space of the polynomials is a field, so there are multiplicative inverses for all coefficients, unlike polynomials over the integers.
 \end{itemize}
 
-Working over a modular space seems like an optimal solution - this removes intermediate expression swell entirely, and the computational cost in both time and memory can be more accurately predicted (as the size of the values is known, and so the amount of memory necessary can be predicted, as can the time necessary to perform computations with these values).  However, there is a downside to this method: the final basis must be given in the space it originated in - either the rationals or the integers extended by a set of variables.  However, working with modular homomorphisms over a modular space means that the final basis returned from the computation will also be over this modular space.  
+Working over a modular space seems like an optimal solution - this removes intermediate expression swell entirely, and the computational cost in both time and memory can be more accurately predicted (as the size of the values is known, and so the amount of memory necessary can be predicted, as can the time necessary to perform computations with these values).  However, there is a downside to this method: the final basis must be given in the space it originated in - that is, as a polynomial over the field of rationals.  However, working with modular homomorphisms over a modular space means that the final basis returned from the computation will also be over this modular space.  
 
 Working over a modular space means that the basis must be reconstructed back to the original space before the computation is complete.  There are various methods for reconstruction back from a modular space to an integer space; here the methods used are the Chinese Remainder Algorithm and Hensel's Algorithm.  Each of these has its particular points in regards to efficiency, and will be explained in detail below.  Post reconstruction, the basis will be represented in the integers extended by the polynomials; then, another reconstruction must be done to build the basis back to the initial space (the rational numbers extended by the polynomials).    
 
@@ -671,15 +661,15 @@ The Chinese Remainder Algorithm (CRA) is a method for reconstruction of an integ
 
 \subsection{Mixed Radix Representation}
 
-In general, when numbers are considered as representations of a sum of values, this is in terms of a set of multiples of successive powers of a particular base.  The general definition is
+In general, when numbers are considered as representations of a sum of values, this is in terms of a set of multiples of successive powers of a particular base.  The general definition is as follows:
 
 \begin{defn}\label{Basic defn}
-  For a value ${x}$ in base ${b}$,
+  For a value ${x \in \mathbb{Z}}$ in base ${b > 0,\, b \in \mathbb{Z}}$,
   \begin{equation*}   x = \sum\limits_{i = 0}^{n}{a_ib^i}     \end{equation*}
-  For ${\{a_i\}}$ a list of coefficients of ${x}$ also in base ${b}$
+  For ${\{a_i\} \in \mathbb{Z},\, 0 \leq a_i < b \; \forall a_i}$ 
 \end{defn}
 
-This representation is \textbf{single-radix}; the radix being the base in which the number is being represented.  \textbf{Mixed-radix representation} is a similar idea, however instead of a linear combination of successive powers of a particular base, it is built from a linear combination of products of successive multiple "bases" - there is not a consistent base for all numerical positions.  The idea is similar in that the sequence of terms in the sum are in the base of a multiple of the previous base, however the factor of this multiple is not constant.  
+This representation is \textbf{single-radix}, since it uses a single radix (or base) to represent a number.  \textbf{Mixed-radix representation} is a similar idea; however, instead of a linear combination of successive powers of a particular base, it is built from a linear combination of products of successive multiple "bases" - there is not a consistent base for all numerical positions.  The idea is similar in that the sequence of terms in the sum are in the base of a multiple of the previous base, however the factor of this multiple is not constant.  
 
 One classic demonstrative example is in representing time: to tell the day, this is a sum of seconds and minutes and hours and days, each of which is a different successive radix.  There is no consistent base across all these terms, however each base is a multiple of the previous one (60 seconds in a minute, 60 minutes in an hour, 24 hours in a day, 7 days in a week).     
 
@@ -688,7 +678,8 @@ The CRA uses the various modular images provided to iteratively construct a mixe
 
 \subsection{Chinese Remainder Algorithm} 
 
-The Chinese Remainder Problem made its earliest appearance in the 3rd century, in the book \textit{Sunzi's Mathematical Classic}, by Sun Tzu, a Chinese mathematician.  The description of the solution to algorithmic solution to this problem was then described in the 6th century by another mathematician, Aryabhata.  Gauss also described this, when he introduced the concept of modular congruences, in his 1801 book \textit{Disquisitiones Arithmeticae}.  (this is cited from elwiki, but I'm sure it's in another, more socially acceptable source)
+The Chinese Remainder Problem made its earliest appearance in the 3rd century, in the book \textit{Sunzi's Mathematical Classic}, by Sun Tzu, a Chinese mathematician.  The description of the algorithmic solution to this problem was then described in the 6th century by another mathematician, Aryabhata.  Gauss also described this, when he introduced the concept of modular congruences, in his 1801 book \textit{Disquisitiones Arithmeticae}.  
+% (this is cited from elwiki, but I'm sure it's in another, more socially acceptable source)   CITE
 
 \noindent The \textit{Chinese Remainder Problem} can be stated as: 
 \begin{addmargin}[2em]{2em}% 2em left and right
@@ -698,16 +689,14 @@ The Chinese Remainder Problem made its earliest appearance in the 3rd century, i
   \end{equation*} 
 \end{addmargin}
 
-The algorithm for solving this problem is essentially an inversion of the modular homomorphism (i.e. rebuilding the original integer ${u}$ from various of its modular images).  
-
-The Chinese Remainder Problem specifies \textit{an} integer; however there are conditions under which the solution to this problem is unique.   
+The algorithm for solving this problem is essentially an inversion of the modular homomorphism (i.e. rebuilding the original integer ${u}$ from various of its modular images).  The Chinese Remainder Problem specifies \textit{an} integer; however there are conditions under which the solution to this problem is unique.   
 
 \begin{theorem}\label{Chinese Remainder Theorem}
-  Given the set ${\{m_i\} \subset \mathbb{Z}}$, where ${i \in [0, n] \subset Z}$ be a set where all elements are pairwise relatively prime i.e.
+  Let the set ${\{m_i\} \subset \mathbb{Z}}$, where ${i \in [0, n] \subset Z}$, be a set where all elements are pairwise relatively prime i.e.
   \begin{equation*}
     gcd( m_j, m_k) = 1 \; \forall \, j \neq k
   \end{equation*}
-  and ${\{u_i\} \subset \mathbb{Z}_{m_i}}$ be the corresponding residues.  Then, for any fixed integer ${a \in \mathbb{Z} \; \exists}$ a unique integer ${u \in \mathbb{Z}}$ which satisfies the following conditions:
+  and let ${\{u_i\} \subset \mathbb{Z}_{m_i}}$ be the corresponding residues.  Then, for any fixed integer ${a \in \mathbb{Z} \; \exists}$ a unique integer ${u \in \mathbb{Z}}$ which satisfies the following conditions:
   \begin{itemize}
     \item ${a \leq a + m}$, where ${m = \prod_{i=0}^{n}m_i}$
     \item ${u \equiv u_i \mod m_i\, ; \forall i \in [0, n] \subset \mathbb{Z}}$
@@ -762,9 +751,9 @@ A demonstrative example of the CRA is included below, over the integers.  Note t
     x &=& 0 \mod 2\\
     x &=& 0 \mod 5
   \end{eqnarray*}  
-  2, 3, 5, 7 are all coprime; therefore, by the CRT, ${\exists}$ a unique solution$\mod$ 210 (where $\prod_{}^{}(2, 3, 5, 7) = 210$) 
+  Here, 2, 3, 5, 7 are all coprime; therefore, by the CRT, ${\exists}$ a unique solution modulo ${210 = 2 \cdot 3 \cdot 5 \cdot 7}$. 
 
-  Now, calculate the components for the algorithm, following the algorithm as pseudocoded above.
+  Now, calculate the components for the algorithm, following the pseudocode above.
   \begin{eqnarray*}
     M_2 = \frac{210}{2} = 105 \qquad ; \qquad \gamma_2 = (105)^{-1} \mod 2 = 1\\
     M_3 = \frac{210}{3} = 70 \qquad ; \qquad \gamma_3 = (70)^{-1} \mod 3 = 1\\
@@ -780,16 +769,16 @@ A demonstrative example of the CRA is included below, over the integers.  Note t
       &=& 80
   \end{eqnarray*}
 
-  So, the unique solution for ${x}$ as given by the modular images is 30.
+  So, the unique solution for ${x}$ as given by the modular images is 80.
 \end{example}
 
-This algorithm reconstructs an integer from its modular images provided, over the modular integers modulo the product of the moduli.  However, this method is equally applicable to polynomials with integer coefficients.  In this case, the arguments to the procedure would be the same list of moduli, and the polynomial residues.  These residues can be thought of as sets of coefficient residues; each coefficient can be reconstructed essentially separately, using Garner's algorithm.  There will be no mixing of terms, as each coefficient (by definition of a polynomial) corresponds to a unique power product.               
+This algorithm reconstructs an integer from the given modular images, over the modular integers modulo the product of the moduli.  However, this method is equally applicable to polynomials with integer coefficients.  In this case, the arguments to the procedure would be the same list of moduli, and the polynomial residues.  These residues can be thought of as sets of coefficient residues; each coefficient can be reconstructed essentially separately, using Garner's algorithm.  There will be no mixing of terms, as each coefficient (by definition of a polynomial) corresponds to a unique power product.               
 
 \section{Hensel's Algorithm}
 
 The Chinese Remainder Algorithm (CRA) is one reconstruction method for rebuilding an integer post processing in over the modular integers.  However, one major drawback to the CRA is that it requires many modular images in order for the reconstruction to proceed.  As the size of the coefficients being rebuilt increases, so too does the number of images which have to be stored and iterated over.  It would be convenient to have a reconstruction method which requires fewer modular images in order to rebuild these larger coefficients.   
 
-Hensel's algorithm is another reconstruction method, similar in aim to the CRA; however, unlike the CRA's mixed-radix representation it uses the idea of ${p}$-adic representation.
+Hensel's algorithm is another reconstruction method, similar in aim to the CRA; however, unlike the CRA's mixed-radix representation it uses the idea of a single-radix, or ${p}$-adic representation.
 
 \subsection{${p}$-adic Representation}
 
@@ -826,36 +815,31 @@ The idea is to have a reconstruction method equivalent to the CRA, but which onl
   Note: the proof is not given here; refer to CN for the full proof.
 \end{theorem}           
 
-The Hensel construction (given by Hensel's lemma above) is built from the linear ${p}$-adic Newton's iteration.  The idea essentially amounts to iteratively building up the ${p}$-adic representation of ${u}$ from the first image given (rather than computing many separate images over different moduli as in the CRA).  The problem from the outset is that there is not enough information from the single modular image to perform the next iterative reconstruction.  Extra information, usually in the form of a set of nonlinear equations which ${u(x)}$ must satisfy, is also provided to the algorithm.  
+The Hensel construction (given by Hensel's lemma above) is built from the linear ${p}$-adic Newton's iteration.  The idea essentially amounts to iteratively building up the ${p}$-adic representation of ${u}$ from the first image given (rather than computing many separate images over different moduli as in the CRA).  The problem from the outset is that there is not enough information from the single modular image to perform the next iterative reconstruction.  Extra information, usually in the form of a set of nonlinear equations which ${u(x)}$ must satisfy, is also provided to the algorithm.   
 
 HOW MUCH SHOULD I REALLY EXPLAIN HERE ABOUT HENSEL  
-
-\subsection{Lucky Prime Efficiency Comparison}
-
-Although Hensel's algorithm is more efficient in terms of the number of images stored in compared with the CRA, it does have its drawbacks.  In particular, when considering "vulnerability" to bad primes, the CRA can simply discard this modular image, however the Hensel algorithm, since it relies on only one prime and images over its successive power products, has a harder time dealing with these.  The CRA can easily detect a bad prime (so long as the first prime iterated over is lucky) by comparing the number of terms in the polynomials or taking the modulus of the previous basis with respect to this new prime to ensure the same answer is achieved.  Then, this modular basis computation has been wasted, however the reconstruction can continue with a new prime.  The Hensel lifting, on the other hand, cannot detect bad primes as easily, since all its computations are based on this prime and it has no other primes to compare results with.  As such, bad primes are not effectively found until the computation is done and the correctness of the output can be verified.  If the prime was bad, the entire Hensel process was a computational waste of time; as such, when using Hensel, the preemptive removal of bad primes is paramount.
 
 \section{Rational Reconstruction}
 
 The original basis in these algorithms is assumed to be the polynomial extended rational numbers, ${\mathbb{Q}[x_1, x_2, \ldots, x_n]}$.  As such, postprocessing must be done on the output of the CRA/Hensel reconstruction to build the basis back to the polynomials over the rationals.  
 
-One common approach for rational reconstruction is using the Farey rational map.  The method as described by B\"ohm in his paper \textit{The Use of Bad Primes in Rational Reconstruction} is included below for explanation; this is also the method which was programmed in Maple as part of the modular methods.
+One common approach for rational reconstruction is using the Farey rational map.  The method as described by B\"ohm is included below for explanation; this is also the method which was programmed in Maple as part of the modular methods.
 
 The idea of rational reconstruction is to build back a number ${x \in \mathbb{Q}}$ from a modular image in ${\mathbb{Z}_p}$. 
 
-The notation from the B\"ohm paper is used for clarity if reference is made to this paper.
-
-Consider the rational number ${x \in \mathbb{Q}}$ which is being reconstructed.  Then, since ${x \in \mathbb{Q}}$ then ${x = \frac{a}{b}}$ for some ${a,\,b \in \mathbb{Z}}$ and some integer ${N \geq 2}$, with ${\gcd(a, b) = 1,\, \gcd(b, N) = 1}$ then
+Consider the rational number ${x \in \mathbb{Q}}$ which is being reconstructed.  Then, since ${x \in \mathbb{Q}}$ we have ${x = \frac{a}{b}}$ for some ${a,\,b \in \mathbb{Z}}$ and some integer ${N \geq 2}$, with ${\gcd(a, b) = 1,\, \gcd(b, N) = 1}$.
+Then
 \begin{equation*}
   x_N = \left(\frac{a}{b}\right)_N = (a + N\mathbb{Z})(b + N\mathbb{Z})^{-1} \in \frac{\mathbb{Z}}{N\mathbb{Z}}
 \end{equation*}   
 
-Note that ${x_N}$ is a modular integer; as such, it is an equivalence class of rationals modulo ${N}$ i.e. the infinite set of rationals ${\frac{a}{b}}$ which are all equal modulo ${N}$.  This set is a member of the fraction field ${\frac{\mathbb{Z}}{N\mathbb{Z}}}$, which itself is isomorphic to ${\mathbb{Z}_N}$.
+Note that ${x_N}$ is a modular integer; as such, it is an equivalence class of rationals modulo ${N}$, i.e. the infinite set of rationals ${\frac{a}{b}}$ which are all equal modulo ${N}$.  This set is a member of the fraction field ${\frac{\mathbb{Z}}{N\mathbb{Z}}}$, which itself is isomorphic to ${\mathbb{Z}_N}$.
 
 This approach to rational reconstruction uses the idea of a Farey rational map, which is defined (using B\"ohm's notation) for an integer ${B > 0}$ as:
 \begin{equation*}
   F_B = \left\{\frac{a}{b} \in \mathbb{Z}\; : \; \gcd(a, b) = 1,\, 0 \leq a \leq B,\, 0 < |b| \leq B\right\}
 \end{equation*}
-Basically, the Farey rational map contains all the rational numbers (representatives of the equivalence classes of rational numbers i.e. fractions in lowest terms, where the GCD of the numerator and the denominator is 0) where the absolute value of the numerator and denominator range from 0 (1 for the denominator) to ${B}$.  This set will be finite for a finite ${B}$.
+Basically, the Farey rational map contains all the rational numbers (representatives of the equivalence classes of rational numbers, i.e. fractions in lowest terms, where the GCD of the numerator and the denominator is 0) where the absolute value of the numerator and denominator range from 0 (1 for the denominator) to ${B}$.  This set will be finite for a finite ${B}$.
 
 Then, define for ${m \in \frac{\mathbb{Z}}{N\mathbb{Z}}}$:
 \begin{equation*}
@@ -863,7 +847,7 @@ Then, define for ${m \in \frac{\mathbb{Z}}{N\mathbb{Z}}}$:
 \end{equation*}
 the set of rational numbers which are congruent to ${m}$ modulo ${N}$.  
 
-As B\"ohm states, the set ${\mathbb{Q}_N}$ can be expressed as the union of all the ${\mathbb{Q}_{N, m}}$ where ${m}$ ranges from 0 to ${N - 1}$.  This is fairly intuitive; each set is the equivalence class of ${m}$ modulo ${N}$ over the rational numbers; as such, the set of all possible ${m}$ ranges from 0 to ${N - 1}$ inclusive, as this is the range of the ${N}$-modular integers.  Therefore, there are ${N}$ distict equivalence classes, and the union of these sets is the entire set ${\mathbb{Q}_N}$ itself (as equivalence classes, by definition, form a partition of the set the relation is defined over; here, the relation is modulo, which is an equivalence relation).  
+As B\"ohm states, the set ${\mathbb{Q}_N}$ can be expressed as the union of all the ${\mathbb{Q}_{N, m}}$ where ${m}$ ranges from 0 to ${N - 1}$.  This is fairly intuitive; each set is the equivalence class of ${m}$ modulo ${N}$ over the rational numbers; as such, the set of all possible ${m}$ ranges from 0 to ${N - 1}$ inclusive, as this is the range of the ${N}$-modular integers.  Therefore, there are ${N}$ distinct equivalence classes, and the union of these sets is the entire set ${\mathbb{Q}_N}$ itself (as equivalence classes, by definition, form a partition of the set the relation is defined over; here, the relation is modulo ${N}$, which is an equivalence relation).  
 
 If ${B}$ is an integer where ${B \leq \sqrt(\frac{N - 1}{2})}$, then the \textbf{Farey map} can be defined as the mapping
 \begin{equation*}
@@ -872,7 +856,7 @@ If ${B}$ is an integer where ${B \leq \sqrt(\frac{N - 1}{2})}$, then the \textbf
 
 This mapping is well-defined and injective (as stated by B\"ohm).  This returns the original rational ${x}$.  To maximize image returned from this mapping with respect to ${N}$, choose ${B}$ to be the largest possible value for the ${N}$ specified.
 
-The following algorithm calculates the Farey preimage as discussed in the B\"ohm paper; it returns the inverse image ${\phi_{B, N}^{-1}(y)}$ if ${y}$ is in the image of the Farey map with respect to the mapping ${\phi}$; if this value cannot be computed (for example, if the value attempting to be reconstructed does not fit the acceptance criteria, essentially amounting to the inverse image of modular integer ${N}$) then \texttt{false} is returned to indicate to the user that the reconstruction failed.
+The following algorithm calculates the Farey preimage as discussed in the B\"ohm paper; it returns the inverse image ${\phi_{B, N}^{-1}(y)}$ if ${y}$ is in the image of the Farey map with respect to the mapping ${\phi}$; if this value cannot be computed (for example, if the value attempting to be reconstructed does not fit the acceptance criteria, essentially amounting to the inverse image of modular integer ${N}$) then \texttt{false} is returned to indicate to the user that there was an error in the computation, and that the value used to attempt the calculations was a "bad prime" with respect to this rational reconstruction.
 
 \begin{algorithm}[H]
 \caption{Farey Reconstruction}\label{farey}
@@ -898,8 +882,6 @@ The following algorithm calculates the Farey preimage as discussed in the B\"ohm
 \end{algorithmic}
 \end{algorithm}
 
-Notice the algorithm returns the correct value for the rational reconstruction if it fits the acceptance criteria, otherwise it returns false in order to indicate to the user that there was an error in the computation; this would indicate that the value used to attempt the calculations was a "bad prime" with respect to rational reconstruction.
-
 \section{Lucky Primes}
 
 Naively, it would seem that using the smaller primes would make this process more efficient - smaller primes would mean a smaller upper bound on the coefficients, and therefore a more computationally efficient basis computation.  However, not every prime is valid for use in the reconstruction.  This can be seen directly in the rational reconstruction algorithm; some primes may return an invalid fraction if their magnitude is insufficient compared to the other inputs to the function.  
@@ -908,15 +890,15 @@ The CRA and Hensel's algorithm also have the potential for "bad" primes - this w
 
 In Arnold's paper, she defines lucky primes as primes for which "we do not lose too much algebraic information" about ideal ${I \subseteq \mathbb{Q}[X]}$ when considering the ideal modulo prime p, ${I_p \subseteq \mathbb{Z}_p[X]}$.  For the modular lifting via CRA/Hensel, the required algebraic information is the set of leading terms of Groebner basis ${G}$ for ${I}$.
 
-Formally (by Arnold):
+Formally: % CITE
 \begin{defn}\label{Lucky Primes}
   A prime integer ${p}$ is a \textbf{lucky prime} for ideal ${I \subseteq \mathbb{Q}[X]}$ ${\iff}$ ${Lp(G) = Lp(G_p)}$
 \end{defn}
 
 \begin{note}
-  A note on notation, with respect to the component parts of a polynomial.  Here, Arnold's notation will be adopted; note that in several other papers referenced the notation may not match precisely, and some translation is necessary to determine which of their notation is equivalent to which of Arnold's notation.  Here, Arnold's notation will be used throughout for consistency.  
+  A note on notation, with respect to the component parts of a polynomial.  Here, Arnold's notation will be adopted.  Note that in several other papers referenced, the notation may not match precisely, and some translation is necessary to determine which of their notation is equivalent to which of Arnold's notation.  Here, Arnold's notation will be used throughout for consistency.  
 
-  In this case, the Groebner basis is considered over Noetherian ring ${R = \mathbb{Q}[X]}$ 
+  In this case, the Groebner basis is considered over the Noetherian ring ${R = \mathbb{Q}[X]}$ 
   \begin{itemize}
     \item ${lp(f)}$ is the leading power product of polynomial ${f \in R}$
     \item ${lc(f)}$ is the leading coefficient of polynomial ${f \in R}$ (i.e. the coefficient of the leading power product)
@@ -941,10 +923,14 @@ The first definition to be considered is as given by Pauer in his paper on prime
 
 However, again, this relies on the true Groebner basis having been previously computed which essentially nullifies the algorithm.  
 
+\subsection{Reconstructions: Lucky Prime Efficiency Comparison}
+
+Although Hensel's algorithm is more efficient in terms of the number of images stored in compared with the CRA, it does have its drawbacks.  In particular, when considering "vulnerability" to bad primes, the CRA can simply discard a bad modular image; however the Hensel algorithm, since it relies on only one prime and images over its successive power products, has a harder time dealing with these.  The CRA can easily detect a bad prime (so long as the first prime used is lucky) by comparing the number of terms in the polynomials or taking the modulus of the previous basis with respect to this new prime to ensure the same answer is achieved.  Then, this modular basis computation has been wasted, however the reconstruction can continue with a new prime.  The Hensel lifting, on the other hand, cannot detect bad primes as easily, since all its computations are based on this prime and it has no other primes to compare results with.  As such, bad primes are not effectively found until the computation is done and the correctness of the output can be verified.  If the prime was bad, the entire Hensel process was a computational waste of time; as such, when using Hensel, the preemptive removal of bad primes is paramount.
+
 
 \chapter{Modular Groebner Basis Reconstruction}
 
-The modular reconstruction methods introduced above can be applied to Groebner basis computations; they can be used in conjunction with the regular basis algorithms, over modular prime fields.  In the non-modular case, the algorithm (Buchberger, F4, or otherwise) can be applied directly to the supplied ideal basis, producing a single result which is the desired basis.  However, in the modular reconstruction case, there are added computations.  
+The modular reconstruction methods introduced in the previous chapter can be applied to Groebner basis computations; they can be used in conjunction with the regular basis algorithms, over modular prime fields.  In the non-modular case, the algorithm (Buchberger, F4, or otherwise) can be applied directly to the supplied ideal basis, producing a single result which is the desired basis.  However, in the modular reconstruction case, there are added computations.  
 
 For the CRA, various basis computations must be performed, each for the basis in a prime modular field, one for each of the primes necessary for the reconstruction.  The idea is that the various modular basis computations, coupled with the reconstruction code and the rational reconstruction will be more efficient (in both time and/or space) than the algorithm over the polynomial extended rational space, because of the elimination of the intermediate expression swell.  
 
@@ -993,13 +979,11 @@ Note that in either case (CRA or Hensel), the result must be verified for correc
 
 \section{Maple}
 
-To test the comparative efficiency of the modular reconstruction algorithms and the straight basis computation, the algorithms were implemented in Maple.  Therefore, the tests were performed relative to the built-in Maple Groebner package.  Similar tests could be performed in other symbolic languages testing versus their built-in Groebner functionality, such as Mathematica, Python's sympy, etc.  
+To test the comparative efficiency of the modular reconstruction algorithms and the direct basis computation, the algorithms were implemented in Maple.  Therefore, the tests were performed relative to the built-in Maple Groebner package.  Similar tests could be performed in other symbolic languages testing against their built-in Groebner functionality, such as Mathematica, Python's sympy, etc.  Some technical details of the Maple Groebner basis package are discussed below:
 
-Some technical details of the Maple Groebner basis package are discussed below:
+There are various versions of the basis computation algorithms available in the Maple Groebner package; these include the classic Buchberger algorithm, the F4 algorithm implemented in Maple (maplef4), and the F4 algorithm implemented as an external C library, FGB.  In Maple, when a Groebner basis computation is performed, this requires a call to the Basis command in the Groebner package - the arguments specified are the basis for the current ideal, the monomial ordering used, and optional arguments specifying the algorithm type used, and the characteristic prime if working over a modular prime coefficient field.   
 
-There are various versions of the basis computation algorithms available in the Maple Groebner package; these include the classic Buchberger algorithm, the F4 algorithm implemented in Maple (maplef4), and the F4 algorithm implemented as an external C library, FGB.  In Maple, when a Groebner basis computation is performed, this amounts to a call to the Basis command in the Groebner package - the arguments specified are the basis for the current ideal, the monomial ordering used, and optional arguments specifying the algorithm type used, and the characteristic prime if working over a modular prime coefficient field.   
-
-The current most efficient built-in basis algorithm in Maple is the FGB algorithm.  This is an efficient, optimized implementation of the Faugere F4 algorithm; it is written in C which also increases the efficiency of the algorithm.  However, this method suffers from lack of implementation of various options: for instance, it cannot be used for any monomial ordering other than degree-based (it does not support lex orderings).  In addition, when using the characteristic prime option to specify a modular field, FGB does not support primes greater than ${2^{16}}$, which becomes an issue when calling the modular reconstruction methods.  In these cases, various prime images are required, and this number increases as the primes are smaller.  In addition, smaller primes leads to the a higher probability of the primes being bad primes.  The comparative effect of efficiency between using more, smaller primes and fewer, larger primes will be examined in the results section.  However, note here that primes used for CRA/Hensel here were in the neighbourhood of ${2^{32}}$; in this way, the coefficients are guaranteed to be integers smaller than the maximum word space of the system, which means that the computations can be performed without external calls to (EXPLAIN THIS BETTER).  However, when using FGB the primes were restricted to the smaller size.
+The current most efficient built-in basis algorithm in Maple is the FGB algorithm.  This is an efficient, optimized implementation of the Faugere F4 algorithm; it is written in C which also increases the efficiency of the algorithm.  However, this method suffers from lack of implementation of various options: for instance, it cannot be used for any monomial ordering other than degree-based (it does not support lex orderings).  In addition, when using the characteristic prime option to specify a modular field, FGB does not support primes greater than ${2^{16}}$, which becomes an issue when calling the modular reconstruction methods.  In these cases, various prime images are required, and this number increases as the primes are smaller.  In addition, smaller primes leads to the a higher probability of the primes being bad primes.  The comparative effect of efficiency between using more, smaller primes and fewer, larger primes will be examined in the results section.  However, note here that primes used for CRA/Hensel here were in the neighbourhood of ${2^{31}}$; in this way, the coefficients are guaranteed to be integers smaller than the maximum word space of the system, which means that the computations can be performed whilw keeping the product of integers in the range which can be represented in hardware on a 64-bit machine (as was available for these tests).  However, when using FGB the primes were restricted to the smaller size.
 
 The more efficient algorithms also cause issues for Hensel construction; Hensel requires another optional argument in the basis computation, output=extended, which specifies that the basis computation should the Syzygy matrix, ${Z^{(1)}}$ as discussed above in the description of the Hensel Groebner approach from the Arnolds paper.  The Hensel lifting algorithm itself is implemented with this matrices as input.  However, the functionality of Faugere's algorithm is such that the intermediate matrices are not computed, and therefore output=extended is not an option for the non-Buchberger algorithms.  
 
@@ -1053,14 +1037,14 @@ The above problems were attempted with the various algorithms (Buchberger, Maple
   forsman3 & 0.068 & \textbf{\textit{DNF}} & 0.108 & 0.068 & 0.028 & 0.059 & 0.024\\
   forsman4 & 0.804 & \textbf{\textit{DNF}} & 0.243 & 0.468 & 0.099 & 0.129 & 0.043\\
   katsura7 & 282.393 & \textbf{\textit{DNF}} & 24.604 & 153.189 & 38.533 & 16.554 & 0.496\\
-  hell-in & 1.795 & 1.944 & 0.12 & 2.253 & 0.116 & 1.977 & 0.039\\
+  hellin & 1.795 & 1.944 & 0.12 & 2.253 & 0.116 & 1.977 & 0.039\\
   kiyoshi5 & 1.128 & 1.212 & 0.016 & 1.152 & 0.024 & 2.321 & 0.044\\
   caprasse & 0.416 & 10.684 & 0.283 & 0.384 & 0.204 & 0.572 & 0.053\\
   mike2 & 38.936 & \textbf{\textit{DNF}} & 5.8 & 25.533 & 5.06 & 2.669 & 0.105\\
-  p27 & 247.147 & \textbf{\textit{DNF}} & 34.236 & 66.784 & 11.92 & 4.88 & 0.283\\
-  p33 & 0.443 & 1.176 & 0.035 & 0.4 & 0.08 & 0.519 & 0.04\\
-  p34 & 1.72 & 1.924 & 0.079 & 2.04 & 0.132 & 1.9 & 0.051\\
-  p41 & 20.956 & 89.82 & 0.456 & 27.987 & 1.08 & 16.964 & 0.264\\
+  czap27 & 247.147 & \textbf{\textit{DNF}} & 34.236 & 66.784 & 11.92 & 4.88 & 0.283\\
+  czap33 & 0.443 & 1.176 & 0.035 & 0.4 & 0.08 & 0.519 & 0.04\\
+  czap34 & 1.72 & 1.924 & 0.079 & 2.04 & 0.132 & 1.9 & 0.051\\
+  czap41 & 20.956 & 89.82 & 0.456 & 27.987 & 1.08 & 16.964 & 0.264\\
   trav1 & 0.028 & 0.1 & 0.028 & 0.04 & 0.059 & 0.053 & 0.04\\
   cassou\_POSSO & 6.694 & \textbf{\textit{DNF}} & 2665.155 & 2.204 & 0.856 & 0.28 & 0.041\\
   cyclic6 & 37.444 & \textbf{\textit{DNF}} & 14.949 & 10.076 & 3.636 & 0.527 & 0.065\\
@@ -1087,7 +1071,7 @@ The above problems were attempted with the various algorithms (Buchberger, Maple
 The table above shows various expected trends.
 
 \begin{itemize}
-  \item Across all algorithms, the FGB is the fastest i.e. FGB Maple is faster than MapleF4 Maple and Buchberger Maple; and the same result can be seen for the CRA
+  \item Across all algorithms, the FGB is the fastest, i.e. FGB Maple is faster than MapleF4 Maple and Buchberger Maple; the same result can be seen for the CRA
   \item  Maple is faster than the CRA, which in turn is faster than Hensel, on a per-algorithm basis
 \end{itemize}
 
@@ -1168,14 +1152,14 @@ The column headers are:
    forsman3 & 0.204 & 0 & 0.012 & 0.216 & 2 \\
    forsman4 & 0.792 & 0.012 & 0 & 0.804 & 5 \\
    katsura7 & 272.61 & 9.407 & 0.376 & 282.393 & 13 \\
-   hell-in & 1.041 & 0.726 & 0.028 & 1.795 & 21 \\
+   hellin & 1.041 & 0.726 & 0.028 & 1.795 & 21 \\
    kiyoshi5 & 0.244 & 0.872 & 0.012 & 1.128 & 71 \\
    caprasse & 0.395 & 0.017 & 0.004 & 0.416 & 2 \\
    mike2 & 37.605 & 1.104 & 0.227 & 38.936 & 8 \\
-   p27 & 245.539 & 1.515 & 0.093 & 247.147 & 8 \\
-   p33 & 0.221 & 0.21 & 0.012 & 0.443 & 17 \\
-   p34 & 0.885 & 0.815 & 0.02 & 1.72 & 21 \\
-   p41 & 12.214 & 8.511 & 0.231 & 20.956 & 41 \\
+   czap27 & 245.539 & 1.515 & 0.093 & 247.147 & 8 \\
+   czap33 & 0.221 & 0.21 & 0.012 & 0.443 & 17 \\
+   czap34 & 0.885 & 0.815 & 0.02 & 1.72 & 21 \\
+   czap41 & 12.214 & 8.511 & 0.231 & 20.956 & 41 \\
    trav1 & 0.028 & 0 & 0 & 0.028 & 2 \\
    cassou\_POSSO & 6.622 & 0.068 & 0.004 & 6.694 & 11 \\
    cyclic6 & 37.187 & 0.233 & 0.024 & 37.444 & 5
@@ -1201,14 +1185,14 @@ The column headers are:
    forsman3 & 0.068 & 0 & 0 & 0.068 & 2 \\
    forsman4 & 0.456 & 0.008 & 0.004 & 0.468 & 5 \\
    katsura7 & 143.325 & 9.604 & 0.26 & 153.189 & 13 \\
-   hell-in & 1.312 & 0.929 & 0.012 & 2.253 & 21 \\
+   hellin & 1.312 & 0.929 & 0.012 & 2.253 & 21 \\
    kiyoshi5 & 0.37 & 0.766 & 0.016 & 1.152 & 71 \\
    caprasse & 0.368 & 0.016 & 0 & 0.384 & 2 \\
    mike2 & 24.343 & 1.129 & 0.061 & 25.533 & 8 \\
-   p27 & 65.269 & 1.444 & 0.071 & 66.784 & 8 \\
-   p33 & 0.234 & 0.146 & 0.02 & 0.4 & 17 \\
-   p34 & 1.219 & 0.793 & 0.028 & 2.04 & 21 \\
-   p41 & 19.183 & 8.666 & 0.138 & 27.987 & 41 \\
+   czap27 & 65.269 & 1.444 & 0.071 & 66.784 & 8 \\
+   czap33 & 0.234 & 0.146 & 0.02 & 0.4 & 17 \\
+   czap34 & 1.219 & 0.793 & 0.028 & 2.04 & 21 \\
+   czap41 & 19.183 & 8.666 & 0.138 & 27.987 & 41 \\
    trav1 & 0.036 & 0.004 & 0 & 0.04 & 2 \\
    cassou\_POSSO & 2.144 & 0.056 & 0.004 & 2.204 & 11 \\
    cyclic6 & 9.533 & 0.428 & 0.115 & 10.076 & 5
@@ -1234,14 +1218,14 @@ The column headers are:
   forsman3 & 0.055 & 0.004 & 0 & 0.059 & 4\\
   forsman4 & 0.109 & 0.016 & 0.004 & 0.129 & 8\\
   katsura7 & 2.39 & 13.629 & 0.535 & 16.554 & 23\\
-  hell-in & 0.317 & 1.585 & 0.075 & 1.977 & 38\\
+  hellin & 0.317 & 1.585 & 0.075 & 1.977 & 38\\
   kiyoshi5 & 0.689 & 1.596 & 0.036 & 2.321 & 135\\
   caprasse & 0.137 & 0.04 & 0.395 & 0.572 & 4\\
   mike2 & 0.564 & 1.953 & 0.152 & 2.669 & 13\\
-  p27 & 1.974 & 2.736 & 0.17 & 4.88 & 12\\
-  p33 & 0.195 & 0.251 & 0.073 & 0.519 & 31\\
-  p34 & 0.289 & 1.51 & 0.101 & 1.9 & 38\\
-  p41 & 1.613 & 14.938 & 0.413 & 16.964 & 77\\
+  czap27 & 1.974 & 2.736 & 0.17 & 4.88 & 12\\
+  czap33 & 0.195 & 0.251 & 0.073 & 0.519 & 31\\
+  czap34 & 0.289 & 1.51 & 0.101 & 1.9 & 38\\
+  czap41 & 1.613 & 14.938 & 0.413 & 16.964 & 77\\
   trav1 & 0.048 & 0.005 & 0 & 0.053 & 2\\
   cassou\_POSSO & 0.169 & 0.075 & 0.036 & 0.28 & 19\\
   cyclic6 & 0.235 & 0.271 & 0.021 & 0.527 & 7
@@ -1370,14 +1354,14 @@ Note that, as above, the \textbf{DNF} problems are not included in the CRA data 
   forsman3 & 0.332 & 0.016 & 0 & 0.348 & 4\\
   forsman4 & 0.981 & 0.016 & 0.008 & 1.005 & 8\\
   katsura7 & 399.268 & 14.618 & 0.442 & 414.328 & 23\\
-  hell-in & 1.467 & 1.464 & 0.04 & 2.971 & 38\\
+  hellin & 1.467 & 1.464 & 0.04 & 2.971 & 38\\
   kiyoshi5 & 0.534 & 1.461 & 0.041 & 2.036 & 135\\
   caprasse & 0.78 & 0.044 & 0 & 0.824 & 4\\
   mike2 & 54.882 & 1.807 & 0.1 & 56.789 & 13\\
-  p27 & 377.798 & 2.331 & 0.117 & 380.246 & 12\\
-  p33 & 0.302 & 0.297 & 0.017 & 0.616 & 31\\
-  p34 & 1.426 & 1.453 & 0.045 & 2.924 & 38\\
-  p41 & 20.023 & 14.799 & 0.553 & 35.375 & 77\\
+  czap27 & 377.798 & 2.331 & 0.117 & 380.246 & 12\\
+  czap33 & 0.302 & 0.297 & 0.017 & 0.616 & 31\\
+  czap34 & 1.426 & 1.453 & 0.045 & 2.924 & 38\\
+  czap41 & 20.023 & 14.799 & 0.553 & 35.375 & 77\\
   trav1 & 0.032 & 0 & 0 & 0.032 & 2\\
   cassou\_POSSO & 9.836 & 0.06 & 0.004 & 9.9 & 19\\
   cyclic6 & 50.378 & 0.279 & 0.031 & 50.688 & 7
@@ -1403,14 +1387,14 @@ Note that, as above, the \textbf{DNF} problems are not included in the CRA data 
   forsman3 & 0.107 & 0.009 & 0 & 0.116 & 4\\
   forsman4 & 0.644 & 0.012 & 0 & 0.656 & 8\\
   katsura7 & 182.875 & 13.931 & 0.662 & 197.468 & 23\\
-  hell-in & 2.08 & 1.517 & 0.044 & 3.641 & 38\\
+  hellin & 2.08 & 1.517 & 0.044 & 3.641 & 38\\
   kiyoshi5 & 0.677 & 1.487 & 0.036 & 2.2 & 135\\
   caprasse & 0.684 & 0.037 & 0 & 0.721 & 4\\
   mike2 & 29.621 & 1.707 & 0.247 & 31.575 & 13\\
-  p27 & 93.244 & 3.572 & 0.127 & 96.943 & 12\\
-  p33 & 0.371 & 0.265 & 0.004 & 0.64 & 31\\
-  p34 & 2.093 & 1.536 & 0.048 & 3.677 & 38\\
-  p41 & 31.701 & 15.124 & 0.456 & 47.281 & 77\\
+  czap27 & 93.244 & 3.572 & 0.127 & 96.943 & 12\\
+  czap33 & 0.371 & 0.265 & 0.004 & 0.64 & 31\\
+  czap34 & 2.093 & 1.536 & 0.048 & 3.677 & 38\\
+  czap41 & 31.701 & 15.124 & 0.456 & 47.281 & 77\\
   trav1 & 0.036 & 0.004 & 0 & 0.04 & 2\\
   cassou\_POSSO & 3.381 & 0.08 & 0.016 & 3.477 & 19\\
   cyclic6 & 11.676 & 0.283 & 0.021 & 11.98 & 7
