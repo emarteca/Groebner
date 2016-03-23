@@ -160,11 +160,9 @@ Groebner bases are useful in many applications in algebra.  GO ON
 Expression swell is a problem emergent in computer algebra.
 
 Working with exact computations, where the numerical precision used is not bounded by the language, provides a platform for situations where as computations proceed the values stored keep increasing in size.  Consider multiplication of integers as an example.  Multiplying two n-digit integers results in a 2n-digit integer.  In computations involving sequential multiplication of integers, the product would get exponentially large.  Another example of expression swell can be seen in rational addition. Consider the following demonstrative example:
-
 \begin{equation*}
   \frac{100}{101} + \frac{101}{102} = \frac{20401}{10302}
 \end{equation*}
-
 Here, the initial numerators and denominators are all 3-digit numbers, however their sum is a rational number with the numerator and denominator both 5 digits.  Addition of rational numbers results in expression swell as the greatest common denominator increases as more values are included in the sum.
 
 This is not a problem in classic numerical programming languages where the precision of values stored is bounded by the language specifications.  However, when using a symbolic language where computations are exact, the precision is arbitrary and depends directly on the values stored.  Because of this essentially limitless precision, the results are accurate; however expression swell could potentially result in a large amount of memory being required to store values.
@@ -174,7 +172,6 @@ Intermediate expression swell is the special case of expression swell where the 
 Groebner basis computations are known to suffer from intermediate expression swell.  Generally the output basis does not reflect the size of the coefficients of the intermediate polynomials.  The intermediate coefficient growth is related to many factors of the original basis: degree, number of polynomials, initial coefficient size.  The values can grow to impractical size, slowing down the execution of the computation and perhaps even halting it if the program runs out of memory for storage.  
 
 Consider the following polynomials, due to Arnold: % CITE
-
 \begin{eqnarray*}
   f_1 &=& 8x^2y^2 + 5xy^3 + 3x^3z + x^2yz\\
   f_2 &=& x^5 + 2y^3z^2 + 13y^2z^3 + 5yz^4\\ 
@@ -186,7 +183,7 @@ For the input ${B = \{f_1, f_2, f_3, f_4\}}$, the Groebner basis using degree-ba
 \begin{eqnarray*}
   g_1 &=& x\\
   g_2 &=& y^3 + \frac{1}{4}\\ 
-  g_3 &=& z^2\\
+  g_3 &=& z^2
 \end{eqnarray*} 
 
 In this case, the coefficients and degree for the input polynomials are all less than 10; the resulting output also has small degree and coefficients.  However, the intermediate computations contain polynomials with very large coefficients, rational numbers commonly of 80 000 digits in both the numerator and denominator (CITE ARNOLD HERE).  
@@ -463,16 +460,13 @@ A Groebner basis is a particular type of basis for a polynomial ideal, which sat
 The following definition presents various logically equivalent definitions for what makes a basis a Groebner basis. 
 
 \begin{defn}\label{Groebner Basis}
-  The following statements are equivalent for nonzero set ${G = \{g_1, \ldots, g_t\} \subseteq I}$ for ideal $I = <p_1, \ldots, p_n>$ over polynomial ring $F[x_1, \ldots, x_m]$ for a particular monomial ordering if:
+  The following statements are equivalent for nonzero set ${G = \{g_1, \ldots, g_t\}}$ for ideal $I = <p_1, \ldots, p_n>$, ${G \subseteq I}$, over polynomial ring $F[x_1, \ldots, x_m]$ for a particular monomial ordering if:
   \begin{itemize}
     \item ${G}$ is a Groenber basis for ${I}$
     \item ${f \in I \iff Reduce( f, G) = 0}$
     \item ${f \in I \iff f = \sum_{i=1}^{t}h_ig_i}$ with ${lp(f) = \max_{1 \leq i \leq t}(lp(h_i)lp(g_i))}$
     \item ${Lt(G) = Lt(I)}$
   \end{itemize}
-  \begin{equation*}
-    p \in I \iff Reduce( p, G) = 0
-  \end{equation*}
 \end{defn}
 
 This definition, although concise, is not complete as it stands; the \textit{Reduce} function has not been defined.
@@ -615,11 +609,14 @@ Homomorphisms have many uses in algebra; in this particular case, the homomorphi
 
 \begin{defn}\label{Modular Homom}
   A modular polynomial ring homomorphism is a homomorphism mapping
-  \begin{equation*}\phi_m : \mathbb{Z}[x_1, \ldots, x_n] \rightarrow \mathbb{Z}_m[x_1, \ldots, x_n]\end{equation*}\\ where \\
-  \begin{eqnarray*}
-  \phi_m(x_i) = x_i; \; 1 \leq i \leq v; \quad \\ \textrm{and} \\
+  \begin{equation*}\phi_m : \mathbb{Z}[x_1, \ldots, x_n] \rightarrow \mathbb{Z}_m[x_1, \ldots, x_n]\end{equation*} where 
+  \begin{equation*}
+  \phi_m(x_i) = x_i; \; 1 \leq i \leq v;
+  \end{equation*}
+  and
+  \begin{equation*}
   \phi_m(a) = a (\mod m)
-  \end{eqnarray*}
+  \end{equation*}
   where ${a (\mod m)}$ is the remainder of the division of ${a}$ by ${m}$.
 \end{defn}
 
@@ -653,7 +650,7 @@ Before the modular reconstruction algorithms are discussed in detail, a new fact
 
 \chapter{Modular Homomorphisms and Reconstruction}
 
-Post processing in modular polynomial space requires reconstruction back to ${\mathbb{Z}[x_1, x_2, \ldots, x_n]}$, which is done through either the Chinese Remainder Algorithm (henceforth the CRA) or Hensel's Algorithm, which will be described below.  Subsequent reconstruction from the integers to the rationals is done using an algorithm similar to Farey rational reconstruction, which is also described below (WHICH PAPER).  This chapter also discusses a new difficulty which arises when attempting to reconstruct - the idea of \textbf{lucky primes}. 
+Post processing in modular polynomial space requires reconstruction back to ${\mathbb{Z}[x_1, x_2, \ldots, x_n]}$, which is done through either the Chinese Remainder Algorithm (henceforth the CRA) or Hensel's Algorithm, which will be described below.  Subsequent reconstruction from the integers to the rationals is done using an algorithm similar to Farey rational reconstruction, which is also described below.  This chapter also discusses a new difficulty which arises when attempting to reconstruct - the idea of \textbf{lucky primes}. 
 
 \section{Chinese Remainder Theorem} 
 
@@ -666,7 +663,7 @@ In general, when numbers are considered as representations of a sum of values, t
 \begin{defn}\label{Basic defn}
   For a value ${x \in \mathbb{Z}}$ in base ${b > 0,\, b \in \mathbb{Z}}$,
   \begin{equation*}   x = \sum\limits_{i = 0}^{n}{a_ib^i}     \end{equation*}
-  For ${\{a_i\} \in \mathbb{Z},\, 0 \leq a_i < b \; \forall a_i}$ 
+  For ${\{a_i\} \subset \mathbb{Z},\, 0 \leq a_i < b \; \forall a_i}$ 
 \end{defn}
 
 This representation is \textbf{single-radix}, since it uses a single radix (or base) to represent a number.  \textbf{Mixed-radix representation} is a similar idea; however, instead of a linear combination of successive powers of a particular base, it is built from a linear combination of products of successive multiple "bases" - there is not a consistent base for all numerical positions.  The idea is similar in that the sequence of terms in the sum are in the base of a multiple of the previous base, however the factor of this multiple is not constant.  
@@ -1259,7 +1256,7 @@ The above plots show that even with the modular basis computation time alone, th
 
 One potential alteration to the method would be to use different-sized primes; 16-bit primes were also used, however this was found to be slower (data included in \textbf{Appendix} \ref{appendix:supplData}).  
 
-Going the other way and using bigger primes could be another approach, however this is also flawed.  The 64-bit Maple has a word-size of 64 bits; using primes greater than 32-bit would mean that their product would no longer be word-size, and therefore the computations would be less efficient.  In additon, increasing the prime size would increase the intermediate expression swell.  Consider that in the limit of the primes reaching the maximum size of the final basis coefficients, then this modular computation would be exactly equivalent to the nonmodular method, and both methods should be equal in necessary time.  Removing the efficiency of using word-size primes for the computations means that the modular computations will not be faster than the nonmodular methods; at fastest, they would be equal to the nonmodular methods.  
+Going the other way and using bigger primes could be another approach, however this is also flawed.  The 64-bit Maple has a word-size of 64 bits; using primes greater than 32-bit would mean that their product would no longer be word-size, and therefore the computations would be in principle less efficient.  In additon, increasing the prime size would increase the intermediate expression swell.  Consider that in the limit of the primes reaching the maximum size of the final basis coefficients, then this modular computation would be exactly equivalent to the nonmodular method, and both methods should be equal in necessary time.  Removing the efficiency of using word-size primes for the computations means that the modular computations will not be faster than the nonmodular methods; at fastest, they would be equal to the nonmodular methods.  
 
 So in conclusion, it seems that the current Maple Groebner package makes the attempted modular homomorphism methods redundant.  No added efficiency was observed; in fact, the modular approach was consistently slower than the basic nonmodular approach, for all available algorithms.  
 
