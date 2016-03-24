@@ -136,9 +136,10 @@
 %======================================================================
 \begin{document}
 
+\frontmatter
 \tableofcontents
 \listoffigures
-
+\mainmatter
 
 %======================================================================
 \chapter{Introduction}
@@ -159,7 +160,7 @@ The concept of a Groebner basis and an algorithm for its computation was introdu
 
 In addition to introducing the concept of Groebner bases, Buchberger also developed an algorithm for solving for a Groebner basis for a particular ideal for which the generating set was provided.  Known as \textbf{Buchberger's Algorithm}, this method of solving for Groebner bases was the first approach presented, and is described below.  Since it was first invented, there have been various improvements to the algorithm, including implementations of F4 by Faugere.    
 
-Note that an introduction/review of the algebraic constructs mentioned above (ring, field, ideal, and such) is included below in \textbf{Chaper} \ref{chpt:bg}.    
+Note that an introduction/review of the algebraic constructs mentioned above (ring, field, ideal, and such) is included below in \textbf{Chapter} \ref{chpt:bg}.    
 
 Groebner bases are useful in many applications in algebra.  GO ON
 
@@ -204,7 +205,7 @@ This is a common occurrence in Groebner basis computations.  The size of the int
 
 \chapter{Background}\label{chpt:bg}
 
-Before delving into the details of implementation, there is some background mathematics necessary to the computation and discussion of Groebner bases which must be introduced.  This will build off assumed knowledge of basic groups and rings in order to explain the ideal theory needed.
+Before delving into the details of implementation, there is some background mathematics necessary to the computation and discussion of Groebner bases which must be introduced.  This will build off assumed knowledge of basic groups and rings.
 
 \section{Algebraic Review}
 
@@ -288,9 +289,11 @@ Finally, there is the concept of a \textbf{field}, again building on the previou
   Therefore, every field is an EuD.
 \end{note}
 
+In this case, these algebraic structures and their behaviour when extended by invariates (to form polynomial algebraic structures) is of particular interest.
+
 \section{Polynomials and Polynomial Ideals}
 
-Polynomials are some of the most important and widely used algebraic objects in symbolic computation (CN).  Polynomial are defined as elements of an extension of a space S by one (or more, for multivariate) variables.  The polynomial spaces of interest are generally those where the space extended was a field i.e. where the coefficients are all elements in the field - in these cases the coefficients will have inverses with respect to both ring additive and multiplicative operations.  
+Polynomials are some of the most important and widely used algebraic objects in symbolic computation (CN).  Polynomials are defined as elements of an extension of a space S by one (or more, for multivariate) variables.  The polynomial spaces of interest are generally those where the space extended was a field i.e. where the coefficients are all elements in the field - in these cases the coefficients will have inverses with respect to both ring additive and multiplicative operations.  
 
 Polynomials can be classified by their number of variables - when considering polynomial spaces, they are mainly divided into univariate and multivariate (greater than one variable) spaces.  The distinction between univariate and multivariates (and the conglomeration of all multivariates in this categorization) is due to the behaviour of the different subcategories of rings (as previously described) when extended by variables (i.e. the ring may become another type of ring, "lower" in the categorization of rings, upon extension), as described below.
 
@@ -315,7 +318,7 @@ The categorization of the initial space determines what structure the univariate
 
 This leads to a few interesting points: for one thing, a polynomial ring is never a polynomial field.  A polynomial extension over a field results in a EuD, and not a field.  This makes sense, as for a space to be a field every non-zero element in the set would need to have an inverse also in the set - and polynomials do not have inverses in the polynomial space (i.e. there are no non-constant polynomials ${p_1(x),\, p_2(x)}$ such that ${p_1(x) \cdot p_2(x) = 1}$).  So, a polynomial space cannot be a field.
 
-Another point to consider is the extension of the concept to multivariate polynomials.  To approach this problem, multivariate polynomials can be represented as univariate polynomials extended recursively by the other variables.  This way, the same definitions and group relationships can be used in figuring out what type of space will be present.  
+Another point to consider is the extension of this concept to multivariate polynomials.  To approach this problem, multivariate polynomials can be represented as univariate polynomials extended recursively by the other variables.  This way, the same definitions and group relationships can be used in figuring out what type of space will be present.  
 
 For example, consider a bivariate polynomial space over a ring.  This is equivalent to a univariate space over a univariate space over a ring.  A univariate space over a ring is a ring; then, again, a univariate space over a ring is a ring.  So, a bivariate space over a ring is a ring.
 
@@ -339,7 +342,7 @@ Ideals are another algebraic structure, building off of rings and ring structure
   This criterion can be written equivalently as
   \begin{equation*} a*n, \, n*a \in N \;\; \forall \, n \in N, \, a \in R \end{equation*}
   
-  In other words: ideals are subgroups within a ring which are closed with respect to the ring's multiplication operation (i.e. every ideal N contains all of its left and right multiplicative cosets).  
+  In other words: ideals are subgroups within a ring which are closed with respect to the ring's multiplication operation (i.e. every ideal ${N}$ contains all of its left and right multiplicative cosets).  
 \end{defn}
 
 The idea of an ideal can be demonstrated in part by the following simple example.  
@@ -356,16 +359,20 @@ The idea of an ideal can be demonstrated in part by the following simple example
     \item the product of 2 even integers is an even integer
     \item the product of an even and an odd integer is an even integer
   \end{itemize}
-  So, the even integers forms an ideal within the ring ${(\mathbb(Z), +, \cdot)}$.
+  So, the even integers forms an ideal within the ring ${(\mathbb{Z}, +, \cdot)}$.
 \end{example}
 
 The concept of an ideal within a ring is analogous to the concept of a normal subgroup within a group. % CITE FRALEIGH
 
 All ideals are subrings in the ring in which they are considered.  Similarly to other sub-structures (subgroups, subrings, etc), ideals share the idea of proper and trivial.  In this case, a \textbf{proper ideal} is one which is a proper subring; i.e. in which the set is a proper subset of the ring.  If the ideal is an improper subring, i.e. the set is the ring set itself, then this is labelled as a \textbf{unit ideal}.  
 
-A simple extension to the idea of ideals is the concept of \textbf{principal ideals}.  This subset of ideals contains those which can be generated by a single element, i.e. cyclic ideals.  Rings in which all ideals are principal are labelled \textbf{principal ideal rings}.  Note that if a ring is cyclic, then all ideals will be principal.  This is the case since in a cyclic ring, all subrings are cyclic.  Since ideals are subrings, it follows that all ideals in a cyclic ring are also cyclic.  Therefore, cyclic rings are principal ideal rings.  However, the converse does not hold; i.e. the existence of a principal ideal does not mean that the ring itself is a principal ideal ring.  
+A simple extension to the idea of ideals is the concept of \textbf{principal ideals}.  This subset of ideals contains those which can be generated by a single element, i.e. cyclic ideals.  Rings in which all ideals are principal are labelled \textbf{principal ideal rings}.  
 
-Ideals can be specified over the subset of rings which are classified as more particular algebraic structures such as integral domains and fields.  In this case, the one of more interest is the \textbf{principal ideal domain}, which is an integral domain in which every ideal is principal.  
+\begin{note}
+  If a ring is cyclic, then all ideals will be principal.  This is the case since in a cyclic ring, all subrings are cyclic.  Since ideals are subrings, it follows that all ideals in a cyclic ring are also cyclic.  Therefore, cyclic rings are principal ideal rings.  However, the converse does not hold; i.e. the existence of a principal ideal does not mean that the ring itself is a principal ideal ring.  
+
+  Ideals can be specified over the subset of rings which are classified as more particular algebraic structures such as integral domains and fields.  In this case, the one of more interest is the \textbf{principal ideal domain}, which is an integral domain in which every ideal is principal.  
+\end{note}
 
 % \begin{example}\label{ex: Principal ideal}
   
@@ -495,7 +502,9 @@ A polynomial ${p}$ is considered \textbf{reducible} over polynomial ${q}$ if a m
 
 Reduction relative to a set ${G}$ of polynomials is the iterative application of the ${Reduce}$ procedure over each of the polynomials in the set, until it is irreducible with respect to every polynomial in the set.  This reduced polynomial is termed the \textbf{normal form} of the polynomial with respect to the set.
 
-Referring back to the definition of a Groebner basis above, the ${Reduce}$ procedure can now be considered more precisely: a Groebner basis is a basis for a polynomial ideal ${I}$ over field ${F}$ when polynomial ${p \in I}$ is a member of the basis if and only if the reduction of every polynomial with respect to the set ${G}$ is zero.  
+Referring back to the definition of a Groebner basis above, the ${Reduce}$ procedure can now be considered more precisely: a Groebner basis is a basis for a polynomial ideal ${I}$ over field ${F}$ when polynomial ${p \in I}$ is a member of the basis if and only if the reduction of every polynomial with respect to the set ${G}$ is zero. 
+
+Now, this procedure will be used in the computation of the Groebner bases, given an input generating set for an ideal. 
 
 \subsection{Buchberger's Algorithm}
 
@@ -524,7 +533,7 @@ The first algorithm for computing Groebner bases was proposed by Bruno Buchberge
 \end{algorithmic}
 \end{algorithm}  
 
-The basic idea is to start with a basis (i.e. a generating set) for the ideal, and repeatedly iterate over the set until all of the polynomials which are irreducible over the set are added to the set.  This is repeated until every combination of polynomials is either in the set its reduction with respect to the set is 0.  Notice the call to ${Reduce}$; this is the reduction of a polynomial over the set ${G}$ as discussed above.   
+The basic idea is to start with a basis (i.e. a generating set) for the ideal, and repeatedly iterate over the set until all of the polynomials which are irreducible over the set are added to the set.  This is repeated until every combination of polynomials is either in the set its reduction with respect to the set is 0.  Notice the call to ${Reduce}$; this is the reduction of a polynomial over the set ${G}$ as discussed above.  The ${selectpair}$ procedure is a selection of a pair of polynomials from the sets ${B}$ and ${G}$; a random pair can be selected, however the choice is generally made based on efficiency of the reduction of the pair's S-polynomial over the current set.     
 
 One new concept which the algorithm requires is the computation of \textbf{S-polynomials}.  Computation of S-polynomials is done through the following formula: 
 
@@ -564,7 +573,37 @@ The S-polynomial is essentially an application of the reduction process; the res
 
 At this point all the necessary constructs for applying Buchberger's algorithm are present.  To demonstrate how this process is applied, an example walkthrough of the algorithm's execution is included for clarity.  Recall that as input, the algorithm requires a generating set for the polynomial ideal, and a monomial ordering specified.
 
-EXAMPLE FROM NOTES
+\begin{example} % CITE CN
+  Consider the set ${S \subset \mathbb{Q}[x, y, z]}$ given as
+  \begin{equation*}
+    S = \{x^2 + yz - 2, \; y^2 + xz - 3, \; xy + z^2 - 5\}
+  \end{equation*}
+  with the degree-based ordering ${x > y > z}$.  
+
+  Now, set ${G = S}$, ${k = 3}$, and ${B = \{[1, 2],\; [1, 3],\; [2, 3]\}}$ (as corresponding to the variables in the pseudocode algorithm above).  
+  \begin{equation*}
+    Spoly( G_1, G_2) = y^2(x^2 + yz - 2) - x^2(y^2 + xz - 3) = -x^3z + y^3z + 3x^2 -2y^2
+  \end{equation*}
+  Then, computing the reduction of this S-polynomial over current basis ${G}$ yields:\\
+  Reduction over ${G}$: 
+  \begin{enumerate}
+    \item Over ${G_1}$: ${y^3z + xyz^2 + 3x^2 -2y^2 - 2xz}$
+    \item Over ${G_2}$: ${3x^2 - 2y^2 - 2xz + 3yz}$
+    \item Over ${G_1}$: ${-2y^2 - 2xz + 6}$
+    \item Over ${G_2}$: 0
+  \end{enumerate}
+  So then, ${B = \{[1, 3],\; [2, 3]\}}$
+
+  \begin{equation*}
+    Spoly( G_1, G_3) = y^2z - xz^2 + 5x - 2y
+  \end{equation*}
+  Reduction over ${G}$: 
+  \begin{enumerate}
+    \item Over ${G_2}$: ${-2xz^2 + 5x - 2y + 3z}$
+    \item Over ${G}$: this is irreducible; now, set ${G_4 = -2xz^2 + 5x - 2y + 3z}$
+  \end{enumerate}
+  Successive reduction over ${G_2}$:
+\end{example}
 
 In addition to the classic Buchberger algorithm, there have been other methods developed for computation of Groebner bases.  
 
@@ -608,7 +647,7 @@ However, regardless of the improvements in speed of these algorithms, one proble
  
 \subsection{Modular Homomorphisms}
 
-Groebner basis computations, depending on the initial ideal, can give rise to unmanagable expression swell.  This cannot be avoided by using classic iterative algorithms; however, these are the only algorithms currently available.  Instead of inventing an entirely new algorithmic approach to the problem, another potential approach would be to use the regular algorithms over prime fields, and then reconstruct the solution to the original space via a modular homomorphism method.
+Groebner basis computations, depending on the initial ideal, can give rise to unmanageable expression swell.  This cannot be avoided by using classic iterative algorithms; however, these are the only algorithms currently available.  Instead of inventing an entirely new algorithmic approach to the problem, another potential approach would be to use the regular algorithms over prime fields, and then reconstruct the solution to the original space via a modular homomorphism method.
 
 To discuss homomorphism methods, first the concept of a ring homomorphism must be introduced.
 
@@ -657,22 +696,26 @@ The following figure shows the relation between these spaces and the algorithms 
 Before the modular reconstruction algorithms are discussed in detail, a new factor must be taken into account: there is a new problem associated with modular reconstructions.  Previously, working with the Groebner computation algorithms directly, there is no consideration for any external factors.  However, now the characteristics of a modular space must be considered.  In particular, the modular space must be a field; every element ${a}$ in the space (excluding the additive inverse, 0) must have a multiplicative inverse in the space i.e. a unique corresponding element ${a^{-1}}$ in the space such that ${a*a^{-1} = 1 = a^{-1}*a}$.  To ensure that this is the case, the positive integer ${m}$ in space ${\mathbb{Z}_m}$ must be a prime.
 
 \begin{note}
-  For the modular space ${\mathbb{Z}_m}$ to be a field, ${m}$ must be a prime.  One of the criteria for a space being a field is that there are no zero divisors i.e. 
-  \begin{equation*}  \forall a, b \in \mathbb{Z}_m,\; a*b = 0 \, \textrm{means that either} \, a = 0 \, \textrm{or} \, b = 0 \end{equation*}
-  However, if the modular space is over ${m}$ not a prime, then this means that ${m}$ must have factors other than the trivial factors 1 and ${m}$.  So then, this means that there are nontrivial ${a, b}$ such that ${m = a*b, \, a, b < m}$.   This implies that these ${a, b \in \mathbb{Z}_m}$, since ${a, b < m}$.  From this, it follows that 
-  \begin{equation*} a*b = m = 0 \mod m \end{equation*}
-  Since ${a, b}$ are both nonzero for ${m}$ nonzero, this means that there are zero divisors in ${\mathbb{Z}_m}$.  Therefore, ${\mathbb{Z}_m}$ is not a field for composite ${m}$.
-\end{note}
+  For the modular space ${\mathbb{Z}_m}$ to be a field, ${m}$ must be a prime.  
+
+  \textbf{Proof:} If ${m}$ is prime, then every integer ${1 \leq k \leq m}$ has ${\gcd(k, m) = 1}$ and ${\exists \; s, \, t \in \mathbb{Z}}$ such that 
+  \begin{equation*}
+    s \cdot k + t \cdot m = \gcd(k, m) = 1
+  \end{equation*}
+  Hence, every nonzero ${k}$ has multiplicative inverse ${s \in \mathbb{Z}_m}$.  Therefore, ${\mathbb{Z}_m}$ is a field for ${m}$ prime, by definition of a field.
+
+  Now, considering the alternative: if nonzero ${m}$ is composite, then ${\exists \; a, \, b \in \mathbb{Z}, a, \, b \neq 0, 1}$ such that ${m = a \cdot b}$.  Then, it follows that ${a \cdot b = 0 (\mod m)}$.  So, ${a}$ and ${b}$ would be zero divisors for the ring ${\mathbb{Z}_m}$.  However, a field is an integral domain (in which each nonzero element has an inverse relative to multiplication), and inverses are defined as having no zero divisors.  Therefore, ${\mathbb{Z}_m}$ is not a field for ${m}$ composite. \qed
+\end{note} % CITE Durbin pg 129
 
 Methods for reconstruction from the prime modular integers to the integers, and then from the integers to the rationals, are detailed in the following chapter.  The methods which will be examined are Garner's Algorithm for Chinese Remainder computation and Hensel's algorithm, for building back from the prime modular integers to the integers; and Farey rational reconstruction for building back from the integers to the rationals.
 
 \chapter{Modular Homomorphisms and Reconstruction}
 
-Post processing in modular polynomial space requires reconstruction back to ${\mathbb{Z}[x_1, x_2, \ldots, x_n]}$, which is done through either the Chinese Remainder Algorithm (henceforth the CRA) or Hensel's Algorithm, which will be described below.  Subsequent reconstruction from the integers to the rationals is done using an algorithm similar to Farey rational reconstruction, which is also described below.  This chapter also discusses a new difficulty which arises when attempting to reconstruct - the idea of \textbf{lucky primes}. 
+Post processing in modular polynomial space requires reconstruction back to ${\mathbb{Z}[x_1, \ldots, x_n]}$, which is done through either the Chinese Remainder Algorithm (henceforth the CRA) or Hensel's Algorithm, which will be described below.  Subsequent reconstruction from the integers to the rationals is done using an algorithm similar to Farey rational reconstruction, which is also described below.  This chapter also discusses a new difficulty which arises when attempting to reconstruct - the idea of \textbf{lucky primes}. 
 
 \section{Chinese Remainder Theorem} 
 
-The Chinese Remainder Algorithm (CRA) is a method for reconstruction of an integer (or set of integers); it requires a set of modular images over various primes, which, combined provide a mixed-radix representation of the integer being reconstructed.  
+The CRA is a method for reconstruction of an integer (or set of integers); it requires a set of modular images over various primes, which, combined provide a mixed-radix representation of the integer being reconstructed.  
 
 \subsection{Mixed Radix Representation}
 
@@ -815,7 +858,7 @@ Hensel's Algorithm reconstructs images using the ${p}$-adic representation, for 
 
 Here, consider that, similarly to the CRA, where extension of the methods to the polynomial case is simple, involving the application of the method to each of the coefficients of the method, Hensel's reconstruction algorithm can also be applied to solving modular congruences with polynomials instead of integers.  Here, the method presented will be for the univariate polynomial case.  
 
-The idea is to have a reconstruction method equivalent to the CRA, but which only uses one prime image to invert the modular homomorphim ${\phi_p\; : \; \mathbb{Z}[x] \rightarrow \mathbb{Z}_p[x]}$.  Rather than starting with multiple images such as in the CRA, here we start with image ${u_0(x) \in \mathbb{Z}_p}$ of the requested solution ${u(x) \in \mathbb{Z}}$.
+The idea is to have a reconstruction method equivalent to the CRA, but which only uses one prime image to invert the modular homomorphism ${\phi_p\; : \; \mathbb{Z}[x] \rightarrow \mathbb{Z}_p[x]}$.  Rather than starting with multiple images such as in the CRA, here we start with image ${u_0(x) \in \mathbb{Z}_p}$ of the requested solution ${u(x) \in \mathbb{Z}}$.
 
 \begin{theorem}\label{hensel's lemma}
   Hensel's Lemma: Given ${p \in \mathbb{Z}}$ prime, and ${a(x) \in \mathbb{Z}[x]}$ univariate polynomial with integer coefficients; and given ${u^{(1)}(x),\, w^{(1)}(x) \in \mathbb{Z}_p[x]}$ relatively prime univariate polynomials over the ${p}$-modular integers such that
@@ -926,9 +969,9 @@ Formally: % CITE
     \item ${lp(f)}$ is the leading power product of polynomial ${f \in R}$
     \item ${lc(f)}$ is the leading coefficient of polynomial ${f \in R}$ (i.e. the coefficient of the leading power product)
     \item ${lt(f)}$ is the leading term of polynomial ${f \in R}$.  This is can be computed as ${lt(f) = lc(f)lp(f)}$ 
-    \item ${Lp(f) = \{lp(f) \mid f \in R\}}$ is the set of leading power products of ${R}$
-    \item ${Lc(f) = \{lc(f) \mid f \in R\}}$ is the set of leading coefficients of ${R}$
-    \item ${Lt(f) = \{lt(f) \mid f \in R\}}$ is the set of leading terms of ${R}$
+    \item ${Lp(R) = \{lp(f) \mid f \in R\}}$ is the set of leading power products of ${R}$
+    \item ${Lc(R) = \{lc(f) \mid f \in R\}}$ is the set of leading coefficients of ${R}$
+    \item ${Lt(R) = \{lt(f) \mid f \in R\}}$ is the set of leading terms of ${R}$
   \end{itemize}
 \end{note}
 
@@ -945,6 +988,8 @@ The first definition to be considered is as given by Pauer in his paper on prime
 \end{defn}
 
 However, again, this relies on the true Groebner basis having been previously computed which essentially nullifies the algorithm. 
+
+TODOOOOOO
 
 Considering lucky primes, the effects of performing the computations with a bad prime varies on the algorithm in use. 
 
@@ -1294,7 +1339,7 @@ The above plots show that even with the modular basis computation time alone, th
 
 One potential alteration to the method would be to use different-sized primes; 16-bit primes were also used, however this was found to be slower (data included in \textbf{Appendix} \ref{appendix:supplData}).  
 
-Going the other way and using bigger primes could be another approach, however this is also flawed.  The 64-bit Maple has a word-size of 64 bits; using primes greater than 32-bit would mean that their product would no longer be word-size, and therefore the computations would be in principle less efficient.  In additon, increasing the prime size would increase the intermediate expression swell.  Consider that in the limit of the primes reaching the maximum size of the final basis coefficients, then this modular computation would be exactly equivalent to the nonmodular method, and both methods should be equal in necessary time.  Removing the efficiency of using word-size primes for the computations means that the modular computations will not be faster than the nonmodular methods; at fastest, they would be equal to the nonmodular methods.  
+Going the other way and using bigger primes could be another approach, however this is also flawed.  The 64-bit Maple has a word-size of 64 bits; using primes greater than 32-bit would mean that their product would no longer be word-size, and therefore the computations would be in principle less efficient.  In addition, increasing the prime size would increase the intermediate expression swell.  Consider that in the limit of the primes reaching the maximum size of the final basis coefficients, then this modular computation would be exactly equivalent to the nonmodular method, and both methods should be equal in necessary time.  Removing the efficiency of using word-size primes for the computations means that the modular computations will not be faster than the nonmodular methods; at fastest, they would be equal to the nonmodular methods.  
 
 So in conclusion, it seems that the current Maple Groebner package makes the attempted modular homomorphism methods redundant.  No added efficiency was observed; in fact, the modular approach was consistently slower than the basic nonmodular approach, for all available algorithms.  
 
@@ -1316,7 +1361,7 @@ An efficiency test across platforms could also be made, to compare the efficienc
 
 \section{In Summary}
 
-In summary, computing the Groebner bases over modular integers, followed by modular reconstructions, although it removed the intermediate expression swell, did not increase the efficiency of the computation when implemented in the Maple system.  For the Hensel algorithm, this is due to the restriction of modular basis computation algorithm to the less efficient Buchberger's algorithm, as it provides the required intermediate matrix.  For the CRA, although more efficient than the Hensel, this is still slower than the Maple direct computation, as the modular basis computation time is greater than the time required for the single direct computation over the rationals.  The advancements in the Groebner basis computation methods make the homomorphic approaches effectively redundant in Maple.  However, potential courses of improvement to these algorithms could be implementation of the modular methods in the fast FGB method implemented in C.  Additionally, other computer algebra systems could be tested similarly. 
+Although it removed the intermediate expression swell, computing the Groebner bases over modular integers, followed by modular reconstructions, did not increase the efficiency of the computation when implemented in the Maple system.  For the Hensel algorithm, this is due to the restriction of modular basis computation to the less efficient Buchberger algorithm, as it provides the required intermediate matrix.  The CRA, although more efficient than Hensel, is still slower than the Maple direct computation, as the modular basis computation time is greater than the time required for the single direct computation over the rationals.  The advancements in the Groebner basis computation methods make the homomorphic approaches effectively redundant in Maple.  However, one potential improvement to these algorithms could be the implementation of the modular methods in the fast FGB method implemented in C.  Additionally, other computer algebra systems could be tested through similar methods. 
 
 \begin{appendices}
 
