@@ -136,7 +136,12 @@
 %======================================================================
 \begin{document}
 
+\title{Modular Algorithms for Computation of Groebner Bases}
+\date{2016-03-29}
+\author{Ellen Arteca}
+
 \frontmatter
+\maketitle
 \tableofcontents
 \listoffigures
 \mainmatter
@@ -494,6 +499,50 @@ This concept of reduction is essential to Groebner bases, and to the computation
 
 Reducing polynomial ${p}$ over another polynomial ${q}$, ${Reduce( p, q)}$ amounts to multivariate division of ${p}$ by ${q}$, with remainder ${r}$.  This is a recursive extension of the Euclidean algorithm for division of univariate polynomials, dependent on the monomial ordering specified.  The idea is to consider the multivariate polynomial as a "recursive univariate polynomial".  This concept is best described by an example: consider the polynomial ${}$ EXAMPLE ON THE SYMBOLIC MIDTERM FOR POLYNOMIAL LONG DIVISION.
 
+The pseudocode for the ${Reduce}$ algorithm is included below
+\begin{algorithm}[H]
+\caption{Reduce}\label{reduce}
+\begin{algorithmic}[1]
+\Input $\quad p$ polynomial to be reduced, and ${Q}$ set to reduce with respect to
+\Output Reduced polynomial, ${q}$
+\Procedure{Reduce}{}
+\State // Given polynomial ${p}$ and set of polynomials ${Q}$
+\State // from ring ${F[x]}$, find ${q}$ such that ${p}$ reduces to ${q}$ modulo ${Q}$
+\State $r \gets p$; $\quad q \gets 0$ \\
+\State // If there are no reducers, remove the leading monomial
+\State // otherwise, continue with the reduction\\
+\While{ $r \neq 0$}
+  \While{ $R_{r, Q} \neq \phi$}
+    \State $f \gets \textrm{select a polynomial from}\; R_{r,Q}$
+    \State $r \gets \frac{Lm(r) \cdot f}{Lm(f)}$
+  \EndWhile
+  \State $q \gets q + Lm(r)$
+  \State $r \gets r - Lm(r)$
+\EndWhile\\
+\Return $q$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}  
+
+\begin{example}
+  Consider the set ${P = \{p_1, p_2\} \subset \mathbb{Q}[x, y]}$, where 
+  \begin{equation*}
+    p_1 = x^2y + 5x^2 + y^2 \; , \; p_2 = 7xy^2 - 2y^3 + 1 \; ;
+  \end{equation*}
+  Then, impose the lex ordering ${x > y}$.  
+
+  Here, the reduction is of polynomial ${q = 3x^3y + 2x^2y^2 - 3xy + 5x}$
+
+  Following the ${Reduce}$ algorithm as shown, we have
+  \begin{eqnarray*}
+    q &=& q - 3xp_1 \qquad \textrm{over }\\
+      &=& -15x^3 + 2x^2y^2 - 3xy^2 - 3xy + 5x\\
+    q &=& -15x^3 - 10x^2y - 3xy^2 - 3xy + 5x - 2y^3\\
+    q &=& -15x^3 + 50x^2 - 3xy^2 -3xy + 5x - 2y^3 + 10y^2\\
+    q &=& -15x^3 + 50x^2 - 3xy + 5x - \frac{20}{7}y^3 + 10y^2 + \frac{3}{7}
+  \end{eqnarray*}
+\end{example}
+
 A polynomial ${p}$ is considered \textbf{reducible} over polynomial ${q}$ if a monomial in ${p}$ can be written as a multiple of the leading monomial of ${q}$.  It is \textbf{irreducible} if there are no monomials in ${p}$ which are multiples of the leading monomial of ${q}$.    
 
 \begin{note}
@@ -584,8 +633,7 @@ At this point all the necessary constructs for applying Buchberger's algorithm a
   \begin{equation*}
     Spoly( G_1, G_2) = y^2(x^2 + yz - 2) - x^2(y^2 + xz - 3) = -x^3z + y^3z + 3x^2 -2y^2
   \end{equation*}
-  Then, computing the reduction of this S-polynomial over current basis ${G}$ yields:\\
-  Reduction over ${G}$: 
+  Then, iteratively reducing this S-polynomial over current basis ${G}$ yields:\\ 
   \begin{enumerate}
     \item Over ${G_1}$: ${y^3z + xyz^2 + 3x^2 -2y^2 - 2xz}$
     \item Over ${G_2}$: ${3x^2 - 2y^2 - 2xz + 3yz}$
@@ -596,13 +644,21 @@ At this point all the necessary constructs for applying Buchberger's algorithm a
 
   \begin{equation*}
     Spoly( G_1, G_3) = y^2z - xz^2 + 5x - 2y
-  \end{equation*}
-  Reduction over ${G}$: 
+  \end{equation*} 
+  Then, reducing over ${G}$: 
   \begin{enumerate}
     \item Over ${G_2}$: ${-2xz^2 + 5x - 2y + 3z}$
-    \item Over ${G}$: this is irreducible; now, set ${G_4 = -2xz^2 + 5x - 2y + 3z}$
+    \item Over ${G}$: this is irreducible; now, set ${G_4 = -2xz^2 + 5x - 2y + 3z}$, and reset ${k = 4}$, and ${B = \{[2, 3],\; [1, 4],\; [2, 4],\; [3, 4]\}}$ and repeat the algorithm loop as above with the new set
   \end{enumerate}
-  Successive reduction over ${G_2}$:
+  
+  Repeating these steps (following the algorithm shown above), the following intermediate steps and final result are found:
+  \begin{enumerate}
+    \item \begin{itemize} \item ${Spoly( G_2, G_3)}$ leads to ${G_5 = -2yz^2 - 3x + 5y + 2z}$ \item ${B = \{[1, 4],\; [2, 4],\; [3, 4],\; [1, 5],\; [2, 5],\; [3, 5],\; [4, 5]\}}$ \end{itemize}
+    \item \begin{itemize} \item ${Spoly( G_1, G_4)}$ leads to ${G_5 = -2yz^2 - 3x + 5y + 2z}$ \item ${B = \{[2, 4],\; [3, 4],\; [1, 5],\; [2, 5],\; [3, 5],\; [4, 5]\}}$ \end{itemize}
+    \item \begin{itemize} \item ${Spoly( G_2, G_4)}$ leads to ${G_5 = -2yz^2 - 3x + 5y + 2z}$ \item ${B = \{[3, 4],\; [1, 5],\; [2, 5],\; [3, 5],\; [4, 5]\}}$ \end{itemize}
+    \item \begin{itemize} \item ${Spoly( G_3, G_4)}$ leads to ${G_5 = -2yz^2 - 3x + 5y + 2z}$ \item ${B = \{[1, 5],\; [2, 5],\; [3, 5],\; [4, 5],\; [1, 6],\; [2, 6],\; [3, 6],\; [4, 6],\; [5, 6]\}}$ \end{itemize}
+  \end{enumerate}
+  After which all further S-polynomial reductions lead to 0 and the algorithm has terminated.
 \end{example}
 
 In addition to the classic Buchberger algorithm, there have been other methods developed for computation of Groebner bases.  
