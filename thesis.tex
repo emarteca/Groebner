@@ -534,13 +534,13 @@ The pseudocode for the ${Reduce}$ algorithm is included below
   Here, the reduction is of polynomial ${q = 3x^3y + 2x^2y^2 - 3xy + 5x}$
 
   Following the ${Reduce}$ algorithm as shown, we have
-  \begin{eqnarray*}
-    q &=& q - 3xp_1 \qquad \textrm{over }\\
-      &=& -15x^3 + 2x^2y^2 - 3xy^2 - 3xy + 5x\\
-    q &=& -15x^3 - 10x^2y - 3xy^2 - 3xy + 5x - 2y^3\\
-    q &=& -15x^3 + 50x^2 - 3xy^2 -3xy + 5x - 2y^3 + 10y^2\\
-    q &=& -15x^3 + 50x^2 - 3xy + 5x - \frac{20}{7}y^3 + 10y^2 + \frac{3}{7}
-  \end{eqnarray*}
+  \begin{align*}
+    q &= q - 3xp_1 && \textrm{over } p_1\\
+      &= -15x^3 + 2x^2y^2 - 3xy^2 - 3xy + 5x\\
+    q &= -15x^3 - 10x^2y - 3xy^2 - 3xy + 5x - 2y^3 && \textrm{over } p_1\\
+    q &= -15x^3 + 50x^2 - 3xy^2 -3xy + 5x - 2y^3 + 10y^2 && \textrm{over } p_1\\
+    q &= -15x^3 + 50x^2 - 3xy + 5x - \frac{20}{7}y^3 + 10y^2 + \frac{3}{7} && \textrm{over } p_2
+  \end{align*}
 \end{example}
 
 A polynomial ${p}$ is considered \textbf{reducible} over polynomial ${q}$ if a monomial in ${p}$ can be written as a multiple of the leading monomial of ${q}$.  It is \textbf{irreducible} if there are no monomials in ${p}$ which are multiples of the leading monomial of ${q}$.    
@@ -1043,9 +1043,22 @@ The first definition to be considered is as given by Pauer in his paper on prime
   A prime ${p}$ is \textbf{Pauer lucky} for ideal ${I}$ if it does not divide any leading coefficient of any polynomial in ${G}$ the reduced Groebner basis of ${I}$.
 \end{defn}
 
-However, again, this relies on the true Groebner basis having been previously computed which essentially nullifies the algorithm. 
+However, again, this relies on the true Groebner basis having been previously computed which essentially nullifies the algorithm.  It would be useful to be able to check if a prime is lucky before performing a lift over this prime.    
 
-TODOOOOOO
+The \textbf{Hilbert function} allows the comparison of two primes ${p,\, q}$ to determine relative luckiness.  This treatment of the Hilbert function and relevant background material is as presented by Arnold.  
+
+For the ideal ${I \subseteq \mathbb{Q}[\bar x]}$, let ${I[n]}$ be the set of polynomials in ${I}$ of degree ${n}$.  This ${I[n]}$ is a vector space over ${\mathbb{Q}}$.  
+
+The \textbf{Hilbert function} of ${\mathbb{Q}[\bar x]/I}$ is a mapping
+\begin{equation*}
+  HF_1\; : \; \mathbb{N} \rightarrow \mathbb{N}
+\end{equation*}
+such that
+\begin{equation*}
+  HF_i(n) = \dim_{\mathbb{Q}}(\mathbb{Q}[\bar x]/I[n])
+\end{equation*}
+
+
 
 Considering lucky primes, the effects of performing the computations with a bad prime varies on the algorithm in use. 
 
