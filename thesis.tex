@@ -10,6 +10,8 @@
 \usepackage[noend]{algpseudocode}
 \usepackage{algorithmicx}
 
+\usepackage{url}
+
 \algnewcommand\algorithmicInput{\textbf{Input:}}
 \algnewcommand\Input{\item[\algorithmicInput]}
 
@@ -1501,7 +1503,8 @@ The steps to defining and including a C external library in Maple are included b
 
 \begin{enumerate}
   \item Write the C code, and compile it with the following options: $$\texttt{gcc -std=c99 -fPIC -g -c -Wall <yourfile>.c -lgmp}$$.  Note that the \texttt{lgmp} option is required for using the GMP MPZ library.
-  \item Then, create a UNIX shared library file as follows: $$\texttt{gcc -shared -Wl,-soname,<yourlib>.so.1 -o <yourlib>.so.1.0.1 <yourfile>.o -lc -lgmp}$$
+  \item Then, create a UNIX shared library file as follows: \begin{align*}\texttt{gcc -shared} & \texttt{ -Wl,-soname,<yourlib>.so.1 -o <yourlib>.so.1.0.1} \\
+                                                                          &\texttt{ <yourfile>.o -lc -lgmp}\end{align*}
   \item Once the shared library file exists, it can be referenced from Maple using the \\\texttt{define\_external} call.  
 \end{enumerate}
 
@@ -1528,7 +1531,7 @@ Here, note that the new prime is below the maximum integer size for C and can th
                                          &\texttt{ RETURN::(string), LIB="mylib.so.1.0.1"):}  
 \end{align*}
 
-Notice the matching names for the function and parameters between the C and \texttt{define\_external}.  More details on the functionality and options available with \texttt{define\_external}, including plugins for other languages (Java and FORTRAN), can be found in the Maple manual online. CITE
+\noindent Notice the matching names for the function and parameters between the C and \\\texttt{define\_external}.  More details on the functionality and options available with \\\texttt{define\_external}, including plugins for other languages (Java and FORTRAN), \\can be found in the Maple manual online. CITE
 
 \begin{note}
   There was one problem which was not resolved in the Maple interfacing with this C function.  In various points in the code, \texttt{malloc} was used to allocate arrays of specified size, including the pointer to the return string, \texttt{char*} in C.  The first call to this function executed with no issues, however if called again within the same Maple session the command would enter what appeared to be a permanent wait and did not terminate.  This was not observed when calling the function from another C function.
@@ -1642,7 +1645,7 @@ Referring back to the 32-bit data tables for the CRA with these algorithms respe
 % Add the References to the Table of Contents
 \addcontentsline{toc}{chapter}{\textbf{References}}
 
-\bibliography{uw-ethesis}
+\bibliography{biblio}
 % Tip 5: You can create multiple .bib files to organize your references. 
 % Just list them all in the \bibliogaphy command, separated by commas (no spaces).
 
