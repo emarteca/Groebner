@@ -1682,14 +1682,136 @@ Referring back to the 32-bit data tables for the CRA with these algorithms respe
 
 The problems the timing tests were performed over are included below.  The basis is the $F$ list, and the monomial ordering specified is the $X$ list.  
 
-\textbf{\texttt{arnborgI}}
-\begin{codefont}
-  fgbwehifhwkfhwkfw
-  ejfwiofnjews
-  fewofws
-  qawefrweafjws
+\singlespacing
+
+\noindent\textbf{\texttt{arnborgI}}\\\\
+\noindent\begin{codefont}
+  f1 := a + b + c + d + e:\\
+  f2 := a*b + b*c + c*d + a*e + d*e:\\
+  f3 := a*b*c + b*c*d + a*b*e + a*d*e + c*d*e:\\
+  f4 := a*b*c*d + a*b*c*e + a*b*d*e + a*c*d*e + b*c*d*e:\\
+  f5 := a*b*c*d*e - 1:\\
+  \\
+  F := [f1,f2,f3,f4,f5];\\
+  X := [a,b,c,d,e];\\
 \end{codefont}
 
+\noindent\textbf{\texttt{arnborgII}}\\\\
+\noindent\begin{codefont}
+  f1 := a + b + c + d + e + f:
+  \\f2 := a*b + b*c + c*d + d*e + e*f + f*a:
+  \\f3 := a*b*c + b*c*d + c*d*e + d*e*f  + e*f*a + f*a*b:
+  \\f4 := a*b*c*d + b*c*d*e + c*d*e*f + d*e*f*a + e*f*a*b + f*a*b*c:
+  \\f5 := a*b*c*d*e + b*c*d*e*f + c*d*e*f*a + d*e*f*a*b + e*f*a*b*c + f*a*b*c*d:
+  \\f6 := a*b*c*d*e*f - 1:
+\\
+  \\F := [f1,f2,f3,f4,f5,f6];
+  \\X := [a,b,c,d,e,f];\\
+\end{codefont}
+
+\noindent\textbf{\texttt{arnborgIII}}\\\\
+\noindent\begin{codefont}
+  f1 := a\^{}2*b*c + a*b\^{}2*c + a*b*c\^{}2 + a*b*c + a*b + a*c + b*c:
+  \\f2 := a\^{}2*b\^2*c + a*b\^{}2*c\^{}2 + a\^{}2*b*c + a*b*c + b*c + a + c:
+  \\f3 := a\^{}2*b\^{}2*c\^{}2 + a\^{}2*b\^{}2*c + a*b\^{}2*c + a*b*c + a*c + c + 1:\\
+  \\
+  \\F := [f1,f2,f3];
+  \\X := [a,c,b];
+\end{codefont}
+
+\noindent\textbf{\texttt{arnborgV}}\\\\
+\noindent\begin{codefont}
+  f1 := a + b + c + d + e:\\
+  f2 := a*b + b*c + c*d + a*e + d*e:\\
+  f3 := a*b*c + b*c*d + a*b*e + a*d*e + c*d*e:\\
+  f4 := b*c*d + a*b*c*e + a*b*d*e + a*c*d*e + b*c*d*e:\\
+  f5 := a*b*c*d*e - 1:\\
+  \\
+  F := [f1,f2,f3,f4,f5];\\
+  X := [a,b,c,d,e];\\
+\end{codefont}
+
+\noindent\textbf{\texttt{forsman1}}\\\\
+\noindent\begin{codefont}
+  F := [y0 - x2\^{}2, y1 - 2*x2*x21, y2 - 2*x2*x22 - 2*x21\^{}2,\\
+      2*x1\^{}5*x11 - u + x1, 2*x2*x21 - x1 + x2, 2*x21\^{}2 + 2*x2*x22 - x11 + x21];\\
+  \\
+  X := [x22,x21,x2,x11,x1,u,y2,y1,y0];\\
+\end{codefont}
+
+\noindent\textbf{\texttt{forsman2}}\\\\
+\noindent\begin{codefont}
+  F := [x1*w\^{}4 + 18*x1*w\^{}2 + 81*x1 - 4*w\^{}2 - 12,\\
+      x2*w\^{}5 + 18*x2*w\^{}3 + 81*x2*w + w\^{}4 + 2*w\^{}2 + 9];\\
+  \\
+  X := [w,x1,x2];
+\end{codefont}
+
+\noindent\textbf{\texttt{forsman3}}\\\\
+\noindent\begin{codefont}
+  F := [3*x1\^{}2 + 4*x2*x1 + 4*x2\^{}2 - 1,\\
+  6*a*x1\^{}3*x2 - 6*x1\^{}2 - 8*x2*x1 + 4*a*x1\^{}2*x2\^{}2 - 8*x2\^{}2,\\
+  6*x1 + 4*x2 + 12*l*x1 - 18*l*a*x1\^{}2*x2 + 8*l*x2 - 8*l*a*x1*x2\^{}2,\\
+  4*x1 + 8*x2 + 8*l*x1 - 8*l*a*x1\^{}2*x2 - 6*l*a*x1\^{}3 + 16*l*x2];\\
+        \\
+  X := [x2,x1,l,a];\\
+\end{codefont}
+
+\noindent\textbf{\texttt{forsman4}}\\\\
+\noindent\begin{codefont}
+  F := [3*x1\^{}2 + 4*x2*x1 + 4*x2\^{}2 - 1,\\
+  6*a*x1\^{}3*x2 - 11/2*x1\^{}2 - 8*x2*x1 + 4*a*x1\^{}2*x2\^{}2 - 15/2*x2\^{}2,\\
+  6*x1 + 4*x2 - l*(18*a*x1\^{}2*x2 - 11*x1 - 8*x2 + 8*a*x1*x2\^{}2),\\
+  4*x1 + 8*x2 - l*(6*a*x1\^{}3 - 8*x1 + 8*a*x1\^{}2*x2 - 15*x2)];\\
+        \\
+  X := [l,x1,x2,a];\\
+\end{codefont}
+
+\noindent\textbf{\texttt{katsura7}}\\\\
+\noindent\begin{codefont}
+  f0 := -x0 + 2*x7\^{}2 + 2*x6\^{}2 + 2*x5\^{}2 + 2*x4\^{}2 + 2*x3\^{}2 + 2*x2\^{}2 + 2*x1\^{}2 + x0\^{}2:\\
+  f1 := -x1 + 2*x7*x6 + 2*x6*x5 + 2*x5*x4 + 2*x4*x3 + 2*x3*x2 + 2*x2*x1 + 2*x1*x0:\\
+  f2 := -x2 + 2*x7*x5 + 2*x6*x4 + 2*x5*x3 + 2*x4*x2 + 2*x3*x1 + 2*x2*x0 + x1\^{}2:\\
+  f3 := -x3 + 2*x7*x4 + 2*x6*x3 + 2*x5*x2 + 2*x4*x1 + 2*x3*x0 + 2*x2*x1:\\
+  f4 := -x4 + 2*x7*x3 + 2*x6*x2 + 2*x5*x1 + 2*x4*x0 + 2*x3*x1 + x2\^{}2:\\
+  f5 := -x5 + 2*x7*x2 + 2*x6*x1 + 2*x5*x0 + 2*x4*x1 + 2*x3*x2:\\
+  f6 := -x6 + 2*x7*x1 + 2*x6*x0 + 2*x5*x1 + 2*x4*x2 + x3\^{}2:\\
+  f7 := -1 + 2*x7 + 2*x6 + 2*x5 + 2*x4 + 2*x3 + 2*x2 + 2*x1 + x0:\\
+  \\
+  F := [f0, f1, f2, f3, f4, f5, f6, f7]:\\
+  X := [x0, x1, x2, x3, x4, x5, x6, x7]:\\
+\end{codefont}
+
+
+\noindent\textbf{\texttt{hellin}}\\\\
+\noindent\begin{codefont}
+  F := [4+8*z-10*z\^{}2-10*z\^{}3+7*y-3*y*z-3*y*z\^{}2+6*y\^{}2+2*y\^{}2*z-8*y\^{}3-9*x\\
+     +5*x*z-2*x*z\^{}2-4*x*y-x*y*z+9*x*y\^{}2-6*x\^{}2+6*x\^{}2*z-2*x\^{}2*y+10*x\^{}3,\\
+\\
+     -5+7*z+z\^{}2-2*z\^{}3+6*y-9*y*z-8*y*z\^{}2-4*y\^{}2-8*y\^{}2*z-5*y\^{}3-9*x-2*x*z\\
+     +10*x*z\^{}2-9*x*y+8*x*y*z+10*x*y\^{}2-3*x\^{}2-2*x\^{}2*z-2*x\^{}2*y-3*x\^{}3,\\
+\\
+     -2+3*z-9*z\^{}2+7*z\^{}3+6*y-7*y*z+9*y*z\^{}2+2*y\^{}2+3*y\^{}2*z+10*y\^{}3-2*x\\
+     +8*x*z+4*x*z\^{}2-3*x*y-6*x*y*z+3*x*y\^{}2-6*x\^{}2+9*x\^{}2*y-3*x\^{}3];\\
+\\
+X := [x,y,z];\\
+\end{codefont}
+
+\noindent\textbf{\texttt{kiyoshi5}}\\\\
+\noindent\begin{codefont}
+  F := [ \\
+  1/7*x\^{}2 - 326548390854652/272974017239*x + 1263781236281/712638126*y\^{}2\\
+  + 26872672361827/7263188218281*z\^{}2,\\
+  3/8*x*y + 12367812638123/763812368213132*y*z - 63812638126/77263812831*y,\\
+  4/9*x + 327091270979304/24122375460421*y + 18467031595309203/318405459032*z\\
+  - 356318063693141319/6436561806418109\\
+  ];\\
+  \\
+  X := [x,y,z];\\
+\end{codefont}
+
+
+\doublespacing
 pls
 
 \end{appendices}
