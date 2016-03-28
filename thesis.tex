@@ -11,6 +11,7 @@
 \usepackage{algorithmicx}
 
 \usepackage{url}
+\usepackage{listings}
 
 \algnewcommand\algorithmicInput{\textbf{Input:}}
 \algnewcommand\Input{\item[\algorithmicInput]}
@@ -123,7 +124,7 @@
 
 % \usepackage[T1]{fontenc}
 % \newenvironment{myfont}{\fontfamily{SansSerif}\selectfont}{\par}
-\newenvironment{codefont}{\ttfamily}{\par}
+\newenvironment{codefont}{\footnotesize\ttfamily}{\par}
 
 
 %\renewcommand{\baselinestretch}{1} 
@@ -316,7 +317,7 @@ In this case, these algebraic structures and their behaviour when extended by in
 
 \section{Polynomials and Polynomial Ideals}
 
-Polynomials are some of the most important and widely used algebraic objects in symbolic computation (CN).  Polynomials are defined as elements of an extension of a domain ${S}$ by one (or more, for multivariate) variables.  The polynomial domains of interest are generally those where the coefficient domain extended was a field, i.e. where the coefficients are all elements in the field - in these cases the coefficients will have inverses with respect to both ring additive and multiplicative operations.  
+Polynomials are some of the most important and widely used algebraic objects in symbolic computation \cite{Geddes}.  Polynomials are defined as elements of an extension of a domain ${S}$ by one (or more, for multivariate) variables.  The polynomial domains of interest are generally those where the coefficient domain extended was a field, i.e. where the coefficients are all elements in the field - in these cases the coefficients will have inverses with respect to both ring additive and multiplicative operations.  
 
 Polynomials can be classified by their number of variables - when considering polynomial rings, they are mainly divided into univariate and multivariate (greater than one variable) domains.  The distinction between univariate and multivariates (and the conglomeration of all multivariates in this categorization) is due to the behaviour of the different subcategories of rings (as previously described) when extended by variables (i.e. the ring may become another type of ring, "lower" in the categorization of rings, upon extension), as described below.
 
@@ -646,7 +647,7 @@ The S-polynomial is essentially an application of the reduction process; the res
 
 At this point all the necessary constructs for applying Buchberger's algorithm are present.  To demonstrate how this process is applied, an example walkthrough of the algorithm's execution is included for clarity.  Recall that as input, the algorithm requires a generating set for the polynomial ideal, and a monomial ordering specified.
 
-An example walkthrough is detailed below to demonstrate the algorithmic process \cite{CN}.
+An example walkthrough is detailed below to demonstrate the algorithmic process \cite{Geddes}.
 
 \begin{example} 
   Consider the set ${S \subset \mathbb{Q}[x, y, z]}$ given as
@@ -694,20 +695,20 @@ Since the introduction of Gr\"obner bases by Buchberger in 1965, there have been
 
 The F4 approach to polynomial reduction replaces the Buchberger's sequential polynomial divisions for reduction over a set (the ${Reduce}$ method detailed above) with a row reduction to row-echelon form of a single matrix of polynomials.
 
-As explained by Roune in his summary of Faugere's original paper detailing the F4 algorithm, reduction of a polynomial ${f}$ over a set of ${k}$ polynomials ${W = \{r_1, \ldots, r_k\}}$ consists of the following steps \cite{Roune}:
+As explained by Roune in his summary of Faugere's original paper detailing the F4 algorithm \cite{faugere}, reduction of a polynomial ${f}$ over a set of ${k}$ polynomials ${W = \{r_1, \ldots, r_k\}}$ consists of the following steps \cite{Roune}:
 \begin{itemize}
   \item From the given polynomial ${f}$ and set of polynomials ${W}$ to reduce over, construct a matrix ${A}$
   \item Compute row-echelon form of ${A}$, denoted ${\bar A}$
   \item Reduced form of ${f}$ can be read from ${\bar A}$
 \end{itemize}      
 
-Rather than having a unique ${A}$ matrix for each ${f}$ to reduce, the ${A}$ matrix can be built in such a way as to allow many polynomials to be reduced simultaneously, and, after the reduction of ${A}$ to ${\bar A}$, all the reduced polynomials can be read off from ${\bar A}$.  Construction of ${A}$ must be done in such a way as to allow polynomial division to be emulated by reduction of ${A}$.  Here, the method is detailed as from Roune's paper.
+Rather than having a unique ${A}$ matrix for each ${f}$ to reduce, the ${A}$ matrix can be built in such a way as to allow many polynomials to be reduced simultaneously, and, after the reduction of ${A}$ to ${\bar A}$, all the reduced polynomials can be read off from ${\bar A}$.  Construction of ${A}$ must be done in such a way as to allow polynomial division to be emulated by reduction of ${A}$.  Here, the method is detailed as from Roune's paper \cite{Roune}.
 
 First, assume that the set has been normalized, and that all polynomials have a leading coefficient of 1.  Then, consider the functionality of the polynomial division algorithm for a set: this takes the leading monomial of the intermediate stage of the division, say polynomial ${h}$, and attempts to find a polynomial ${r_i}$ in the set such that the ${Lm(r_i) \mid Lm(h)}$; if such an ${r_i}$ exists in the set ${W}$, then the next intermediate result in the division would be ${h - tr_i}$, where $${t = \frac{Lm(h)}{Lm(r_i)}}$$.  
 
 To include this computation in the reduction of ${A}$, then there must be a row in ${A}$ that corresponds to the subtraction term required for the polynomial division of ${h}$, i.e. ${tr_i}$.  Then, the next step in the polynomial division will require another ${W}$-entry, some ${r_j}$.  In order to generalize the algorithm, instead of attempting to predict which monomials will be included in the reduced term ${h - t_ri}$ (in order to find which is the leading monomial), simply include all monomials of ${h}$ and ${tr_i}$ except for the leading monomial.
 
-The step-by-step for the algorithm of construction of ${A}$ is as presented by Roune:
+The step-by-step for the algorithm of construction of ${A}$ is as presented by Roune \cite{Roune}:
 \begin{enumerate}
   \item Add ${f}$ to ${A}$, and take ${M}$ as the set of monomials of ${f}$
   \item If ${M}$ is the empty set, then the algorithm terminates and A is in its final form
@@ -719,7 +720,7 @@ The step-by-step for the algorithm of construction of ${A}$ is as presented by R
 
 Once ${A}$ has been constructed, then it can be reduced by some method specified and the F4 algorithm proceeds to repeat this step for every polynomial ${f}$ in the ideal's generating set.
 
-The row reduction of ${A}$ to achieve ${\bar A}$ in row-echelon form can also be optimized.  Classic Gaussian elimination could be used to perform this reduction; however, since the ${A}$ matrix is constructed with many zero entries, faster methods of reduction using sparse-matrix techniques could be taken advantage of.  There are advanced linear algebra packages available which make this reduction efficient; using existing techniques also reduces the complexity of coding the F4 algorithm itself.
+The row reduction of ${A}$ to achieve ${\bar A}$ in row-echelon form can also be optimized.  Classic Gaussian elimination could be used to perform this reduction; however, since the ${A}$ matrix is constructed with many zero entries, faster methods of reduction using sparse-matrix techniques could be taken advantage of.  There are advanced linear algebra packages available which make this reduction efficient; for instance, there is the LinearAlgebra package for Maple \cite{MapleLinAlg}, the CXSPARSE package for GNU Octave \cite{OctaveLinAlg}, and the scipy.sparse.linalg module for Python scipy \cite{scipyLinAlg}, among others.  Using existing techniques also reduces the complexity of coding the F4 algorithm itself.  
 
 The FGB Gr\"obner computation method included in the Maple Gr\"obner package is an optimized C implementation of the F4 algorithm included as an external library, also written by Faugere.  The algorithm is the same as F4, however it makes use of the lower-level optimizations available in C which are not present in Maple. 
 
@@ -776,7 +777,7 @@ The following figure shows the relation between these spaces and the algorithms 
 Before the modular reconstruction algorithms are discussed in detail, a new factor must be taken into account: there is a new problem associated with modular reconstructions.  Previously, working with the Gr\"obner computation algorithms directly, there is no consideration for any external factors.  However, now the characteristics of a modular space must be considered.  In particular, the modular space must be a field; every element ${a}$ in the space (excluding the additive identity, 0) must have a multiplicative inverse in the space i.e. a unique corresponding element ${a^{-1}}$ in the space such that ${a*a^{-1} = 1 = a^{-1}*a}$.  To ensure that this is the case, the positive integer ${m}$ in space ${\mathbb{Z}_m}$ must be a prime.
 
 \begin{note}
-  For the modular space ${\mathbb{Z}_m}$ to be a field, ${m}$ must be a prime.  
+  For the modular space ${\mathbb{Z}_m}$ to be a field, ${m}$ must be a prime \cite{Durbin}.  
 
   \textbf{Proof:} If ${m}$ is prime, then every integer ${1 \leq k \leq m}$ has ${\gcd(k, m) = 1}$ and ${\exists \; s, \, t \in \mathbb{Z}}$ such that 
   \begin{equation*}
@@ -784,7 +785,7 @@ Before the modular reconstruction algorithms are discussed in detail, a new fact
   \end{equation*}
   Hence, every nonzero ${k}$ has multiplicative inverse ${s \in \mathbb{Z}_m}$.  Therefore, ${\mathbb{Z}_m}$ is a field for ${m}$ prime, by definition of a field.
 
-  Now, considering the alternative: if nonzero ${m}$ is composite, then ${\exists \; a, \, b \in \mathbb{Z}, a, \, b \neq 0, 1}$ such that ${m = a \cdot b}$.  Then, it follows that ${a \cdot b = 0 \;\;(\textrm{mod} m)}$.  So, ${a}$ and ${b}$ would be zero divisors for the ring ${\mathbb{Z}_m}$.  However, a field is an integral domain (in which each nonzero element has an inverse relative to multiplication), and inverses are defined as having no zero divisors.  Therefore, ${\mathbb{Z}_m}$ is not a field for ${m}$ composite \cite{Fraleigh}. \qed
+  Now, considering the alternative: if nonzero ${m}$ is composite, then ${\exists \; a, \, b \in \mathbb{Z}, a, \, b \neq 0, 1}$ such that ${m = a \cdot b}$.  Then, it follows that ${a \cdot b = 0 \;\;(\textrm{mod} m)}$.  So, ${a}$ and ${b}$ would be zero divisors for the ring ${\mathbb{Z}_m}$.  However, a field is an integral domain (in which each nonzero element has an inverse relative to multiplication), and inverses are defined as having no zero divisors.  Therefore, ${\mathbb{Z}_m}$ is not a field for ${m}$ composite. \qed
 \end{note} 
 
 Methods for reconstruction from the prime modular integers to the integers, and then from the integers to the rationals, are detailed in the following chapter.  The methods which will be examined are Garner's Algorithm for Chinese Remainder computation and Hensel's algorithm, for building back from the prime modular integers to the integers; and Farey rational reconstruction for building back from the integers to the rationals.
@@ -952,7 +953,7 @@ The idea is to have a reconstruction method equivalent to the CRA, but which onl
   \end{equation*}
   and ${u^{(k)}(x) \equiv u^{(1)}(x) \mod p}$, ${w^{(k)}(x) \equiv w^{(1)}(x) \mod p}$. 
 
-  Note: the proof is not given here; refer to CN for the full proof.
+  Note: the proof is not given here; refer to Geddes \cite{Geddes} for the full proof.
 \end{theorem}           
 
 The Hensel construction (given by Hensel's lemma above) is built from the linear ${p}$-adic Newton's iteration.  The idea essentially amounts to iteratively building up the ${p}$-adic representation of ${u}$ from the first image given (rather than computing many separate images over different moduli as in the CRA).  The problem from the outset is that there is not enough information from the single modular image to perform the next iterative reconstruction.  Extra information, usually in the form of a set of nonlinear equations which ${u(x)}$ must satisfy, is also provided to the algorithm.  Examples of this procedure for the GCD and factorization problems are provided by Geddes \cite{Geddes}.  The procedure for the reconstruction of Gr\"obner bases will be described in \textbf{Chapter} \ref{groebnerRecon}. 
@@ -1036,7 +1037,7 @@ Formally:
 \end{defn}
 
 \begin{note}
-  A note on notation, with respect to the component parts of a polynomial.  Here, Arnold's notation will be adopted.  Note that in several other papers referenced, the notation may not match precisely, and some translation is necessary to determine which of their notation is equivalent to which of Arnold's notation.  Here, Arnold's notation will be used throughout for consistency \cite{Arnolds}.  
+  A note on notation, with respect to the component parts of a polynomial.  Here, Arnold's notation will be adopted.  Note that in several other papers referenced, the notation may not match precisely, and some translation is necessary to determine which of their notation is equivalent to which of Arnold's notation.  Here, Arnold's notation will be used throughout for consistency \cite{Arnold}.  
 
   In this case, the Gr\"obner basis is considered over the Noetherian ring ${R = \mathbb{Q}[X]}$ 
   \begin{itemize}
@@ -1055,10 +1056,10 @@ There are two alternate, more applicable definitions of lucky primes which will 
 
 \subsection{Hilbert and Pauer}
 
-The first definition to be considered is as given by Pauer in his paper on prime luckiness applied to Gr\"obner bases.  
+The first definition to be considered is as given by Pauer in his paper on prime luckiness applied to Gr\"obner bases \cite{Pauer}.  
 
 \begin{defn}\label{Pauer lucky}
-  A prime ${p}$ is \textbf{Pauer lucky} for ideal ${I}$ if it does not divide any leading coefficient of any polynomial in ${G}$ the reduced Gr\"obner basis of ${I}$ \hfill \cite{Pauer}.
+  A prime ${p}$ is \textbf{Pauer lucky} for ideal ${I}$ if it does not divide any leading coefficient of any polynomial in ${G}$ the reduced Gr\"obner basis of ${I}$.
 \end{defn}
 
 However, again, this relies on the true Gr\"obner basis having been previously computed which essentially nullifies the algorithm.  It would be useful to be able to check if a prime is lucky before performing a lift over this prime.    
@@ -1168,7 +1169,7 @@ The methodology and results of the tests are presented and discussed in the foll
 
 \chapter{Methodology and Results}
 
-In order to obtain a wide range of data to have the potential to make conclusions, a set of problems must be constructed, representing the range of Gr\"obner basis problems (i.e. a broad range of total degree, number of polynomials, coefficient size, integers/rationals, number of terms in the polynomial) was constructed and timing tests run on them with the various constructed algorithms, in order to compare.  These problems are included in APPENDIX, and are detailed below in \textbf{Table} \ref{dataOut}.
+In order to obtain a wide range of data to have the potential to make conclusions, a set of problems must be constructed, representing the range of Gr\"obner basis problems (i.e. a broad range of total degree, number of polynomials, coefficient size, integers/rationals, number of terms in the polynomial) was constructed and timing tests run on them with the various constructed algorithms, in order to compare.  These problems are included in \textbf{Appendix} \ref{probSet}, and are detailed below in \textbf{Table} \ref{dataOut}.
 
 The results of the various algorithms running, with the various homomorphism implementations, were compared in terms of computational time.  
 
@@ -1688,6 +1689,44 @@ Referring back to the 32-bit data tables for the CRA with these algorithms respe
 
 \chapter{Code}\label{elCode}
 
+This appendix contains the implementation of the modular reconstruction techniques, and the code for the timing tests.  All the code was written in Maple.
+\\
+\noindent CRA reconstruction for integers: \hfill \ref{cra}\\
+Rational reconstruction wrapper for polynomials over the integers: \hfill \ref{frec}\\
+Groebner basis computation via the CRA: \hfill \ref{bcra}\\
+Groebner basis computation via Hensel, including helper methods: \hfill \ref{bh}\\
+Timer to run specified problem with specified method: \hfill \ref{timer}\\
+Batch runner to run all 25 selected problems with all methods/algorithms: \hfill \ref{bash}\\
+%CRA implementation in C, using the MPZ library: \hfill \ref{theC}\\
+
+\newpage 
+\singlespacing
+\lstinputlisting[label=cra, caption={CRA reconstruction for integers}, basicstyle=\footnotesize\ttfamily]{test/cra_int.mpl}
+\doublespacing
+
+\singlespacing
+\lstinputlisting[label=frec, caption={Rational reconstruction wrapper for polynomials over the integers}, basicstyle=\footnotesize\ttfamily]{test/intpolyrecon.mpl}
+\doublespacing
+
+\singlespacing
+\lstinputlisting[label=bcra, caption={Groebner basis computation via the CRA}, basicstyle=\footnotesize\ttfamily]{test/Basis_CRA.mpl}
+\doublespacing
+
+\singlespacing
+\lstinputlisting[label=bh, caption={Groebner basis computation via Hensel, including helper methods}, basicstyle=\footnotesize\ttfamily]{test/Basis_Hensel.mpl}
+\doublespacing
+
+\singlespacing
+\lstinputlisting[label=timer, caption={Timer to run specified problem with specified method}, basicstyle=\footnotesize\ttfamily]{test/timer.mpl}
+\doublespacing
+
+\singlespacing
+\lstinputlisting[label=bash, caption={Batch runner to run all 25 selected problems with all methods/algorithms}, basicstyle=\footnotesize\ttfamily]{test/theTest/runner.sh}
+\doublespacing
+
+% \singlespacing
+% \lstinputlisting[label=theC, caption={CRA implementation in C, using the MPZ library}, basicstyle=\footnotesize\ttfamily]{test/pls.c}
+% \doublespacing
 
 
 \chapter{Problem Set}\label{probSet}
@@ -1728,7 +1767,7 @@ The problems the timing tests were performed over are included below.  The basis
   \\f3 := a\^{}2*b\^{}2*c\^{}2 + a\^{}2*b\^{}2*c + a*b\^{}2*c + a*b*c + a*c + c + 1:\\
   \\
   \\F := [f1,f2,f3];
-  \\X := [a,c,b];
+  \\X := [a,c,b];\\
 \end{codefont}
 
 \noindent\textbf{\texttt{arnborgV}}\\\\
@@ -1756,7 +1795,7 @@ The problems the timing tests were performed over are included below.  The basis
   F := [x1*w\^{}4 + 18*x1*w\^{}2 + 81*x1 - 4*w\^{}2 - 12,\\
       x2*w\^{}5 + 18*x2*w\^{}3 + 81*x2*w + w\^{}4 + 2*w\^{}2 + 9];\\
   \\
-  X := [w,x1,x2];
+  X := [w,x1,x2];\\
 \end{codefont}
 
 \noindent\textbf{\texttt{forsman3}}\\\\
@@ -1899,34 +1938,34 @@ X := [x,y,z];\\
 
 \noindent\textbf{\texttt{czap41}}\\\\
 \noindent\begin{codefont}
- eq44 := -13968*x*v**3-48384*x**4-300504*y**4-\\232488*x**2*y**2-1224*v**4-\\
-2448*u**2*v**2-1224*u**4-163176*x**2*u**2-\\20936*x**2*v**2-258000*y**2*u**2-\\
-59360*y**2*v**2+103328*x**3*v+615400*y**3*u-\\38352*y*u**3+56400*x*y*u*v+\\
-389008*x*y**2*v+25800*x**2*y*u-13968*x*u**2*v-\\38352*y*u*v**2 :\\
-eq45 := 22946672*u*v*x**2*y-1723584*v**2*x*y**2-\\551424*u*v**3*y-\\
-437760*y**2*u**2*v+82308304*x*y**3*u-7837248*x*y*u**3+\\13865936*x**3*y*u-\\
-6568288*x*y*u*v**2-551424*u**3*v*y-785664*u**2*v**2*x-\\5786368*x**5-29376*v**5+\\
-17756592*u*v*y**3-2184000*x**2*u**2*v+\\18411664*v*x**2*y**2-\\
-23676960*u**2*x*y**2+5031360*x**4*v+1948640*y**2*v**3-\\378720*v**4*x-\\
-406944*u**4*x-1066560*x**2*v**3-58752*u**2*v**3-\\29636864*x**3*y**2-\\
-29376*u**4*v-22279728*y**4*v+1877920*v**2*x**3-\\37854976*x*y**4-\\
+ eq44 := -13968*x*v**3-48384*x**4-300504*y**4-232488*x**2*y**2-\\1224*v**4-
+2448*u**2*v**2-1224*u**4-163176*x**2*u**2-\\20936*x**2*v**2-258000*y**2*u**2-
+59360*y**2*v**2+103328*x**3*v+615400*y**3*u-\\38352*y*u**3+56400*x*y*u*v+
+389008*x*y**2*v+25800*x**2*y*u-13968*x*u**2*v-\\38352*y*u*v**2 :
+eq45 := 22946672*u*v*x**2*y-1723584*v**2*x*y**2-\\551424*u*v**3*y-
+437760*y**2*u**2*v+82308304*x*y**3*u-\\7837248*x*y*u**3+13865936*x**3*y*u-
+6568288*x*y*u*v**2-551424*u**3*v*y-\\785664*u**2*v**2*x-5786368*x**5-29376*v**5+
+17756592*u*v*y**3-\\2184000*x**2*u**2*v+18411664*v*x**2*y**2-
+23676960*u**2*x*y**2+5031360*x**4*v+\\1948640*y**2*v**3-378720*v**4*x-
+406944*u**4*x-1066560*x**2*v**3-\\58752*u**2*v**3-29636864*x**3*y**2-
+29376*u**4*v-22279728*y**4*v+\\1877920*v**2*x**3-37854976*x*y**4-
 20137056*u**2*x**3 :\\
-eq46 := 719349312*u*v**2*y**3-1441644576*u**3*x**2*y-\\4756990912*x*y**4*v-\\
-15526848*y*u*v**4+4259029664*x*u*v*y**3-\\641656256*u*v**2*x**2*y-\\
-196488640*u*v**3*x*y-596035648*x**3*y**2*v+\\5451998848*x**2*y**3*u-\\
-6143872*u**2*v**2*y**2-1283825280*x**2*v**2*y**2+\\87472064*u**2*v*x*y**2+\\
-610786944*v**3*x*y**2-20782848*y*u**3*v**2-\\30855168*x*u**2*v**3-\\
-234542592*u**2*v*x**3-176256*u**6-281756160*x**6+\\1604140416*y**6-881280*v**6-\\
-166993920*u**2*v**2*x**2+1402343392*y**4*u**2+\\24176640*v**3*x**3-\\
-12908160*x*v**5-1394907904*x**2*y**4-1938816*u**2*v**4-\\5256000*y*u**5-\\
-79511680*x**5*v+152446560*u**3*y**3-1335202752*y**4*v**2+\\307022080*x**4*v**2-\\
-50359680*v**4*x**2-3297059104*y**5*u-36670848*u**4*y**2+67633216*v**4*y**2-\\
-1233792*u**4*v**2-1615166080*x**4*y**2-118892160*u**4*x**2-\\
-2505599232*x**4*u**2+5376498336*x**3*u*v*y-235852800*u**3*v*x*y-\\
-383146720*x**2*u**2*y**2+805335456*x**4*y*u-17947008*x*u**4*v :\\
+eq46 := 719349312*u*v**2*y**3-1441644576*u**3*x**2*y-\\4756990912*x*y**4*v-
+15526848*y*u*v**4+4259029664*x*u*v*y**3-\\641656256*u*v**2*x**2*y-
+196488640*u*v**3*x*y-596035648*x**3*y**2*v+\\5451998848*x**2*y**3*u-
+6143872*u**2*v**2*y**2-1283825280*x**2*v**2*y**2+\\87472064*u**2*v*x*y**2+
+610786944*v**3*x*y**2-20782848*y*u**3*v**2-\\30855168*x*u**2*v**3-
+234542592*u**2*v*x**3-176256*u**6-\\281756160*x**6+1604140416*y**6-881280*v**6-
+166993920*u**2*v**2*x**2+\\1402343392*y**4*u**2+24176640*v**3*x**3-\\
+12908160*x*v**5-1394907904*x**2*y**4-\\1938816*u**2*v**4-5256000*y*u**5-
+79511680*x**5*v+152446560*u**3*y**3-\\1335202752*y**4*v**2+307022080*x**4*v**2-
+50359680*v**4*x**2-3297059104*y**5*u-\\36670848*u**4*y**2+67633216*v**4*y**2-
+1233792*u**4*v**2-1615166080*x**4*y**2-\\118892160*u**4*x**2-
+2505599232*x**4*u**2+\\5376498336*x**3*u*v*y-235852800*u**3*v*x*y-
+383146720*x**2*u**2*y**2+\\805335456*x**4*y*u-17947008*x*u**4*v :
 F := [eq44,eq45,eq46]:\\
 \\
-X := [u,v,x,y];
+X := [u,v,x,y];\\
 \end{codefont}
 
 \noindent\textbf{\texttt{trav1}}\\\\
@@ -2065,7 +2104,6 @@ X := [x0, x1, x2, x3, x4, x5, x6, x7, x8]:\\
 
 \noindent\textbf{\texttt{katsura9}}\\\\
 \noindent\begin{codefont}
- \\
 f0 := -x0 + 2*x9\^{}2 + 2*x8\^{}2 + 2*x7\^{}2 + 2*x6\^{}2 + 2*x5\^{}2 + \\2*x4\^{}2 + 2*x3\^{}2 + 2*x2\^{}2 + 2*x1\^{}2 + x0\^{}2:
 \\
 f1 := -x1 + 2*x9*x8 + 2*x8*x7 + 2*x7*x6 + 2*x6*x5 + 2*x5*x4 + 2*x4*x3 + \\2*x3*x2 + 2*x2*x1 + 2*x1*x0:
@@ -2175,11 +2213,10 @@ Also, note that the \texttt{repulso} problems can be found at \url{http://magma.
 \noindent\textbf{\texttt{section of repulso1}}\\\\
 \noindent\begin{codefont}
  F := [\\
-x1\^{}2+x1, x2\^{}2+x2, x3\^{}2+x3, x4\^{}2+x4, x5\^{}2+x5, x6\^{}2+x6, \\x7\^{}2+x7, x8\^{}2+x8, x9\^{}2+x9, x10\^{}2+x10, x11\^{}2+x11, x12\^{}2+x12, x13\^{}2+x13, x14\^{}2+x14, x15\^{}2+x15, x16\^{}2+x16, x17\^{}2+x17, \\x18\^{}2+x18, x19\^{}2+x19, x20\^{}2+x20, x21\^{}2+x21, \\x22\^{}2+x22, x23\^{}2+x23, x24\^{}2+x24, x25\^{}2+x25,\\
-x1+x2+x7+x9+x11+x12+x19+x20+x21+x25+x1*x4+x1*x6+x1*x9+\\x1*x13+x1*x16+x1*x21+x1*x23+x2*x3+x2*x4+x2*x5+x2*x7+x2*x9\\+x2*x10+\\x2*x13+x2*x16+x2*x17+x2*x18+x2*x19+\\x2*x20+x2*x23+x3*x6+x3*x9+x3*x11+x3*x16+x3*x19+x3*x20+\\x3*x22+x3*x25+x4*x6+x4*x7+x4*x9+x4*x10+x4*x11+\\x4*x12+x4*x16+x4*x17+x4*x18+x4*x19+x4*x22+x4*x24+x5*x6+\\x5*x12+x5*x13+x5*x14+x5*x18+x5*x20+x5*x21+x5*x23+\\x5*x25+x6*x8+x6*x11+x6*x12+x6*x13+x6*x14+x6*x15+x6*x17\\+x6*x19+x6*x20+x6*x22+x6*x23+x7*x8+x7*x9+x7*x10+\\x7*x11+x7*x12+x7*x15+x7*x16+x7*x18+x7*x19+\\x7*x21+x7*x22+x7*x24+x8*x10+x8*x11+\\x8*x15+x8*x19+x8*x23+x8*x24+x8*x25+x9*x11+x9*x12+\\x9*x13+x9*x15+x9*x16+x9*x17+x9*x21+x9*x22+x9*x24+x9*x25+\\x10*x11+x10*x12+x10*x15+x10*x16+\\x10*x17+x10*x18+x10*x19+x10*x21+x10*x22+x10*x23+\\x10*x24+x11*x12+x11*x13+x11*x14+x11*x17+x11*x20+x11*x25+\\x12*x13+x12*x15+x12*x16+x12*x19+x12*x20+\\x12*x22+x12*x23+x12*x24+x12*x25+x13*x14+x13*x15+x13*x16+\\x13*x18+x13*x19+x13*x20+x13*x24+x13*x25+x14*x16+\\x14*x18+x14*x20+x14*x22+x14*x24+x14*x25+\\x15*x16+x15*x17+x15*x19+x15*x22+x15*x25+x16*x17+x16*x18+\\x16*x19+x16*x21+x17*x18+x17*x19+x17*x20+x17*x21+\\x17*x22+x17*x23+x18*x19+x18*x22+x18*x23+\\x19*x20+x19*x21+x19*x22+x19*x23+x19*x24+x20*x22+x20*x25+\\x21*x22+x21*x24+x21*x25+x22*x25+x23*x25,\\
-x1+x7+x11+x15+x16+x22+x23+x24+x1*x3+x1*x5+\\x1*x6+x1*x7+x1*x8+x1*x9+x1*x11+x1*x13+x1*x14+x1*x15+\\x1*x17+x1*x19+x1*x20+x1*x21+x1*x24+x1*x25+\\x2*x7+x2*x9+x2*x11+x2*x15+x2*x16+x2*x17+\\x2*x18+x2*x21+x3*x4+x3*x5+x3*x7+x3*x9+x3*x11+x3*x13+\\x3*x16+x3*x17+\\
-...\\
-...\\
+x1\^{}2+x1, x2\^{}2+x2, x3\^{}2+x3, x4\^{}2+x4, x5\^{}2+x5, x6\^{}2+x6, \\x7\^{}2+x7, x8\^{}2+x8, x9\^{}2+x9, x10\^{}2+x10, x11\^{}2+x11, x12\^{}2+x12, x13\^{}2+x13, \\x14\^{}2+x14, x15\^{}2+x15, x16\^{}2+x16, x17\^{}2+x17, \\x18\^{}2+x18, x19\^{}2+x19, x20\^{}2+x20, x21\^{}2+x21, \\x22\^{}2+x22, x23\^{}2+x23, x24\^{}2+x24, x25\^{}2+x25,\\
+x1+x2+x7+x9+x11+x12+x19+x20+x21+x25+x1*x4+x1*x6+x1*x9+\\x1*x13+x1*x16+x1*x21+x1*x23+x2*x3+x2*x4+x2*x5+x2*x7+x2*x9\\+x2*x10+\\x2*x13+x2*x16+x2*x17+x2*x18+x2*x19+\\x2*x20+x2*x23+x3*x6+x3*x9+x3*x11+x3*x16+x3*x19+x3*x20+\\x3*x22+x3*x25+x4*x6+x4*x7+x4*x9+x4*x10+x4*x11+\\x4*x12+x4*x16+x4*x17+x4*x18+x4*x19+x4*x22+x4*x24+x5*x6+\\x5*x12+x5*x13+x5*x14+x5*x18+x5*x20+x5*x21+x5*x23+\\x5*x25+x6*x8+x6*x11+x6*x12+x6*x13+x6*x14+x6*x15+x6*x17\\+x6*x19+x6*x20+x6*x22+x6*x23+x7*x8+x7*x9+x7*x10+\\x7*x11+x7*x12+x7*x15+x7*x16+x7*x18+x7*x19+\\x7*x21+x7*x22+x7*x24+x8*x10+x8*x11+\\x8*x15+x8*x19+x8*x23+x8*x24+x8*x25+x9*x11+x9*x12+\\x9*x13+x9*x15+x9*x16+x9*x17+x9*x21+x9*x22+x9*x24+x9*x25+\\x10*x11+x10*x12+x10*x15+x10*x16+\\x10*x17+x10*x18+x10*x19+x10*x21+x10*x22+x10*x23+\\x10*x24+x11*x12+x11*x13+x11*x14+x11*x17+x11*x20+x11*x25+\\x12*x13+x12*x15+x12*x16+x12*x19+x12*x20+\\x12*x22+x12*x23+x12*x24+x12*x25+x13*x14+x13*x15+x13*x16+\\x13*x18+x13*x19+x13*x20+x13*x24+x13*x25+x14*x16+\\x14*x18+x14*x20+x14*x22+x14*x24+x14*x25+\\x15*x16+x15*x17+x15*x19+x15*x22+x15*x25+x16*x17+x16*x18+\\x16*x19+x16*x21+x17*x18+x17*x19+x17*x20+x17*x21+\\x17*x22+x17*x23+x18*x19+x18*x22+x18*x23+\\
+....\\
+....\\
 +x15*x17+x15*x19+x15*x20+x15*x21+x15*x22+x15*x23+\\x16*x17+x16*x19+x16*x22+x16*x23+x16*x24+\\x17*x21+x17*x22+x17*x23+x17*x24+x18*x21+\\x19*x20+x19*x22+x19*x24+x20*x22+x20*x23+x20*x24+\\x20*x25+x21*x24+x22*x23+x22*x24+x22*x25+x23*x24+x23*x25\\
 ]:\\
 \\
