@@ -164,16 +164,24 @@
 
 \frontmatter
 
+\chapter*{Acknowledgements}%
+\addcontentsline{toc}{chapter}{\numberline{}Acknowledgements}%
+
+% Pls to thenk u Czapor and also Alexi
+
+Above all, I'd like to thank my supervisor Dr Stephanie Czapor for all her support and guidance through this project.  You've been a source of inpiration and great anecdotes these past few years and I'll always appreciate that.
+
+
+I'd also like to thank Alexi Turcotte for showing me that with a good friend and enough coffee anything is possible. % I LOVE CAMELS
+
+
+\noindent Also, a shoutout to Frank Vojtesek for letting me borrow his (admittedly superior) laptop so I could work on this thesis on the drive to CS games.
+
+
 \chapter*{Abstract}%
 \addcontentsline{toc}{chapter}{\numberline{}Abstract}%
 
 The computation of Gr\"obner bases is a classic example of a problem suffering from intermediate expression swell in computer algebra.  Efficient computation of Gr\"obner bases would be useful for a range of applications in algebra, including solutions of systems of equations and problems in algebraic geometry.  This thesis will implement and examine the comparative efficiency of two modular reconstruction methods, Garner's Algorithm for Chinese Remainder computation, and Hensel's Algorithm for ${p}$-adic reconstruction, when applied to Gr\"obner basis computation working over modular integers to reduce expression swell.  Timings tests were performed over a set of problems representing a range of input ideals.  All computations were done using the Maple computer algebra system and interfacing with its supplied Gr\"obner package. 
-
-
-\chapter*{Acknowledgements}%
-\addcontentsline{toc}{chapter}{\numberline{}Acknowledgements}%
-
-Pls to thenk u Czapor and also Alexi
 
 \tableofcontents
 \listoffigures
@@ -193,9 +201,9 @@ In addition to introducing the concept of Gr\"obner bases, Buchberger also devel
 
 Note that an introduction/review of the algebraic constructs mentioned above (ring, field, ideal, and such) is included below in \textbf{Chapter} \ref{chpt:bg}.    
 
-Gr\"obner bases are useful in many applications in algebra.  On first introduction by Buchberger, they were primarily used in the ideal membership and on solutions of algebraic systems.  However, they have since been applied to a diversity of areas, including algebraic geometry, numerical analysis, coding theory, cryptography, and integer programming, among others \cite{Adams}.   
+Gr\"obner bases are useful in many applications in algebra.  On first introduction by Buchberger, they were primarily used in the ideal membership problem and on solutions of algebraic systems.  They have since been applied to a diversity of areas, including algebraic geometry, numerical analysis, coding theory, cryptography, and integer programming, among others \cite{Adams}.   
 
-However, although once the basis has been found it can improve the efficiency of many computations over its ideal, the computation of the Gr\"obner bases themselves can be computationally intensive and can even be unfeasible in some cases.  This is due to the phenomenon known as \textbf{intermediate expression swell} \cite{Geddes}. 
+Once the basis has been found it can improve the efficiency of many computations over its ideal, however the computation of the Gr\"obner bases themselves can be computationally intensive and can even be unfeasible in some cases.  This is due to the phenomenon known as \textbf{intermediate expression swell} \cite{Geddes}. 
 
 \section{Intermediate Expression Swell}
 
@@ -306,8 +314,8 @@ Finally, there is the concept of a \textbf{field}, again building on the previou
   \textbf{Proof}: For a space to be a EuD, it must have a valuation function ${v : F - \{0\} \rightarrow \mathbb{N}_0}$ satisfying the criteria listed above.
   Here, take the valuation function to be ${v(a) = 1 \, \forall \, a \, \in F - \{0\}}$, for ${F}$ field with unity 1.    
   \begin{itemize}
-    \item ${v(a * b) = 1 \, \forall \, a, b \, \in F - \{0\}}$, since ${a * b \in F - \{0\} \forall \, a, b \, \in F - \{0\}}$, and ${v(a) = 1 \, \forall \, a \, \in F - \{0\}}$ \\ This satisfies the first condition of EuD, since ${v(a * b) = 1 \leq 1 = v(b) \, \forall \, a, b \, \in F - \{0\}}$
-    \item ${a, b \, \in F, b \neq 0}$ \begin{equation*} a = b * q + r; \; q, r \, \in F, v(r) < v(b) \, \text{or} \, r = 0 \end{equation*} \\ Here, consider that ${v(a) = 1 \, \forall \, a \in F - \{0\}}$.  So, there is no ${r \in F - \{0\}}$ such that ${v(r) < v(b)}$ for some ${b \in F - \{0\}}$.  So therefore, ${r = 0}$.  Then, ${a = b*q}$ for some ${q \in F - \{0\}}$.  Recall that in a field F, ${b^{-1} \exists \, \forall \, b \in F - \{0\}}$. \\ So, applying ${b^{-1}}$ to both sides, \begin{equation*} b^{-1} * a = q \; \in F \,\, \forall a, b \in F, b \neq 0 \end{equation*}  This satisfies the second condition of EuD. ${\qed}$
+    \item ${v(a * b) = 1 \, \forall \, a, b \, \in F - \{0\}}$, since ${a * b \in F - \{0\} \forall \, a, b \, \in F - \{0\}}$, and ${v(a) = 1 \, \forall \, a \, \in F - \{0\}}$ \\ This satisfies the first condition of EuD, since $${v(a * b) = 1 \leq 1 = v(b) \, \forall \, a, b \, \in F - \{0\}}$$
+    \item ${a, b \, \in F, b \neq 0}$ \begin{equation*} a = b * q + r; \; q, r \, \in F, v(r) < v(b) \, \text{or} \, r = 0 \end{equation*} Here, consider that ${v(a) = 1 \, \forall \, a \in F - \{0\}}$.  So, there is no ${r \in F - \{0\}}$ such that ${v(r) < v(b)}$ for some ${b \in F - \{0\}}$.  So therefore, ${r = 0}$.  Then, ${a = b*q}$ for some ${q \in F - \{0\}}$.  Recall that in a field F, ${b^{-1} \exists \, \forall \, b \in F - \{0\}}$. \\ So, applying ${b^{-1}}$ to both sides, \begin{equation*} b^{-1} * a = q \; \in F \,\, \forall a, b \in F, b \neq 0 \end{equation*}  This satisfies the second condition of EuD. ${\qed}$
   \end{itemize} 
 
   Therefore, every field is an EuD.
@@ -507,7 +515,7 @@ Polynomial ideals can be specified by a basis; this specifies a generating set f
 
 A Gr\"obner basis is a particular type of basis for a polynomial ideal, which satisfies various conditions, detailed below.  There are various advantages to these sets.  A normalized, minimal Gr\"obner basis is unique to each ideal, and can therefore be used as a sort of identifier for the ideal. 
 
-The following definition presents various logically equivalent definitions for what makes a basis a Gr\"obner basis. 
+The following definition presents various logically equivalent definitions for what makes a basis a Gr\"obner basis \cite{Adams}. 
 
 \begin{defn}\label{Groebner Basis}
   The following statements are equivalent for nonzero set ${G = \{g_1, \ldots, g_t\}}$ for ideal $I = <p_1, \ldots, p_n>$, ${G \subseteq I}$, over polynomial ring $F[x_1, \ldots, x_m]$ for a particular monomial ordering:
@@ -525,7 +533,7 @@ This concept of reduction is essential to Gr\"obner bases, and to the computatio
 
 Reducing polynomial ${p}$ over another polynomial ${q}$, ${Reduce( p, q)}$ amounts to multivariate division of ${p}$ by ${q}$, with remainder ${r}$.  This is a multivariate generalization of the Euclidean algorithm for division of univariate polynomials, dependent on the monomial ordering specified.  
 
-The pseudocode for the ${Reduce}$ algorithm is included below:
+\noindent The pseudocode for the ${Reduce}$ algorithm is included below, as given by Geddes et al. \cite{Geddes}:
 \begin{algorithm}[H]
 \caption{Reduce}\label{reduce}
 \begin{algorithmic}[1]
@@ -704,7 +712,7 @@ As explained by Roune in his summary of Faugere's original paper detailing the F
 
 Rather than having a unique ${A}$ matrix for each ${f}$ to reduce, the ${A}$ matrix can be built in such a way as to allow many polynomials to be reduced simultaneously, and, after the reduction of ${A}$ to ${\bar A}$, all the reduced polynomials can be read off from ${\bar A}$.  Construction of ${A}$ must be done in such a way as to allow polynomial division to be emulated by reduction of ${A}$.  Here, the method is detailed as from Roune's paper \cite{Roune}.
 
-First, assume that the set has been normalized, and that all polynomials have a leading coefficient of 1.  Then, consider the functionality of the polynomial division algorithm for a set: this takes the leading monomial of the intermediate stage of the division, say polynomial ${h}$, and attempts to find a polynomial ${r_i}$ in the set such that the ${Lm(r_i) \mid Lm(h)}$; if such an ${r_i}$ exists in the set ${W}$, then the next intermediate result in the division would be ${h - tr_i}$, where $${t = \frac{Lm(h)}{Lm(r_i)}}$$.  
+First, assume that the set has been normalized, and that all polynomials have a leading coefficient of 1.  Then, consider the functionality of the polynomial division algorithm for a set: this takes the leading monomial of the intermediate stage of the division, say polynomial ${h}$, and attempts to find a polynomial ${r_i}$ in the set such that the ${Lm(r_i) \mid Lm(h)}$; if such an ${r_i}$ exists in the set ${W}$, then the next intermediate result in the division would be ${h - tr_i}$, where $${t = \frac{Lm(h)}{Lm(r_i)}}$$  
 
 To include this computation in the reduction of ${A}$, then there must be a row in ${A}$ that corresponds to the subtraction term required for the polynomial division of ${h}$, i.e. ${tr_i}$.  Then, the next step in the polynomial division will require another ${W}$-entry, some ${r_j}$.  In order to generalize the algorithm, instead of attempting to predict which monomials will be included in the reduced term ${h - t_ri}$ (in order to find which is the leading monomial), simply include all monomials of ${h}$ and ${tr_i}$ except for the leading monomial.
 
@@ -774,7 +782,10 @@ The following figure shows the relation between these spaces and the algorithms 
   \caption{Modular basis computations and the reconstruction algorithms, relation between spaces \label{fig:bb_tests}}
 \end{figure}
 
-Before the modular reconstruction algorithms are discussed in detail, a new factor must be taken into account: there is a new problem associated with modular reconstructions.  Previously, working with the Gr\"obner computation algorithms directly, there is no consideration for any external factors.  However, now the characteristics of a modular space must be considered.  In particular, the modular space must be a field; every element ${a}$ in the space (excluding the additive identity, 0) must have a multiplicative inverse in the space i.e. a unique corresponding element ${a^{-1}}$ in the space such that ${a*a^{-1} = 1 = a^{-1}*a}$.  To ensure that this is the case, the positive integer ${m}$ in space ${\mathbb{Z}_m}$ must be a prime.
+Before the modular reconstruction algorithms are discussed in detail, a new factor must be taken into account: there is a new problem associated with modular reconstructions.  Previously, working with the Gr\"obner computation algorithms directly, there is no consideration for any external factors.  However, now the characteristics of a modular space must be considered.  In particular, the modular space must be a field; every element ${a}$ in the space (excluding the additive identity, 0) must have a multiplicative inverse in the space i.e. a unique corresponding element ${a^{-1}}$ in the space such that $${a*a^{-1} = 1 = a^{-1}*a}$$  
+
+\noindent To ensure that this is the case, the positive integer ${m}$ in space ${\mathbb{Z}_m}$ must be a prime.
+\\
 
 \begin{note}
   For the modular space ${\mathbb{Z}_m}$ to be a field, ${m}$ must be a prime \cite{Durbin}.  
@@ -792,7 +803,7 @@ Methods for reconstruction from the prime modular integers to the integers, and 
 
 \chapter{Modular Homomorphisms and Reconstruction}
 
-Post processing in a modular polynomial space requires reconstruction back to ${\mathbb{Z}[x_1, \ldots, x_n]}$, which is done through either the Chinese Remainder Algorithm (henceforth the CRA) or Hensel's Algorithm, which will be described below.  Subsequent reconstruction from the integers to the rationals is done using an algorithm similar to Farey rational reconstruction, which is also described below.  This chapter also discusses a new difficulty which arises when attempting to reconstruct - the idea of \textbf{lucky primes}. 
+Post processing in a modular polynomial ring requires reconstruction back to the ring ${\mathbb{Z}[x_1, \ldots, x_n]}$, which is done through either the Chinese Remainder Algorithm (henceforth the CRA) or Hensel's Algorithm, which will be described below.  Subsequent reconstruction from the integers to the rationals is done using an algorithm similar to Farey rational reconstruction, which is also described below.  This chapter also discusses a new difficulty which arises when attempting to reconstruct - the idea of \textbf{lucky primes}. 
 
 \section{Chinese Remainder Theorem} 
 
@@ -819,17 +830,18 @@ The CRA uses the various modular images provided to iteratively construct a mixe
 
 The Chinese Remainder Problem made its earliest appearance in the 3rd century, in the book \textit{Sunzi's Mathematical Classic}, by Sun Tzu, a Chinese mathematician.  The description of the algorithmic solution to this problem was then described in the 6th century by another mathematician, Aryabhata.  Gauss also described this, when he introduced the concept of modular congruences, in his 1801 book \textit{Disquisitiones Arithmeticae} \cite{Geddes}.  
 % (this is cited from elwiki, but I'm sure it's in another, more socially acceptable source)   CITE
+\\
 
 \noindent The \textit{Chinese Remainder Problem} can be stated as: 
 \begin{addmargin}[2em]{2em}% 2em left and right
   Given a set of moduli ${\{m_i\} \subset \mathbb{Z}}$ and corresponding residues ${\{u_i\} \subset \mathbb{Z}}$, where ${i}$ ranges from 0 to ${n \in \mathbb{N}_0}$, find an integer ${u}$ which satisfies the congruences
   \begin{equation*}
-    u \equiv u_i \;\; (\textrm{mod} m_i)\, ,  \quad 0 \leq i \leq n
+    u \equiv u_i \;\; (\textrm{mod} \; m_i)\, ,  \quad 0 \leq i \leq n
   \end{equation*} 
 \end{addmargin}
 
 The algorithm for solving this problem is essentially an inversion of the modular homomorphism (i.e. rebuilding the original integer ${u}$ from various of its modular images).  The Chinese Remainder Problem specifies \textit{an} integer; however there are conditions under which the solution to this problem is unique.   
-
+\newpage
 \begin{theorem}\label{Chinese Remainder Theorem}
   Let the set ${\{m_i\} \subset \mathbb{Z}}$, where ${i \in [0, n] \subset Z}$, be a set where all elements are pairwise relatively prime, i.e.
   \begin{equation*}
@@ -838,7 +850,7 @@ The algorithm for solving this problem is essentially an inversion of the modula
   and let ${\{u_i\} \subset \mathbb{Z}_{m_i}}$ be the corresponding residues.  Then, for any fixed integer ${a \in \mathbb{Z} \; \exists}$ a unique integer ${u \in \mathbb{Z}}$ which satisfies the following conditions:
   \begin{itemize}
     \item ${a \leq a + m}$, where ${m = \prod_{i=0}^{n}m_i}$
-    \item ${u \equiv u_i \;\; (\textrm{mod} m_i)\,, 0 \leq i \leq n}$
+    \item ${u \equiv u_i \;\; (\textrm{mod} \; m_i)\,, 0 \leq i \leq n}$
   \end{itemize}  
 \end{theorem}
 
@@ -953,10 +965,10 @@ The idea is to have a reconstruction method equivalent to the CRA, but which onl
   \end{equation*}
   and ${u^{(k)}(x) \equiv u^{(1)}(x) \mod p}$, ${w^{(k)}(x) \equiv w^{(1)}(x) \mod p}$. 
 
-  Note: the proof is not given here; refer to Geddes \cite{Geddes} for the full proof.
+  Note: the proof is not given here; refer to Geddes et al. \cite{Geddes} for the full proof.
 \end{theorem}           
 
-The Hensel construction (given by Hensel's lemma above) is built from the linear ${p}$-adic Newton's iteration.  The idea essentially amounts to iteratively building up the ${p}$-adic representation of ${u}$ from the first image given (rather than computing many separate images over different moduli as in the CRA).  The problem from the outset is that there is not enough information from the single modular image to perform the next iterative reconstruction.  Extra information, usually in the form of a set of nonlinear equations which ${u(x)}$ must satisfy, is also provided to the algorithm.  Examples of this procedure for the GCD and factorization problems are provided by Geddes \cite{Geddes}.  The procedure for the reconstruction of Gr\"obner bases will be described in \textbf{Chapter} \ref{groebnerRecon}. 
+The Hensel construction (given by Hensel's lemma above) is built from the linear ${p}$-adic Newton's iteration.  The idea essentially amounts to iteratively building up the ${p}$-adic representation of ${u}$ from the first image given (rather than computing many separate images over different moduli as in the CRA).  The problem from the outset is that there is not enough information from the single modular image to perform the next iterative reconstruction.  Extra information, usually in the form of a set of nonlinear equations which ${u(x)}$ must satisfy, is also provided to the algorithm.  Examples of this procedure for the GCD and factorization problems are provided by Geddes et al. \cite{Geddes}.  The procedure for the reconstruction of Gr\"obner bases will be described in \textbf{Chapter} \ref{groebnerRecon}. 
 
 Further details of the Hensel reconstruction are included in the discussion of the application of Hensel to Gr\"obner bases specifically, as detailed by Arnold.
 
@@ -1167,7 +1179,7 @@ The algorithm selected for the Gr\"obner basis computation does not change the p
 
 The methodology and results of the tests are presented and discussed in the following chapter.
 
-\chapter{Methodology and Results}
+\chapter{Methodology and Results}\label{MethAndRes}
 
 In order to obtain a wide range of data to have the potential to make conclusions, a set of problems must be constructed, representing the range of Gr\"obner basis problems (i.e. a broad range of total degree, number of polynomials, coefficient size, integers/rationals, number of terms in the polynomial) was constructed and timing tests run on them with the various constructed algorithms, in order to compare.  These problems are included in \textbf{Appendix} \ref{probSet}, and are detailed below in \textbf{Table} \ref{dataOut}.
 
@@ -1299,7 +1311,7 @@ The data from the timing tests is included below.
 \newpage 
 
 \begin{note}
-  The cells marked \textit{\textbf{DNF}} indicate that this problem "did not finish" (or ran out of mem -- RECHECK FILES); in these cases it was due to the Maple kernel running out of memory and crashing with a "not enough memory available" or "object too large" error.  
+  The cells marked \textit{\textbf{DNF}} indicate that this problem "did not finish"; in these cases it was due to the Maple kernel running out of memory and crashing with a "not enough memory available" or "object too large" error, or surpassing the maximum alloted runtime of 50 000 seconds.  
 \end{note}
 
 The table above shows various expected trends.  For example:
@@ -1613,7 +1625,7 @@ Here, note that the new prime is below the maximum integer size for C and can th
 
 The CRA was run using Buchberger and MapleF4 with 16-bit primes in addition to the 32-bit prime data included in the body of the thesis.  This was mainly done in order to have a more "level" comparison with the FGB CRA, which can only use 16-bit primes, as the option for larger primes has not been included in the CRA.  It was found that the 16-bit primes were slower than the 32-bit primes for Buchberger and F4; this seems to be due to the larger number of modular images which are necessary for the smaller primes, and that the majority of the time spent on CRA Gr\"obner computations is in the calls to the modular basis computations in the Gr\"obner package.
 
-The FGB 16-bit prime data is included above in the \textbf{Methodology and Results} chapter.  
+The FGB 16-bit prime data is included above in \textbf{Chapter} \ref{MethAndRes}.  
 
 Note that, as above, the \textbf{DNF} problems are not included in the CRA data tables.
 
@@ -1689,8 +1701,8 @@ Referring back to the 32-bit data tables for the CRA with these algorithms respe
 
 \chapter{Code}\label{elCode}
 
-This appendix contains the implementation of the modular reconstruction techniques, and the code for the timing tests.  All the code was written in Maple.
-\\
+\noindent This appendix contains the implementation of the modular reconstruction techniques, and the code for the timing tests.  All the code was written in Maple.
+\\\\
 \noindent CRA reconstruction for integers: \hfill \ref{cra}\\
 Rational reconstruction wrapper for polynomials over the integers: \hfill \ref{frec}\\
 Groebner basis computation via the CRA: \hfill \ref{bcra}\\
